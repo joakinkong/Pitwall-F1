@@ -96,7 +96,7 @@ function buildCompare(){
   const source=currentTab==='drivers'?s.drivers:s.constructors;
   const selA=document.getElementById('selectA'),selB=document.getElementById('selectB');
   const prevA=selA.value,prevB=selB.value;
-  const none='<option value="">— ninguno —</option>';
+  const none='<option value="">—</option>';
   const opts=source.map(d=>`<option value="${d.id}">${d.name}</option>`).join('');
   selA.innerHTML=none+opts;
   selB.innerHTML=none+opts;
