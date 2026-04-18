@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PIT WALL | F1 2021-2026</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary":"#ffb4a7","primary-container":"#df1300","secondary":"#47efda","surface":"#121314","surface-container-low":"#1b1c1d","surface-container-high":"#292a2b","surface-container-highest":"#343536","surface-container-lowest":"#0d0e0f","on-surface":"#e3e2e3","outline-variant":"#5e3f3a"},borderRadius:{DEFAULT:"0px",lg:"0px",xl:"0px",full:"9999px"},fontFamily:{headline:["Space Grotesk"],body:["Inter"]}}}};</script>
+<link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body class="dark selection:bg-primary selection:text-on-primary">
+<header class="bg-[#121314] flex justify-between items-center px-6 py-4 w-full border-b border-white/5 sticky top-0 z-50">
+<div class="flex items-center gap-2" id="headerLeft"><span class="material-symbols-outlined text-red-600">leaderboard</span><h1 class="text-2xl font-black italic tracking-tighter text-[#ffb4a7] font-headline uppercase">PIT WALL</h1></div>
+<div id="headerRight"><select id="yearSelect" onchange="changeYear(this.value)" class="year-select bg-surface-container-lowest border border-outline-variant/40 text-primary font-headline font-bold text-sm px-3 py-2 cursor-pointer focus:outline-none focus:border-primary tracking-wider">
+<option value="2026" selected>2026</option><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option></select></div>
+<button id="backBtn" onclick="goBack()" class="items-center gap-1 text-zinc-400 hover:text-white transition-colors" style="display:none"><span class="material-symbols-outlined">arrow_back</span><span class="text-xs font-headline font-bold uppercase tracking-wider">Volver</span></button>
+</header>
+<main class="pb-28 max-w-5xl mx-auto">
+<!-- HOME PAGE -->
+<div id="pageHome"><section class="px-6 pt-6 pb-4 page-transition"><div class="flex items-center justify-center min-h-[60vh]"><p class="text-zinc-500 text-sm font-headline uppercase tracking-widest">Home — contenido próximamente</p></div></section></div>
+<!-- STANDINGS PAGE -->
+<div id="pageStandings" style="display:none">
+<section class="px-6 pt-6"><div class="flex items-end justify-between mb-4"><div><span class="text-secondary text-[10px] font-bold uppercase tracking-[0.2em] font-headline mb-1 block">Campeonato Mundial</span><h2 class="text-3xl font-headline font-bold leading-none tracking-tighter" id="seasonTitle">SEASON 2026</h2></div><div class="text-right"><span class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest block mb-1" id="raceCount">3/22 Carreras</span><div class="flex items-center gap-2 text-primary" id="seasonStatus"><span class="text-sm font-headline font-bold">FINALIZADO</span><span class="material-symbols-outlined text-sm">flag</span></div></div></div>
+<div class="flex w-full bg-surface-container-low p-1 mb-6"><button id="tabDrivers" onclick="switchTab('drivers')" class="flex-1 py-3 text-center text-xs font-bold font-headline tracking-widest uppercase tab-active transition-all cursor-pointer">Pilotos</button><button id="tabConstructors" onclick="switchTab('constructors')" class="flex-1 py-3 text-center text-xs font-bold font-headline tracking-widest uppercase tab-inactive transition-all cursor-pointer">Constructores</button></div></section>
+<section class="px-6 mb-8"><div class="bg-surface-container-low p-5 relative overflow-hidden"><div class="absolute top-0 right-0 w-24 h-24 bg-primary/5 -rotate-45 translate-x-12 -translate-y-12"></div><div class="flex justify-between items-start mb-3"><div><h3 class="text-sm font-headline font-bold uppercase tracking-widest text-on-surface">Progresión de Puntos</h3><p class="text-[10px] text-zinc-500 uppercase font-medium" id="chartSubtitle"></p></div></div><div id="chartLegend" class="flex flex-wrap gap-x-4 gap-y-1.5 mb-4"></div><div class="chart-box"><canvas id="mainChart"></canvas></div><p class="text-[9px] text-zinc-600 uppercase tracking-widest mt-3 text-center font-headline">Clic en la leyenda para ocultar/mostrar · Hover para ver detalles</p></div></section>
+<section class="px-6"><h3 class="text-[10px] font-headline font-bold uppercase tracking-[0.3em] text-zinc-500 mb-4" id="standingsTitle"></h3><div id="standingsCards" class="space-y-2"></div></section>
+</div>
+<!-- CALENDAR PAGE -->
+<div id="pageCalendar" style="display:none"><section class="px-6 pt-6 pb-4 page-transition"><div class="flex items-end justify-between mb-6"><div><span class="text-secondary text-[10px] font-bold uppercase tracking-[0.2em] font-headline mb-1 block">Calendario</span><h2 class="text-3xl font-headline font-bold leading-none tracking-tighter" id="calTitle">SEASON 2025</h2></div></div><div id="calendarGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div></section></div>
+<!-- GP DETAIL PAGE -->
+<div id="pageGPDetail" style="display:none"><section class="px-6 pt-6 pb-4 page-transition" id="gpDetailContent"></section></div>
+<!-- DRIVER DETAIL PAGE -->
+<div id="pageDriverDetail" style="display:none"><section class="px-6 pt-6 pb-4 page-transition" id="driverDetailContent"></section></div>
+<!-- TEAM DETAIL PAGE -->
+<div id="pageTeamDetail" style="display:none"><section class="px-6 pt-6 pb-4 page-transition" id="teamDetailContent"></section></div>
+</main>
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 bg-[#121314] border-t border-white/10 shadow-[0_-24px_48px_-12px_rgba(0,0,0,0.5)]" id="bottomNav">
+<button onclick="showPage('home')" id="navHome" class="nav-btn flex flex-col items-center justify-center text-[#ffb4a7] border-t-2 border-[#ffb4a7] pt-2 pb-1"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">home</span><span class="text-[10px] uppercase tracking-widest font-bold">Home</span></button>
+<button onclick="showPage('standings')" id="navStandings" class="nav-btn flex flex-col items-center justify-center text-zinc-500 pt-2 pb-1 border-t-2 border-transparent"><span class="material-symbols-outlined">emoji_events</span><span class="text-[10px] uppercase tracking-widest font-bold">Standings</span></button>
+<button onclick="showPage('calendar')" id="navCalendar" class="nav-btn flex flex-col items-center justify-center text-zinc-500 pt-2 pb-1 border-t-2 border-transparent"><span class="material-symbols-outlined">calendar_today</span><span class="text-[10px] uppercase tracking-widest font-bold">Calendario</span></button>
+</nav>
+<script src="js/data.js"></script>
+<script src="js/assets.js"></script>
+<script src="js/drivers-info.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
