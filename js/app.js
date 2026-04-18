@@ -34,9 +34,12 @@ if(navStack.length>0){
 }
 }
 
-function changeYear(y){currentYear=y;document.getElementById('seasonTitle').textContent='SEASON '+y;const s=SEASONS[y];document.getElementById('raceCount').textContent=(s.completed?s.completed+'/'+s.races.length:s.races.length)+' Carreras';buildChart(currentTab);buildStandings(currentTab);if(currentPage==='calendar')buildCalendar();updateSeasonStatus();}
+function changeYear(y){currentYear=y;document.getElementById('seasonTitle').textContent='SEASON '+y;const s=SEASONS[y];document.getElementById('raceCount').textContent=(s.completed?s.completed+'/'+s.races.length:s.races.length)+' Carreras';buildCompare();buildChart(currentTab);buildStandings(currentTab);if(currentPage==='calendar')buildCalendar();updateSeasonStatus();}
 
-function buildChart(tab){const ctx=document.getElementById('mainChart').getContext('2d');if(chart)chart.destroy();const s=SEASONS[currentYear],source=tab==='drivers'?s.drivers:s.constructors;let sec=new Set();if(tab==='drivers'){const tb={};for(const d of source){if(!tb[d.color]||d.total>tb[d.color].total)tb[d.color]=d;}for(const d of source){if(tb[d.color]&&tb[d.color].id!==d.id)sec.add(d.id);}}
+function buildChart(tab){const ctx=document.getElementById('mainChart').getContext('2d');if(chart)chart.destroy();const s=SEASONS[currentYear];let source=tab==='drivers'?s.drivers:s.constructors;
+const idA=document.getElementById('selectA')?.value,idB=document.getElementById('selectB')?.value;
+if(idA&&idB)source=source.filter(d=>d.id===idA||d.id===idB);
+let sec=new Set();if(tab==='drivers'){const tb={};for(const d of source){if(!tb[d.color]||d.total>tb[d.color].total)tb[d.color]=d;}for(const d of source){if(tb[d.color]&&tb[d.color].id!==d.id)sec.add(d.id);}}
 const racesDone=s.completed||s.races.length;const chartLabels=s.races.slice(0,racesDone);const ds=source.map(d=>({label:d.id,data:d.cum.slice(0,racesDone),borderColor:d.color,backgroundColor:d.color+'18',borderWidth:2.2,borderDash:sec.has(d.id)?[6,3]:[],pointRadius:3,pointHoverRadius:6,pointBackgroundColor:d.color,pointBorderColor:'#121314',pointBorderWidth:1.5,tension:.3,fill:false}));
 var hlPlugin={id:'hl',_hx:-1,afterEvent:function(ch,args){
   var e=args.event;
@@ -72,7 +75,104 @@ document.getElementById('chartSubtitle').textContent=s.races.length+' GP — '+(
 function toggleDs(i){const m=chart.getDatasetMeta(i);m.hidden=!m.hidden;chart.update();document.getElementById('lb'+i).style.opacity=m.hidden?'.25':'1';}
 function buildStandings(tab){const s=SEASONS[currentYear],source=tab==='drivers'?s.drivers:s.constructors,ch=tab==='drivers'?s.champion_driver:s.champion_constructor;const c=document.getElementById('standingsCards');document.getElementById('standingsTitle').textContent='Clasificación — '+(tab==='drivers'?'Pilotos':'Constructores');
 c.innerHTML=source.map((d,i)=>{const p=String(i+1).padStart(2,'0'),pc=i<3?['text-[#FFD700]','text-[#C0C0C0]','text-[#CD7F32]'][i]:'text-zinc-600',bg=i===0?'bg-surface-container-high':'bg-surface-container-low',ptC=i===0?'text-primary':'text-zinc-500',tm=tab==='drivers'?'<p class="text-[10px] font-medium text-zinc-500 uppercase tracking-widest">'+d.team+'</p>':'',bd=d.id===ch?'<span class="champion-badge ml-2">Campeón</span>':'',br=i===0?'<div class="absolute left-0 top-0 w-1 h-full" style="background:'+d.color+'"></div>':'';const onclick=tab==='drivers'?'openDriverDetail(\''+d.id+'\')':'openTeamDetail(\''+d.id+'\')';return '<div class="relative rank-card cursor-pointer" onclick="'+onclick+'">'+br+'<div class="'+bg+' flex items-center p-4"><div class="w-10 flex flex-col items-center justify-center border-r border-white/5 mr-4"><span class="text-2xl font-headline font-black italic leading-none tabular-nums '+pc+'">'+p+'</span></div><div class="flex-1 flex items-center gap-3 min-w-0"><div class="w-1 h-9 flex-shrink-0" style="background:'+d.color+'"></div><div class="min-w-0"><div class="flex items-center"><h4 class="text-sm font-headline font-extrabold uppercase leading-tight tracking-tight truncate">'+d.name+'</h4>'+bd+'</div>'+tm+'</div></div><div class="text-right flex-shrink-0 ml-2"><span class="text-lg font-headline font-bold tabular-nums">'+d.total+'</span><span class="block text-[8px] font-bold '+ptC+' tracking-widest">PTS</span></div><span class="material-symbols-outlined text-zinc-600 text-base ml-2">chevron_right</span></div></div>';}).join('');}
-function switchTab(tab){currentTab=tab;const tD=document.getElementById('tabDrivers'),tC=document.getElementById('tabConstructors');if(tab==='drivers'){tD.className=tD.className.replace('tab-inactive','tab-active');tC.className=tC.className.replace('tab-active','tab-inactive');}else{tC.className=tC.className.replace('tab-inactive','tab-active');tD.className=tD.className.replace('tab-active','tab-inactive');}buildChart(tab);buildStandings(tab);}
+function switchTab(tab){
+  currentTab=tab;
+  const tD=document.getElementById('tabDrivers'),tC=document.getElementById('tabConstructors');
+  const cmpCtrl=document.getElementById('compareControls');
+  if(tab==='drivers'){
+    tD.className=tD.className.replace('tab-inactive','tab-active');
+    tC.className=tC.className.replace('tab-active','tab-inactive');
+  } else {
+    tC.className=tC.className.replace('tab-inactive','tab-active');
+    tD.className=tD.className.replace('tab-active','tab-inactive');
+  }
+  if(cmpCtrl)cmpCtrl.style.display='';
+  buildCompare();
+  buildChart(tab);buildStandings(tab);
+}
+
+function buildCompare(){
+  const s=SEASONS[currentYear];
+  const source=currentTab==='drivers'?s.drivers:s.constructors;
+  const selA=document.getElementById('selectA'),selB=document.getElementById('selectB');
+  const prevA=selA.value,prevB=selB.value;
+  const none='<option value="">— ninguno —</option>';
+  const opts=source.map(d=>`<option value="${d.id}">${d.name}</option>`).join('');
+  selA.innerHTML=none+opts;
+  selB.innerHTML=none+opts;
+  if(source.find(d=>d.id===prevA))selA.value=prevA; else selA.value='';
+  if(source.find(d=>d.id===prevB))selB.value=prevB; else selB.value='';
+  renderComparison();
+}
+
+function renderComparison(){
+  buildChart(currentTab); // refresh chart with current filter
+  const idA=document.getElementById('selectA').value;
+  const idB=document.getElementById('selectB').value;
+  const s=SEASONS[currentYear];
+  const isDrivers=currentTab==='drivers';
+  const source=isDrivers?s.drivers:s.constructors;
+  const dA=source.find(d=>d.id===idA),dB=source.find(d=>d.id===idB);
+  if(!dA||!dB){document.getElementById('compareResult').innerHTML='';return;}
+
+  const statsA=isDrivers?(calcDriverSeasonStats(idA,currentYear)||{pos:'-',wins:0,podiums:0}):(calcTeamSeasonStats(idA,currentYear)||{pos:'-',wins:0,podiums:0});
+  const statsB=isDrivers?(calcDriverSeasonStats(idB,currentYear)||{pos:'-',wins:0,podiums:0}):(calcTeamSeasonStats(idB,currentYear)||{pos:'-',wins:0,podiums:0});
+
+  // head to head: compare cumulative points per race
+  let h2hA=0,h2hB=0,tied=0;
+  const races=s.completed||s.races.length;
+  for(let i=0;i<races;i++){
+    const ptA=(dA.cum[i]||0)-(i>0?dA.cum[i-1]||0:0);
+    const ptB=(dB.cum[i]||0)-(i>0?dB.cum[i-1]||0:0);
+    if(ptA>ptB)h2hA++;else if(ptB>ptA)h2hB++;else tied++;
+  }
+  const total=h2hA+h2hB+tied||1;
+  const barA=Math.round(h2hA/total*100),barB=Math.round(h2hB/total*100);
+
+  function statRow(label,vA,vB,higherWins=true){
+    const nA=parseFloat(vA),nB=parseFloat(vB);
+    const aWin=higherWins?nA>nB:nA<nB,bWin=higherWins?nB>nA:nB<nA;
+    return `<div class="flex items-center py-2 border-b border-white/5 last:border-0">
+      <span class="w-1/3 text-right text-sm font-headline font-bold tabular-nums ${aWin?'font-black text-white':bWin?'text-zinc-500':''}" style="${aWin?'color:'+dA.color:''}">${vA}</span>
+      <span class="w-1/3 text-center text-[9px] font-headline uppercase tracking-widest text-zinc-600">${label}</span>
+      <span class="w-1/3 text-left text-sm font-headline font-bold tabular-nums ${bWin?'font-black text-white':aWin?'text-zinc-500':''}" style="${bWin?'color:'+dB.color:''}">${vB}</span>
+    </div>`;
+  }
+
+  const infoA=isDrivers?(DRIVERS_INFO[idA]||{}):{};
+  const infoB=isDrivers?(DRIVERS_INFO[idB]||{}):{};
+  const flagA=infoA.flag?`<span class="fi fi-${infoA.flag} fi-4x3 rounded-sm" style="display:inline-block;width:16px;height:11px;"></span>`:'';
+  const flagB=infoB.flag?`<span class="fi fi-${infoB.flag} fi-4x3 rounded-sm" style="display:inline-block;width:16px;height:11px;"></span>`:'';
+  const subA=isDrivers?dA.team:'Constructor';
+  const subB=isDrivers?dB.team:'Constructor';
+
+  document.getElementById('compareResult').innerHTML=`
+  <div class="bg-surface-container-low border border-white/5 p-4 mb-3">
+    <div class="flex justify-between items-center mb-4">
+      <div class="text-left"><div class="flex items-center gap-1 mb-0.5">${flagA}<span class="text-[9px] text-zinc-500 font-headline uppercase">${subA}</span></div>
+        <h3 class="text-base font-headline font-black uppercase tracking-tight" style="color:${dA.color}">${dA.name}</h3></div>
+      <span class="text-xs font-headline font-black text-zinc-600 tracking-widest">VS</span>
+      <div class="text-right"><div class="flex items-center justify-end gap-1 mb-0.5">${flagB}<span class="text-[9px] text-zinc-500 font-headline uppercase">${subB}</span></div>
+        <h3 class="text-base font-headline font-black uppercase tracking-tight" style="color:${dB.color}">${dB.name}</h3></div>
+    </div>
+    ${statRow('Posición','P'+statsA.pos,'P'+statsB.pos,false)}
+    ${statRow('Puntos',dA.total,dB.total)}
+    ${statRow('Victorias',statsA.wins,statsB.wins)}
+    ${statRow('Podios',statsA.podiums,statsB.podiums)}
+  </div>
+  <div class="bg-surface-container-low border border-white/5 p-4 mb-3">
+    <h4 class="text-[9px] font-headline font-bold uppercase tracking-[0.3em] text-zinc-500 mb-3">Head to Head — ${races} carreras</h4>
+    <div class="flex items-center gap-2 mb-1">
+      <span class="text-sm font-headline font-black tabular-nums" style="color:${dA.color}">${h2hA}</span>
+      <div class="flex-1 h-2 bg-surface-container-high rounded-full overflow-hidden flex">
+        <div class="h-full" style="width:${barA}%;background:${dA.color}"></div>
+        <div class="h-full ml-auto" style="width:${barB}%;background:${dB.color}"></div>
+      </div>
+      <span class="text-sm font-headline font-black tabular-nums" style="color:${dB.color}">${h2hB}</span>
+    </div>
+    ${tied?`<p class="text-[9px] text-zinc-600 text-center mt-1">${tied} empate${tied>1?'s':''}</p>`:''}
+  </div>`;
+}
 
 // CALENDAR
 function buildCalendar(){const cal=CAL_DATA.calendars[currentYear],cts=CAL_DATA.circuits;document.getElementById('calTitle').textContent='SEASON '+currentYear;
@@ -278,7 +378,7 @@ const color=stats?stats.color:"#ffb4a7";
 let hero='<div class="detail-hero bg-surface-container-low border border-white/5 p-6 relative mb-4" style="--accent-color:'+color+'">'+
 '<div class="absolute top-0 left-0 w-1 h-full" style="background:'+color+'"></div>'+
 '<div class="flex items-start justify-between mb-3">'+
-'<div class="flex items-center gap-2"><span class="text-3xl">'+flagStr+'</span><div><span class="text-[10px] font-headline font-bold text-secondary uppercase tracking-[0.2em]">Piloto · '+currentYear+'</span><h2 class="text-2xl font-headline font-black uppercase tracking-tighter leading-tight mt-1">'+nameStr+'</h2></div></div>'+
+'<div class="flex items-center gap-2">'+(flagStr?'<span class="fi fi-'+flagStr+' fi-4x3 rounded-sm" style="display:inline-block;width:40px;height:28px;"></span>':'')+' <div><span class="text-[10px] font-headline font-bold text-secondary uppercase tracking-[0.2em]">Piloto · '+currentYear+'</span><h2 class="text-2xl font-headline font-black uppercase tracking-tighter leading-tight mt-1">'+nameStr+'</h2></div></div>'+
 '<span class="text-5xl font-headline font-black italic leading-none stat-num" style="color:'+color+'">'+numStr+'</span></div>'+
 (stats?'<p class="text-xs text-zinc-400 uppercase tracking-widest font-headline clickable-name" onclick="openTeamDetail(\''+(teamIdFromName(stats.team)||'')+'\')">'+stats.team+' <span class="material-symbols-outlined text-xs align-middle">chevron_right</span></p>':'<p class="text-xs text-zinc-500 italic">Sin datos en '+currentYear+'</p>')+
 '</div>';
@@ -378,7 +478,7 @@ if(stats&&stats.drivers.length>0){
   driversBox='<div class="mb-4"><h3 class="text-[10px] font-headline font-bold uppercase tracking-[0.3em] text-zinc-500 mb-3">Pilotos '+currentYear+'</h3><div class="space-y-2">';
   stats.drivers.forEach(d=>{
     const dInfo=DRIVERS_INFO[d.id]||{};
-    driversBox+='<div class="entity-pill bg-surface-container-low border border-white/5 flex items-center p-3" onclick="openDriverDetail(\''+d.id+'\')"><div class="w-1 h-9 mr-3" style="background:'+d.color+'"></div><div class="flex-1"><span class="text-sm font-headline font-bold uppercase block">'+d.name+'</span><span class="text-[10px] text-zinc-500">'+(dInfo.flag||"")+' '+(dInfo.nat||"")+' · #'+(dInfo.num||"?")+'</span></div><span class="material-symbols-outlined text-zinc-600">chevron_right</span></div>';
+    driversBox+='<div class="entity-pill bg-surface-container-low border border-white/5 flex items-center p-3" onclick="openDriverDetail(\''+d.id+'\')"><div class="w-1 h-9 mr-3" style="background:'+d.color+'"></div><div class="flex-1"><span class="text-sm font-headline font-bold uppercase block">'+d.name+'</span><span class="text-[10px] text-zinc-500">'+(dInfo.flag?'<span class="fi fi-'+dInfo.flag+' fi-4x3 rounded-sm" style="display:inline-block;width:16px;height:11px;"></span> ':'')+' '+(dInfo.nat||"")+' · #'+(dInfo.num||"?")+'</span></div><span class="material-symbols-outlined text-zinc-600">chevron_right</span></div>';
   });
   driversBox+='</div></div>';
 }
@@ -437,4 +537,4 @@ showPage('team');
     sel.appendChild(opt);
   });
 })();
-buildChart('drivers');buildStandings('drivers');updateSeasonStatus();showPage('home');
+buildCompare();buildChart('drivers');buildStandings('drivers');updateSeasonStatus();showPage('home');
