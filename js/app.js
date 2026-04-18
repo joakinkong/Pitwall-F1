@@ -291,6 +291,11 @@ function teamIdFromName(nm){
   }
   return null;
 }
+function resolveTeamId(teamName,year){
+  const fromInfo=teamIdFromName(teamName);if(fromInfo)return fromInfo;
+  const s=SEASONS[year];if(s){const c=s.constructors.find(c=>c.name===teamName);if(c)return c.id;}
+  return '';
+}
 
 
 
@@ -325,7 +330,7 @@ return{points:dr.total,pos:chPos,team:dr.team,color:dr.color,wins,podiums,top10,
 function calcTeamSeasonStats(teamId,year){
 const s=SEASONS[year];if(!s)return null;
 const tm=s.constructors.find(t=>t.id===teamId);if(!tm)return null;
-const drivers=s.drivers.filter(d=>teamIdFromName(d.team)===teamId);
+const drivers=s.drivers.filter(d=>teamIdFromName(d.team)===teamId||d.team===tm.name);
 let wins=0,podiums=0,top10=0,onetwos=0,dnf=0,bestResult=null;
 const posData=POSITIONS[year]||{};
 const numRaces=s.races.length;
@@ -380,7 +385,7 @@ let hero='<div class="detail-hero bg-surface-container-low border border-white/5
 '<div class="flex items-start justify-between mb-3">'+
 '<div class="flex items-center gap-2">'+(flagStr?'<span class="fi fi-'+flagStr+' fi-4x3 rounded-sm" style="display:inline-block;width:40px;height:28px;"></span>':'')+' <div><span class="text-[10px] font-headline font-bold text-secondary uppercase tracking-[0.2em]">Piloto · '+currentYear+'</span><h2 class="text-2xl font-headline font-black uppercase tracking-tighter leading-tight mt-1">'+nameStr+'</h2></div></div>'+
 '<span class="text-5xl font-headline font-black italic leading-none stat-num" style="color:'+color+'">'+numStr+'</span></div>'+
-(stats?'<p class="text-xs text-zinc-400 uppercase tracking-widest font-headline clickable-name" onclick="openTeamDetail(\''+(teamIdFromName(stats.team)||'')+'\')">'+stats.team+' <span class="material-symbols-outlined text-xs align-middle">chevron_right</span></p>':'<p class="text-xs text-zinc-500 italic">Sin datos en '+currentYear+'</p>')+
+(stats?'<p class="text-xs text-zinc-400 uppercase tracking-widest font-headline clickable-name" onclick="openTeamDetail(\''+resolveTeamId(stats.team,currentYear)+'\')">'+stats.team+' <span class="material-symbols-outlined text-xs align-middle">chevron_right</span></p>':'<p class="text-xs text-zinc-500 italic">Sin datos en '+currentYear+'</p>')+
 '</div>';
 let bioBox='<div class="bg-surface-container-low border border-white/5 p-4 mb-4"><div class="grid grid-cols-3 gap-3 mb-3">'+
 '<div><span class="text-[9px] text-zinc-600 uppercase tracking-widest block font-headline mb-1">Nacionalidad</span><span class="text-xs font-headline font-bold">'+natStr+'</span></div>'+
