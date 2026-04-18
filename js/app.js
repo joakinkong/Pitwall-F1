@@ -76,17 +76,17 @@ function switchTab(tab){currentTab=tab;const tD=document.getElementById('tabDriv
 
 // CALENDAR
 function buildCalendar(){const cal=CAL_DATA.calendars[currentYear],cts=CAL_DATA.circuits;document.getElementById('calTitle').textContent='SEASON '+currentYear;
-document.getElementById('calendarGrid').innerHTML=cal.map((r,i)=>{const c=cts[r.id]||{name:r.id};const svg=TRACKS[r.id]||'';const fl=FLAGS[r.id]||'';const nm=c.name.replace(' Grand Prix','');const spDot=r.sprint?'<div class="sprint-dot"></div>':'';
+document.getElementById('calendarGrid').innerHTML=cal.map((r,i)=>{const c=cts[r.id]||{name:r.id};const fl=FLAGS[r.id]||'';const nm=c.name.replace(' Grand Prix','');const spDot=r.sprint?'<div class="sprint-dot"></div>':'';
 return `<div class="gp-card bg-surface-container-low border border-white/5 p-4 flex flex-col items-center justify-between" onclick="openGP(${i})">${spDot}
 <div class="text-center"><span class="text-[9px] font-headline font-bold text-zinc-600 uppercase tracking-widest">R${String(r.round).padStart(2,'0')}</span></div>
-<div class="flex-1 flex items-center justify-center w-full py-2"><svg class="track-svg w-16 h-16 sm:w-20 sm:h-20" viewBox="0 0 500 500" fill="none"><path d="${svg}" stroke="#e3e2e3" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
-<div class="text-center"><div class="flex justify-center mb-1">${(function(){var s=FLAG_SVGS[fl]||"";if(!s)return"";s=s.replace(/width="[^"]*"/,'width="28"').replace(/height="[^"]*"/,'height="20"');return '<div class="flex justify-center"><div class="w-7 h-5 overflow-hidden rounded-sm border border-white/10">'+s+'</div></div>';})()}</div><h4 class="text-[11px] font-headline font-extrabold uppercase leading-tight tracking-tight">${nm}</h4><p class="text-[9px] text-zinc-500 mt-0.5">${r.date}</p></div></div>`;}).join('');}
+<div class="flex-1 flex items-center justify-center w-full py-2"><img src="circuits/${r.id}.svg" class="track-svg w-16 h-16 sm:w-20 sm:h-20" style="filter:brightness(0.65)" onerror="this.style.opacity='0'" alt=""></div>
+<div class="text-center"><div class="flex justify-center mb-1">${fl?'<span class="fi fi-'+fl+' fi-4x3 rounded-sm border border-white/10" style="display:inline-block;width:28px;height:20px;"></span>':''}</div><h4 class="text-[11px] font-headline font-extrabold uppercase leading-tight tracking-tight">${nm}</h4><p class="text-[9px] text-zinc-500 mt-0.5">${r.date}</p></div></div>`;}).join('');}
 
 // GP DETAIL
 function getDriverPts(idx){const s=SEASONS[currentYear];const res=[];for(const d of s.drivers){const prev=idx>0?d.cum[idx-1]:0;const cur=d.cum[idx];const pts=Math.round((cur-prev)*10)/10;if(pts>0)res.push({id:d.id,name:d.name,team:d.team,color:d.color,pts});}res.sort((a,b)=>b.pts-a.pts);return res;}
 
 function openGP(idx){const cal=CAL_DATA.calendars[currentYear];const r=cal[idx];const c=CAL_DATA.circuits[r.id]||{name:r.id,circuit:'',city:'',length:'',turns:'',laps:''};
-const svg=TRACKS[r.id]||'';const fl=FLAGS[r.id]||'';const dp=getDriverPts(idx);
+const fl=FLAGS[r.id]||'';const dp=getDriverPts(idx);
 const sprintBadge=r.sprint?'<span class="inline-block bg-secondary/20 text-secondary event-badge border border-secondary/30 mr-2">Sprint Weekend</span>':'';
 const eventHtml=r.event?`<div class="bg-surface-container-high border border-white/5 p-3 mt-4"><p class="text-xs text-zinc-300 leading-relaxed">${r.event}</p></div>`:'';
 const posData=POSITIONS[currentYear]||{};
@@ -131,8 +131,8 @@ const noPts=raceDrivers.length===0?'<p class="text-xs text-zinc-500 italic py-4 
 
 document.getElementById('gpDetailContent').innerHTML=`<div class="page-transition">
 <div class="bg-surface-container-low border border-white/5 p-6 relative overflow-hidden mb-4">
-<div class="absolute top-4 right-4 opacity-10"><svg class="w-28 h-28" viewBox="0 0 500 500" fill="none"><path d="${svg}" stroke="#ffb4a7" stroke-width="12" fill="none"/></svg></div>
-<div class="flex items-center gap-2 mb-2"><div class="inline-block w-9 h-6 overflow-hidden align-middle">${FLAG_SVGS[fl]||""}</div><span class="text-[10px] font-headline font-bold text-secondary uppercase tracking-[0.2em]">Ronda ${r.round} · ${currentYear}</span></div>
+<div class="absolute top-4 right-4 opacity-10"><img src="circuits/${r.id}.svg" class="w-28 h-28" onerror="this.style.opacity='0'" alt=""></div>
+<div class="flex items-center gap-2 mb-2">${fl?'<span class="fi fi-'+fl+' fi-4x3" style="display:inline-block;width:36px;height:24px;vertical-align:middle;border-radius:2px;"></span>':''}<span class="text-[10px] font-headline font-bold text-secondary uppercase tracking-[0.2em]">Ronda ${r.round} · ${currentYear}</span></div>
 <h2 class="text-2xl font-headline font-bold tracking-tighter uppercase">${c.name}</h2>
 <p class="text-sm text-zinc-400 mt-1">${c.circuit}</p>
 <p class="text-xs text-zinc-500">${c.city} · ${r.date}</p>
@@ -143,7 +143,7 @@ ${eventHtml}</div>
 <div class="bg-surface-container-low border border-white/5 p-4 text-center"><span class="text-[9px] text-zinc-600 uppercase tracking-widest block font-headline mb-1">Curvas</span><span class="text-lg font-headline font-bold">${c.turns}</span></div>
 <div class="bg-surface-container-low border border-white/5 p-4 text-center"><span class="text-[9px] text-zinc-600 uppercase tracking-widest block font-headline mb-1">Vueltas</span><span class="text-lg font-headline font-bold">${c.laps}</span></div></div>
 <div class="bg-surface-container-low border border-white/5 p-6 mb-4 flex items-center justify-center">
-<svg class="w-48 h-48" viewBox="0 0 500 500" fill="none"><path d="${svg}" stroke="#ffb4a7" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
+<img src="circuits/${r.id}.svg" class="w-48 h-48" style="filter:brightness(0.65)" onerror="this.style.opacity='0'" alt="${c.name}"></div>
 <div id="gpClassifications">
 ${(function(){
   const sprintData=SPRINTS[currentYear]&&SPRINTS[currentYear][String(idx)];
@@ -313,8 +313,7 @@ if(stats){
       const isNum=!isNaN(parseInt(r.pos));
       const pc=r.pos==="1"?"text-[#FFD700]":r.pos==="2"?"text-[#C0C0C0]":r.pos==="3"?"text-[#CD7F32]":isNum?"text-zinc-500":"text-red-400";
       const posL=isNum?"P"+r.pos:r.pos;
-      const flagSvg=FLAG_SVGS[r.flag]||"";
-      const flagBox=flagSvg?'<div class="w-6 h-4 overflow-hidden border border-white/10">'+flagSvg.replace(/width="[^"]*"/,'width="24"').replace(/height="[^"]*"/,'height="16"')+'</div>':'';
+      const flagBox=r.flag?'<span class="fi fi-'+r.flag+' fi-4x3 border border-white/10" style="display:inline-block;width:24px;height:16px;border-radius:2px;flex-shrink:0;"></span>':'';
       lastResults+='<div class="flex items-center justify-between py-2 px-3 border-b border-white/5 last:border-0 cursor-pointer hover:bg-surface-container-high transition-colors" onclick="openGP('+r.idx+')"><div class="flex items-center gap-2">'+flagBox+'<div><span class="text-xs font-headline font-bold uppercase">'+r.raceName+'</span><span class="text-[9px] text-zinc-600 ml-1.5">'+r.date+'</span></div></div><span class="text-sm font-headline font-black tabular-nums '+pc+'">'+posL+'</span></div>';
     });
     lastResults+='</div></div>';
