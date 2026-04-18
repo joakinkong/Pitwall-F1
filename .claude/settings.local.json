@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(awk -F',' '$2 >= 2010 && $2 <= 2020 {print $2}' \"c:/Users/usuario/Desktop/proyecto f1/CSV proyecto f1/f1_results_full.csv\")",
+      "Bash(awk -F',' '$1 >= 2010 && $1 <= 2020 {print $8}' \"c:/Users/usuario/Desktop/proyecto f1/CSV proyecto f1/f1_results_full.csv\")",
+      "Bash(awk -F',' '$1 == 2010' \"c:/Users/usuario/Desktop/proyecto f1/CSV proyecto f1/f1_results_full.csv\")"
+    ]
+  }
+}

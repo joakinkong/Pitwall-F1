@@ -322,7 +322,7 @@ if(stats){
 }
 // Trayectoria PIT WALL (todos los años)
 let trajectory='<div class="mb-4"><h3 class="text-[10px] font-headline font-bold uppercase tracking-[0.3em] text-zinc-500 mb-3">Trayectoria PIT WALL</h3><div class="bg-surface-container-low border border-white/5">';
-const years=['2021','2022','2023','2024','2025','2026'];
+const years=Object.keys(SEASONS).sort();
 const trajData=[];
 let hasData=false;
 years.forEach(y=>{
@@ -400,7 +400,7 @@ if(stats){
 }
 // Trayectoria PIT WALL
 let trajectory='<div class="mb-4"><h3 class="text-[10px] font-headline font-bold uppercase tracking-[0.3em] text-zinc-500 mb-3">Trayectoria PIT WALL</h3><div class="bg-surface-container-low border border-white/5">';
-const years=['2021','2022','2023','2024','2025','2026'];
+const years=Object.keys(SEASONS).sort();
 const trajData=[];
 let hasData=false;
 years.forEach(y=>{
@@ -428,4 +428,14 @@ document.getElementById('teamDetailContent').innerHTML=hero+bioBox+driversBox+se
 showPage('team');
 }
 
+// Poblar selector de años dinámicamente desde SEASONS
+(function(){
+  const sel=document.getElementById('yearSelect');
+  Object.keys(SEASONS).sort((a,b)=>+b-+a).forEach(y=>{
+    const opt=document.createElement('option');
+    opt.value=y;opt.textContent=y;
+    if(y===currentYear)opt.selected=true;
+    sel.appendChild(opt);
+  });
+})();
 buildChart('drivers');buildStandings('drivers');updateSeasonStatus();showPage('home');
