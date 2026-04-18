@@ -229,7 +229,15 @@ const rows=raceDrivers.map((d,i)=>{
 }).join('');
 const noPts=raceDrivers.length===0?'<p class="text-xs text-zinc-500 italic py-4 text-center">Sin datos</p>':'';
 
+const hasPrev=idx>0,hasNext=idx<cal.length-1;
+const prevBtn=hasPrev?`<button onclick="openGP(${idx-1})" class="flex items-center gap-1 text-zinc-400 hover:text-white transition-colors"><span class="material-symbols-outlined">arrow_back_ios</span></button>`:`<span class="w-8"></span>`;
+const nextBtn=hasNext?`<button onclick="openGP(${idx+1})" class="flex items-center gap-1 text-zinc-400 hover:text-white transition-colors"><span class="material-symbols-outlined">arrow_forward_ios</span></button>`:`<span class="w-8"></span>`;
 document.getElementById('gpDetailContent').innerHTML=`<div class="page-transition">
+<div class="flex items-center justify-between mb-4 px-1">
+${prevBtn}
+<span class="text-[10px] font-headline font-bold uppercase tracking-widest text-zinc-500">R${r.round} / ${cal.length}</span>
+${nextBtn}
+</div>
 <div class="bg-surface-container-low border border-white/5 p-6 relative overflow-hidden mb-4">
 <div class="absolute top-4 right-4 opacity-10"><img src="circuits/${r.id}.svg" class="w-28 h-28" onerror="this.style.opacity='0'" alt=""></div>
 <div class="flex items-center gap-2 mb-2">${fl?'<span class="fi fi-'+fl+' fi-4x3" style="display:inline-block;width:36px;height:24px;vertical-align:middle;border-radius:2px;"></span>':''}<span class="text-[10px] font-headline font-bold text-secondary uppercase tracking-[0.2em]">Ronda ${r.round} · ${currentYear}</span></div>
