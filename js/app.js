@@ -206,7 +206,11 @@ for(const d of s.drivers){
     const spScore=spPts[spPos]||0;
     pts=Math.round((pts-spScore)*10)/10;
   }
-  raceDrivers.push({id:d.id,name:d.name,team:d.team,color:d.color,pos:posVal,pts:pts});
+  const rcOverride=(RACE_CONSTRUCTORS&&RACE_CONSTRUCTORS[currentYear]&&RACE_CONSTRUCTORS[currentYear][d.id])?RACE_CONSTRUCTORS[currentYear][d.id][idx]:null;
+  const raceConstr=rcOverride?s.constructors.find(c=>c.id===rcOverride):null;
+  const raceTeam=raceConstr?raceConstr.name:d.team;
+  const raceColor=raceConstr?raceConstr.color:d.color;
+  raceDrivers.push({id:d.id,name:d.name,team:raceTeam,color:raceColor,pos:posVal,pts:pts});
 }
 // Sort: numbered positions first (ascending), then R, DSQ, DNS
 const sortOrder={"R":1,"DSQ":2,"DNS":3};

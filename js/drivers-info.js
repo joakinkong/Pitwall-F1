@@ -40,7 +40,9 @@ const DRIVERS_INFO={
 "ZHO":{name:"Zhou Guanyu",nat:"China",flag:"cn",num:24,dob:"1999-05-30",debut:2022,bio:"Primer piloto chino en la historia de F1. Corrió con Alfa Romeo/Sauber entre 2022 y 2024."},
 "DEV":{name:"Nyck de Vries",nat:"Países Bajos",flag:"nl",num:21,dob:"1995-02-06",debut:2022,bio:"Campeón de F2 2019 y de Fórmula E 2021. Corrió con AlphaTauri en 2023 antes de ser reemplazado por Ricciardo."},
 "SAR":{name:"Logan Sargeant",nat:"Estados Unidos",flag:"us",num:2,dob:"2000-12-31",debut:2023,bio:"Primer piloto estadounidense en F1 desde Scott Speed. Corrió con Williams en 2023 y parte de 2024."},
-"DOO":{name:"Jack Doohan",nat:"Australia",flag:"au",num:7,dob:"2003-01-20",debut:2024,bio:"Hijo del campeón de MotoGP Mick Doohan. Debutó en el GP de Abu Dhabi 2024 con Alpine. Reemplazado por Colapinto a mitad de 2025."}
+"DOO":{name:"Jack Doohan",nat:"Australia",flag:"au",num:7,dob:"2003-01-20",debut:2024,bio:"Hijo del campeón de MotoGP Mick Doohan. Debutó en el GP de Abu Dhabi 2024 con Alpine. Reemplazado por Colapinto a mitad de 2025."},
+"SEN":{name:"Ayrton Senna",nat:"Brasil",flag:"br",num:12,dob:"1960-03-21",debut:1984,bio:"Triple campeón del mundo (1988, 1990, 1991) con McLaren y Williams. Considerado uno de los mejores pilotos de la historia. Falleció en el GP de San Marino 1994."},
+"BSE":{name:"Bruno Senna",nat:"Brasil",flag:"br",num:17,dob:"1983-10-15",debut:2010,bio:"Sobrino de Ayrton Senna. Debutó con HRT en 2010. Corrió con Renault (2011) y Williams (2012) antes de retirarse de la F1."}
 };
 
 // ============ TEAMS INFO (datos fijos) ============
