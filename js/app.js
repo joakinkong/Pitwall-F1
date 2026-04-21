@@ -3,7 +3,41 @@
 // Cambia cuando agregas una feature o arreglas un bug de UI.
 // ============================================================
 
-let currentYear='2026',currentTab='drivers',chart=null,miniChart=null,currentPage='home',navStack=[],homeChartDriver=null,homeChartTeam=null,countdownInterval=null;
+let currentYear='2026',currentTab='drivers',chart=null,miniChart=null,currentPage='home',navStack=[],homeChartDriver=null,homeChartTeam=null,countdownInterval=null,homeChartData=null;
+
+// Mapeo: ID interno único → código de display oficial F1
+// Solo se necesita cuando el código visual difiere del ID interno.
+const DRIVER_DISPLAY_CODES={
+  "JOS":"VER","JVR":"VER",          // Jos Verstappen / Jean-Éric Vergne
+  "ALR":"ALB","CAL":"ALB",          // Alboreto / Albers
+  "EBN":"BER",                       // Éric Bernard
+  "JBL":"BOU","SBD":"BOU",          // Boullion / Bourdais
+  "DBM":"BRA",                       // David Brabham
+  "PCH":"CHA",                       // Pedro Chaves
+  "ACH":"CHI",                       // Andrea Chiesa
+  "PFT":"FIT",                       // Pietro Fittipaldi
+  "GMZ":"GAS",                       // Gastón Mazzacane
+  "GBR":"GIA",                       // Gianmaria Bruni
+  "GPA":"GIO",                       // Giorgio Pantano
+  "OGR":"GRO",                       // Olivier Grouillard
+  "RHA":"HAR",                       // Rio Haryanto
+  "JLA":"LAM",                       // Jan Lammers
+  "JMG":"MAG",                       // Jan Magnussen
+  "TMQ":"MAR",                       // Tarso Marques
+  "AMO":"MON",                       // Andrea Montermini
+  "GMO":"MOR",                       // Giovanni Morbidelli
+  "SNJ":"NAK","SNA":"NAK",          // S. Nakajima / S. Nakano
+  "ENS":"NAS",                       // Emanuele Naspetti
+  "PJR":"PIQ",                       // Nelson Piquet Jr.
+  "RRS":"ROS",                       // Ricardo Rosset
+  "BSN":"SCH","DSC":"SCH",          // Schneider / Schiattarella
+  "RDB":"DOO",                       // Robert Doornbos
+  "SSZ":"SAR",                       // Sébastien Sarrazin
+  "PBR":"BAR","FBZ":"BAR",          // Barilla / Barbazza
+  "MCN":"ALL",                       // Allan McNish
+  "YOO":"ALE",                       // Alex Yoong
+};
+function dCode(id){return DRIVER_DISPLAY_CODES[id]||id;}
 
 function showPage(p,pushHistory){
 if(pushHistory!==false&&currentPage&&currentPage!==p)navStack.push(currentPage);
@@ -40,7 +74,7 @@ function buildChart(tab){const ctx=document.getElementById('mainChart').getConte
 const idA=document.getElementById('selectA')?.value,idB=document.getElementById('selectB')?.value;
 if(idA&&idB)source=source.filter(d=>d.id===idA||d.id===idB);
 let sec=new Set();if(tab==='drivers'){const tb={};for(const d of source){if(!tb[d.color]||d.total>tb[d.color].total)tb[d.color]=d;}for(const d of source){if(tb[d.color]&&tb[d.color].id!==d.id)sec.add(d.id);}}
-const racesDone=s.completed||s.races.length;const chartLabels=s.races.slice(0,racesDone);const ds=source.map(d=>({label:d.id,data:d.cum.slice(0,racesDone),borderColor:d.color,backgroundColor:d.color+'18',borderWidth:2.2,borderDash:sec.has(d.id)?[6,3]:[],pointRadius:3,pointHoverRadius:6,pointBackgroundColor:d.color,pointBorderColor:'#121314',pointBorderWidth:1.5,tension:.3,fill:false}));
+const racesDone=s.completed||s.races.length;const chartLabels=s.races.slice(0,racesDone);const ds=source.map(d=>({label:dCode(d.id),data:d.cum.slice(0,racesDone),borderColor:d.color,backgroundColor:d.color+'18',borderWidth:2.2,borderDash:sec.has(d.id)?[6,3]:[],pointRadius:3,pointHoverRadius:6,pointBackgroundColor:d.color,pointBorderColor:'#121314',pointBorderWidth:1.5,tension:.3,fill:false}));
 var hlPlugin={id:'hl',_hx:-1,afterEvent:function(ch,args){
   var e=args.event;
   if(!e||e.type==='mouseout'){
@@ -70,7 +104,7 @@ onClick:function(evt,el,ch){
     if(idx>=0&&idx<ch.data.labels.length)openGP(idx);
   }
 }}});
-const le=document.getElementById('chartLegend');le.innerHTML=source.map((d,i)=>{const isDash=sec.has(d.id);const st=isDash?'background:transparent;border:2px dashed '+d.color:'background:'+d.color;return '<button onclick="toggleDs('+i+')" class="flex items-center gap-1.5 cursor-pointer transition-opacity" id="lb'+i+'"><span class="legend-dot" style="'+st+'"></span><span class="text-[9px] uppercase font-bold text-zinc-400 hover:text-white transition-colors font-headline tracking-wider">'+d.id+'</span></button>';}).join('');
+const le=document.getElementById('chartLegend');le.innerHTML=source.map((d,i)=>{const isDash=sec.has(d.id);const st=isDash?'background:transparent;border:2px dashed '+d.color:'background:'+d.color;return '<button onclick="toggleDs('+i+')" class="flex items-center gap-1.5 cursor-pointer transition-opacity" id="lb'+i+'"><span class="legend-dot" style="'+st+'"></span><span class="text-[9px] uppercase font-bold text-zinc-400 hover:text-white transition-colors font-headline tracking-wider">'+dCode(d.id)+'</span></button>';}).join('');
 document.getElementById('chartSubtitle').textContent=s.races.length+' GP — '+(tab==='drivers'?'Pilotos':'Constructores');}
 function toggleDs(i){const m=chart.getDatasetMeta(i);m.hidden=!m.hidden;chart.update();document.getElementById('lb'+i).style.opacity=m.hidden?'.25':'1';}
 function buildStandings(tab){const s=SEASONS[currentYear],source=tab==='drivers'?s.drivers:s.constructors,ch=tab==='drivers'?s.champion_driver:s.champion_constructor;const c=document.getElementById('standingsCards');document.getElementById('standingsTitle').textContent='Clasificación — '+(tab==='drivers'?'Pilotos':'Constructores');
@@ -229,7 +263,7 @@ const rows=raceDrivers.map((d,i)=>{
   const ptsStr=d.pts>0?"+"+d.pts:"0";
   const ptsColor=d.pts>0?"text-primary":"text-zinc-600";
   const posLabel=isNaN(parseInt(d.pos))?d.pos:"P"+d.pos;
-  return `<div class="flex items-center justify-between py-2 px-3 ${bg} border-b border-white/5 last:border-0 cursor-pointer hover:bg-surface-container-high transition-colors" onclick="openDriverDetail('${d.id}')"><div class="flex items-center gap-2"><span class="text-xs font-headline font-black tabular-nums ${posColor} w-7 text-center">${posLabel}</span><div class="w-1 h-5" style="background:${d.color}"></div><div><span class="text-xs font-headline font-bold uppercase">${d.id}</span><span class="text-[10px] text-zinc-500 ml-1.5 hidden sm:inline">${d.team}</span></div></div><span class="text-sm font-headline font-bold tabular-nums ${ptsColor}">${ptsStr}</span></div>`;
+  return `<div class="flex items-center justify-between py-2 px-3 ${bg} border-b border-white/5 last:border-0 cursor-pointer hover:bg-surface-container-high transition-colors" onclick="openDriverDetail('${d.id}')"><div class="flex items-center gap-2"><span class="text-xs font-headline font-black tabular-nums ${posColor} w-7 text-center">${posLabel}</span><div class="w-1 h-5" style="background:${d.color}"></div><div><span class="text-xs font-headline font-bold uppercase">${dCode(d.id)}</span><span class="text-[10px] text-zinc-500 ml-1.5 hidden sm:inline">${d.team}</span></div></div><span class="text-sm font-headline font-bold tabular-nums ${ptsColor}">${ptsStr}</span></div>`;
 }).join('');
 const noPts=raceDrivers.length===0?'<p class="text-xs text-zinc-500 italic py-4 text-center">Sin datos</p>':'';
 
@@ -277,7 +311,7 @@ ${(function(){
       const ptsStr=pts>0?'+'+pts:'0';
       const ptsColor=pts>0?'text-secondary':'text-zinc-600';
       const posLabel=isNaN(p)?d.pos:'P'+d.pos;
-      return '<div class="flex items-center justify-between py-2 px-3 '+bg+' border-b border-white/5 last:border-0 cursor-pointer hover:bg-surface-container-high transition-colors" onclick="openDriverDetail(\''+d.id+'\')"><div class="flex items-center gap-2"><span class="text-xs font-headline font-black tabular-nums '+posColor+' w-7 text-center">'+posLabel+'</span><div class="w-1 h-5" style="background:'+d.color+'"></div><div><span class="text-xs font-headline font-bold uppercase">'+d.id+'</span><span class="text-[10px] text-zinc-500 ml-1.5 hidden sm:inline">'+d.team+'</span></div></div><span class="text-sm font-headline font-bold tabular-nums '+ptsColor+'">'+ptsStr+'</span></div>';
+      return '<div class="flex items-center justify-between py-2 px-3 '+bg+' border-b border-white/5 last:border-0 cursor-pointer hover:bg-surface-container-high transition-colors" onclick="openDriverDetail(\''+d.id+'\')"><div class="flex items-center gap-2"><span class="text-xs font-headline font-black tabular-nums '+posColor+' w-7 text-center">'+posLabel+'</span><div class="w-1 h-5" style="background:'+d.color+'"></div><div><span class="text-xs font-headline font-bold uppercase">'+dCode(d.id)+'</span><span class="text-[10px] text-zinc-500 ml-1.5 hidden sm:inline">'+d.team+'</span></div></div><span class="text-sm font-headline font-bold tabular-nums '+ptsColor+'">'+ptsStr+'</span></div>';
     }).join('');
     sprintHtml='<div class="bg-surface-container-low border border-white/5 mb-4"><div class="p-4 border-b border-white/5 flex items-center gap-2"><div class="w-2 h-2 bg-secondary rounded-full"></div><h3 class="text-[10px] font-headline font-bold uppercase tracking-[0.3em] text-secondary">Sprint</h3></div>'+spRows+'</div>';
   }
@@ -544,7 +578,7 @@ document.getElementById('teamDetailContent').innerHTML=hero+bioBox+driversBox+se
 showPage('team');
 }
 
-function renderDonut(canvasId,labels,data,colors,legendId,prevChart){
+function renderDonut(canvasId,labels,data,colors,legendId,prevChart,unit='resultado'){
   if(prevChart)prevChart.destroy();
   const leg=document.getElementById(legendId);
   if(!data.length){
@@ -555,7 +589,7 @@ function renderDonut(canvasId,labels,data,colors,legendId,prevChart){
   const ch=new Chart(ctx,{
     type:'doughnut',
     data:{labels,datasets:[{data,backgroundColor:colors,borderColor:'#121314',borderWidth:2,hoverBorderColor:'#ffffff',hoverBorderWidth:1.5}]},
-    options:{responsive:true,maintainAspectRatio:true,aspectRatio:1,cutout:'62%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw} ${c.raw===1?'victoria':'victorias'}`},backgroundColor:'#1b1c1d',titleColor:'#e3e2e3',bodyColor:'#a1a1aa',borderColor:'#3f3f46',borderWidth:1}}}
+    options:{responsive:true,maintainAspectRatio:true,aspectRatio:1,cutout:'62%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw} ${c.raw===1?unit:unit+'s'}`},backgroundColor:'#1b1c1d',titleColor:'#e3e2e3',bodyColor:'#a1a1aa',borderColor:'#3f3f46',borderWidth:1}}}
   });
   if(leg)leg.innerHTML=labels.map((l,i)=>`<div class="flex items-center gap-1.5 min-w-0"><span class="w-2 h-2 rounded-full shrink-0" style="background:${colors[i]}"></span><span class="text-[10px] font-headline uppercase tracking-wide text-zinc-300 truncate">${l}</span><span class="text-[10px] text-zinc-500 ml-auto shrink-0 pl-1">${data[i]}</span></div>`).join('');
   return ch;
@@ -565,20 +599,23 @@ function buildHome(){
   const s=SEASONS[currentYear];
   if(!s)return;
   const pos=POSITIONS[currentYear]||{};
-  // Count wins per driver and per team
-  const dWins={},tWins={},tColors={};
+  // Compute metrics: wins, podiums, DNF per driver and team
+  const dWins={},tWins={},dPodiums={},tPodiums={},dDNF={},tDNF={},tColors={};
   for(const d of s.drivers){
     const results=pos[d.id]||[];
     for(let i=0;i<results.length;i++){
-      if(results[i]!=='1')continue;
-      dWins[d.id]=(dWins[d.id]||0)+1;
+      const p=results[i];
       const rcId=RACE_CONSTRUCTORS&&RACE_CONSTRUCTORS[currentYear]&&RACE_CONSTRUCTORS[currentYear][d.id]?RACE_CONSTRUCTORS[currentYear][d.id][i]:null;
-      let tName=d.team,tColor=d.color;
-      if(rcId){const tObj=s.constructors.find(c=>c.id===rcId);if(tObj){tName=tObj.name;tColor=tObj.color;}}
-      tWins[tName]=(tWins[tName]||0)+1;
+      const tObj=rcId?s.constructors.find(c=>c.id===rcId):null;
+      const tName=tObj?tObj.name:d.team;
+      const tColor=tObj?tObj.color:d.color;
       if(!tColors[tName])tColors[tName]=tColor;
+      if(p==='1'){dWins[d.id]=(dWins[d.id]||0)+1;tWins[tName]=(tWins[tName]||0)+1;}
+      if(p==='1'||p==='2'||p==='3'){dPodiums[d.id]=(dPodiums[d.id]||0)+1;tPodiums[tName]=(tPodiums[tName]||0)+1;}
+      if(p==='R'||p==='DNS'||p==='W'||p==='EX'||p==='D'){dDNF[d.id]=(dDNF[d.id]||0)+1;tDNF[tName]=(tDNF[tName]||0)+1;}
     }
   }
+  homeChartData={wins:{d:dWins,t:tWins},podiums:{d:dPodiums,t:tPodiums},dnf:{d:dDNF,t:tDNF},colors:tColors};
   const cal=CAL_DATA.calendars[currentYear]||[];
   const racesDone=s.completed!==undefined?s.completed:s.races.length;
   // Champion or current leader
@@ -751,7 +788,7 @@ function buildHome(){
         const rcId=RACE_CONSTRUCTORS&&RACE_CONSTRUCTORS[currentYear]&&RACE_CONSTRUCTORS[currentYear][d.id]?RACE_CONSTRUCTORS[currentYear][d.id][i]:null;
         const tObj=rcId?s.constructors.find(c=>c.id===rcId):null;
         winnerColor=tObj?tObj.color:d.color;
-        winnerLabel=d.id;
+        winnerLabel=dCode(d.id);
         break;
       }
     }
@@ -761,24 +798,41 @@ function buildHome(){
     const borderColor=winnerId?winnerColor:(ran?'#52525b':'#3f3f46');
     const bg=winnerId?winnerColor+'22':'transparent';
     const labelColor=winnerId?winnerColor:(ran?'#71717a':'#3f3f46');
-    return `<button onclick="openGP(${i})" class="flex flex-col items-center gap-1 pt-2 pb-2 px-1.5 min-w-[46px] transition-opacity hover:opacity-80" style="background:${bg};border-top:2px solid ${borderColor}" title="R${r.round} ${r.id}${winnerId?' · '+winnerId:''}">
+    return `<button onclick="openGP(${i})" class="flex flex-col items-center gap-1 pt-2 pb-2 px-1.5 min-w-[46px] transition-opacity hover:opacity-80" style="background:${bg};border-top:2px solid ${borderColor}" title="R${r.round} ${r.id}${winnerId?' · '+dCode(winnerId):''}">
       <span class="text-[8px] font-headline text-zinc-600 font-bold leading-none">${r.round}</span>
       ${flagHtml}
       <span class="text-[9px] font-headline font-black uppercase leading-none" style="color:${labelColor}">${ran?winnerLabel:'···'}</span>
     </button>`;
   }).join('');setTimeout(updateStripFade,0);}
-  // Driver wins chart
-  const dEntries=Object.entries(dWins).sort((a,b)=>b[1]-a[1]);
+  const metric=document.getElementById('homeMetricSelect')?.value||'wins';
+  renderHomeCharts(metric);
+}
+
+function renderHomeCharts(metric){
+  if(!homeChartData)return;
+  const s=SEASONS[currentYear];if(!s)return;
+  const data=homeChartData[metric];
+  const labels={wins:'Victorias',podiums:'Podios',dnf:'DNF / Abandono'};
+  const units={wins:'victoria',podiums:'podio',dnf:'abandono'};
+  const el=document.getElementById('homeChartsLabel');
+  if(el)el.textContent=labels[metric]+' por Gran Premio';
+  // Driver chart
+  const dEntries=Object.entries(data.d).sort((a,b)=>b[1]-a[1]);
   const dLabels=dEntries.map(([id])=>{const d=s.drivers.find(x=>x.id===id);return d?d.name:id;});
-  const dData=dEntries.map(([,w])=>w);
-  const dColorsArr=dEntries.map(([id])=>{const d=s.drivers.find(x=>x.id===id);return d?d.color:'#888';});
-  homeChartDriver=renderDonut('homeChartDriver',dLabels,dData,dColorsArr,'homeDriverLegend',homeChartDriver);
-  // Team wins chart
-  const tEntries=Object.entries(tWins).sort((a,b)=>b[1]-a[1]);
+  const dData=dEntries.map(([,v])=>v);
+  const dColors=dEntries.map(([id])=>{const d=s.drivers.find(x=>x.id===id);return d?d.color:'#888';});
+  homeChartDriver=renderDonut('homeChartDriver',dLabels,dData,dColors,'homeDriverLegend',homeChartDriver,units[metric]);
+  // Team chart
+  const tEntries=Object.entries(data.t).sort((a,b)=>b[1]-a[1]);
   const tLabels=tEntries.map(([n])=>n);
-  const tData=tEntries.map(([,w])=>w);
-  const tColorsArr=tEntries.map(([n])=>tColors[n]||'#888');
-  homeChartTeam=renderDonut('homeChartTeam',tLabels,tData,tColorsArr,'homeTeamLegend',homeChartTeam);
+  const tData=tEntries.map(([,v])=>v);
+  const tColors=tEntries.map(([n])=>homeChartData.colors[n]||'#888');
+  homeChartTeam=renderDonut('homeChartTeam',tLabels,tData,tColors,'homeTeamLegend',homeChartTeam,units[metric]);
+}
+
+function updateHomeCharts(){
+  const metric=document.getElementById('homeMetricSelect')?.value||'wins';
+  renderHomeCharts(metric);
 }
 
 // Poblar selector de años dinámicamente desde SEASONS

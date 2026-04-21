@@ -34,7 +34,14 @@
       <div id="stripFadeL" class="absolute inset-y-0 -left-6 w-10 pointer-events-none transition-opacity duration-200 opacity-0" style="background:linear-gradient(to left,transparent 20%,#121314)"></div>
       <div id="stripFadeR" class="absolute inset-y-0 -right-6 w-10 pointer-events-none transition-opacity duration-200" style="background:linear-gradient(to right,transparent 20%,#121314)"></div>
     </div>
-    <div class="mb-3"><span class="text-[10px] font-headline font-bold uppercase tracking-[0.3em] text-zinc-500">Victorias por Gran Premio</span></div>
+    <div class="mb-3 flex items-center justify-between">
+      <span class="text-[10px] font-headline font-bold uppercase tracking-[0.3em] text-zinc-500" id="homeChartsLabel">Victorias por Gran Premio</span>
+      <select id="homeMetricSelect" onchange="updateHomeCharts()" class="year-select bg-surface-container-high border border-outline-variant/40 text-primary font-headline font-bold text-[10px] px-2 py-1 cursor-pointer focus:outline-none focus:border-primary tracking-wider">
+        <option value="wins">Victorias</option>
+        <option value="podiums">Podios</option>
+        <option value="dnf">DNF / Abandono</option>
+      </select>
+    </div>
     <div class="grid grid-cols-2 gap-3">
       <div class="bg-surface-container-low p-4">
         <h3 class="text-[10px] font-headline font-bold uppercase tracking-[0.2em] text-zinc-400 mb-3">Pilotos</h3>
