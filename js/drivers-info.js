@@ -34,7 +34,7 @@ const DRIVERS_INFO={
 "RAI":{name:"Kimi Räikkönen",nat:"Finlandia",flag:"fi",num:7,dob:"1979-10-17",debut:2001,bio:"Campeón del mundo 2007 con Ferrari. Ganó 21 GPs. Se retiró a fines de 2021 tras su paso final por Alfa Romeo."},
 "GIO":{name:"Antonio Giovinazzi",nat:"Italia",flag:"it",num:99,dob:"1993-12-14",debut:2017,bio:"Corrió con Alfa Romeo entre 2019 y 2021. Posteriormente siguió carrera en WEC con Ferrari."},
 "MAZ":{name:"Nikita Mazepin",nat:"Rusia",flag:"ru",num:9,dob:"1999-03-02",debut:2021,bio:"Corrió una única temporada en F1 con Haas en 2021. Su contrato fue rescindido tras la invasión rusa a Ucrania en 2022."},
-"MSC":{name:"Mick Schumacher",nat:"Alemania",flag:"de",num:47,dob:"1999-03-22",debut:2021,bio:"Hijo de Michael Schumacher. Campeón de F2 2020. Corrió con Haas en 2021 y 2022."},
+"MCK":{name:"Mick Schumacher",nat:"Alemania",flag:"de",num:47,dob:"1999-03-22",debut:2021,bio:"Hijo de Michael Schumacher. Campeón de F2 2020. Corrió con Haas en 2021 y 2022."},
 "KUB":{name:"Robert Kubica",nat:"Polonia",flag:"pl",num:88,dob:"1984-12-07",debut:2006,bio:"Ganador del GP de Canadá 2008. Regresó como suplente de Alfa Romeo en 2021 tras su accidente de rally de 2011."},
 "LAT":{name:"Nicholas Latifi",nat:"Canadá",flag:"ca",num:6,dob:"1995-06-29",debut:2020,bio:"Corrió con Williams entre 2020 y 2022. Su accidente en Abu Dhabi 2021 marcó un hito histórico."},
 "ZHO":{name:"Zhou Guanyu",nat:"China",flag:"cn",num:24,dob:"1999-05-30",debut:2022,bio:"Primer piloto chino en la historia de F1. Corrió con Alfa Romeo/Sauber entre 2022 y 2024."},
