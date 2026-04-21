@@ -21,7 +21,38 @@
 </header>
 <main class="pb-28 max-w-5xl mx-auto">
 <!-- HOME PAGE -->
-<div id="pageHome"><section class="px-6 pt-6 pb-4 page-transition"><div class="flex items-center justify-center min-h-[60vh]"><p class="text-zinc-500 text-sm font-headline uppercase tracking-widest">Home — contenido próximamente</p></div></section></div>
+<div id="pageHome">
+  <section class="px-6 pt-6 pb-6 page-transition">
+    <div class="mb-1"><span class="text-secondary text-[10px] font-bold uppercase tracking-[0.2em] font-headline">Resumen de temporada</span></div>
+    <div id="homeChampion" class="mb-5"></div>
+    <div id="homeCountdown" class="mb-5"></div>
+    <div class="mb-3"><span class="text-[10px] font-headline font-bold uppercase tracking-[0.3em] text-zinc-500">Ganadores por carrera</span></div>
+    <div class="relative mb-5">
+      <div class="overflow-x-auto no-scrollbar -mx-6 px-6" id="stripScroll">
+        <div id="homeWinnerStrip" class="flex gap-1.5 w-max"></div>
+      </div>
+      <div id="stripFadeL" class="absolute inset-y-0 -left-6 w-10 pointer-events-none transition-opacity duration-200 opacity-0" style="background:linear-gradient(to left,transparent 20%,#121314)"></div>
+      <div id="stripFadeR" class="absolute inset-y-0 -right-6 w-10 pointer-events-none transition-opacity duration-200" style="background:linear-gradient(to right,transparent 20%,#121314)"></div>
+    </div>
+    <div class="mb-3"><span class="text-[10px] font-headline font-bold uppercase tracking-[0.3em] text-zinc-500">Victorias por Gran Premio</span></div>
+    <div class="grid grid-cols-2 gap-3">
+      <div class="bg-surface-container-low p-4">
+        <h3 class="text-[10px] font-headline font-bold uppercase tracking-[0.2em] text-zinc-400 mb-3">Pilotos</h3>
+        <canvas id="homeChartDriver"></canvas>
+        <div id="homeDriverLegend" class="mt-3 space-y-1.5"></div>
+      </div>
+      <div class="bg-surface-container-low p-4">
+        <h3 class="text-[10px] font-headline font-bold uppercase tracking-[0.2em] text-zinc-400 mb-3">Equipos</h3>
+        <canvas id="homeChartTeam"></canvas>
+        <div id="homeTeamLegend" class="mt-3 space-y-1.5"></div>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-3 mt-6">
+      <div id="homeLastGP"></div>
+      <div id="homeRightPanel"></div>
+    </div>
+  </section>
+</div>
 <!-- STANDINGS PAGE -->
 <div id="pageStandings" style="display:none">
 <section class="px-6 pt-6"><div class="flex items-end justify-between mb-4"><div><span class="text-secondary text-[10px] font-bold uppercase tracking-[0.2em] font-headline mb-1 block">Campeonato Mundial</span><h2 class="text-3xl font-headline font-bold leading-none tracking-tighter" id="seasonTitle">SEASON 2026</h2></div><div class="text-right"><span class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest block mb-1" id="raceCount">3/22 Carreras</span><div class="flex items-center gap-2 text-primary" id="seasonStatus"><span class="text-sm font-headline font-bold">FINALIZADO</span><span class="material-symbols-outlined text-sm">flag</span></div></div></div>

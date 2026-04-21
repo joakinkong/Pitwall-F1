@@ -3,7 +3,7 @@
 // Cambia cuando agregas una feature o arreglas un bug de UI.
 // ============================================================
 
-let currentYear='2026',currentTab='drivers',chart=null,miniChart=null,currentPage='home',navStack=[];
+let currentYear='2026',currentTab='drivers',chart=null,miniChart=null,currentPage='home',navStack=[],homeChartDriver=null,homeChartTeam=null,countdownInterval=null;
 
 function showPage(p,pushHistory){
 if(pushHistory!==false&&currentPage&&currentPage!==p)navStack.push(currentPage);
@@ -23,7 +23,7 @@ if(p==='home')active=nh;
 else if(p==='standings'||p==='driver'||p==='team')active=ns;
 else if(p==='calendar'||p==='gpdetail')active=nc;
 if(active){active.className=active.className.replace('text-zinc-500','text-[#ffb4a7]').replace('border-transparent','border-[#ffb4a7]');active.querySelector('.material-symbols-outlined').style.fontVariationSettings="'FILL' 1";}
-if(p==='calendar')buildCalendar();if(p==='standings'){buildChart(currentTab);buildStandings(currentTab);updateSeasonStatus();}window.scrollTo(0,0);}
+if(p==='home')buildHome();if(p==='calendar')buildCalendar();if(p==='standings'){buildChart(currentTab);buildStandings(currentTab);updateSeasonStatus();}window.scrollTo(0,0);}
 
 function goBack(){
 if(navStack.length>0){
@@ -34,7 +34,7 @@ if(navStack.length>0){
 }
 }
 
-function changeYear(y){currentYear=y;document.getElementById('seasonTitle').textContent='SEASON '+y;const s=SEASONS[y];document.getElementById('raceCount').textContent=(s.completed?s.completed+'/'+s.races.length:s.races.length)+' Carreras';buildCompare();buildChart(currentTab);buildStandings(currentTab);if(currentPage==='calendar')buildCalendar();updateSeasonStatus();}
+function changeYear(y){currentYear=y;document.getElementById('seasonTitle').textContent='SEASON '+y;const s=SEASONS[y];document.getElementById('raceCount').textContent=(s.completed?s.completed+'/'+s.races.length:s.races.length)+' Carreras';buildCompare();buildChart(currentTab);buildStandings(currentTab);if(currentPage==='home')buildHome();if(currentPage==='calendar')buildCalendar();updateSeasonStatus();}
 
 function buildChart(tab){const ctx=document.getElementById('mainChart').getContext('2d');if(chart)chart.destroy();const s=SEASONS[currentYear];let source=tab==='drivers'?s.drivers:s.constructors;
 const idA=document.getElementById('selectA')?.value,idB=document.getElementById('selectB')?.value;
@@ -542,6 +542,243 @@ if(hasData&&trajData.length>1){
 trajectory+=totals+'</div>';
 document.getElementById('teamDetailContent').innerHTML=hero+bioBox+driversBox+seasonBox+trajectory;
 showPage('team');
+}
+
+function renderDonut(canvasId,labels,data,colors,legendId,prevChart){
+  if(prevChart)prevChart.destroy();
+  const leg=document.getElementById(legendId);
+  if(!data.length){
+    if(leg)leg.innerHTML='<p class="text-[10px] text-zinc-600 text-center">Sin victorias aún</p>';
+    return null;
+  }
+  const ctx=document.getElementById(canvasId).getContext('2d');
+  const ch=new Chart(ctx,{
+    type:'doughnut',
+    data:{labels,datasets:[{data,backgroundColor:colors,borderColor:'#121314',borderWidth:2,hoverBorderColor:'#ffffff',hoverBorderWidth:1.5}]},
+    options:{responsive:true,maintainAspectRatio:true,aspectRatio:1,cutout:'62%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw} ${c.raw===1?'victoria':'victorias'}`},backgroundColor:'#1b1c1d',titleColor:'#e3e2e3',bodyColor:'#a1a1aa',borderColor:'#3f3f46',borderWidth:1}}}
+  });
+  if(leg)leg.innerHTML=labels.map((l,i)=>`<div class="flex items-center gap-1.5 min-w-0"><span class="w-2 h-2 rounded-full shrink-0" style="background:${colors[i]}"></span><span class="text-[10px] font-headline uppercase tracking-wide text-zinc-300 truncate">${l}</span><span class="text-[10px] text-zinc-500 ml-auto shrink-0 pl-1">${data[i]}</span></div>`).join('');
+  return ch;
+}
+
+function buildHome(){
+  const s=SEASONS[currentYear];
+  if(!s)return;
+  const pos=POSITIONS[currentYear]||{};
+  // Count wins per driver and per team
+  const dWins={},tWins={},tColors={};
+  for(const d of s.drivers){
+    const results=pos[d.id]||[];
+    for(let i=0;i<results.length;i++){
+      if(results[i]!=='1')continue;
+      dWins[d.id]=(dWins[d.id]||0)+1;
+      const rcId=RACE_CONSTRUCTORS&&RACE_CONSTRUCTORS[currentYear]&&RACE_CONSTRUCTORS[currentYear][d.id]?RACE_CONSTRUCTORS[currentYear][d.id][i]:null;
+      let tName=d.team,tColor=d.color;
+      if(rcId){const tObj=s.constructors.find(c=>c.id===rcId);if(tObj){tName=tObj.name;tColor=tObj.color;}}
+      tWins[tName]=(tWins[tName]||0)+1;
+      if(!tColors[tName])tColors[tName]=tColor;
+    }
+  }
+  const cal=CAL_DATA.calendars[currentYear]||[];
+  const racesDone=s.completed!==undefined?s.completed:s.races.length;
+  // Champion or current leader
+  const done=!!s.champion_driver;
+  const champDId=done?s.champion_driver:(s.drivers.reduce((a,b)=>b.total>a.total?b:a,s.drivers[0])?.id||'');
+  const champCId=done?s.champion_constructor:(s.constructors.reduce((a,b)=>b.total>a.total?b:a,s.constructors[0])?.id||'');
+  const champDObj=s.drivers.find(d=>d.id===champDId);
+  const champCObj=s.constructors.find(c=>c.id===champCId);
+  const champDInfo=DRIVERS_INFO[champDId];
+  const driverName=champDInfo?champDInfo.name:(champDObj?champDObj.name:champDId);
+  const driverFlag=champDInfo?champDInfo.flag:'';
+  const driverTeam=champDObj?champDObj.team:'';
+  const driverColor=champDObj?champDObj.color:'#ffffff';
+  const constrName=champCObj?champCObj.name:(champCId||'—');
+  const constrColor=champCObj?champCObj.color:'#ffffff';
+  const doneLabel=done?'CAMPEÓN':'LÍDER';
+  const flagHtml=driverFlag?`<span class="fi fi-${driverFlag} fi-4x3" style="display:inline-block;width:36px;height:24px;border-radius:2px;flex-shrink:0"></span>`:'';
+  const constrFlagKey=Object.keys(FLAGS||{}).find(k=>FLAGS[k]&&s.constructors.find(c=>c.id===champCId));
+  document.getElementById('homeChampion').innerHTML=`
+    <div class="grid grid-cols-2 gap-3">
+      <div class="bg-surface-container-low p-4 relative overflow-hidden" style="border-top:2px solid ${driverColor}">
+        <div class="absolute top-0 right-0 w-16 h-16 bg-primary/5 -rotate-45 translate-x-8 -translate-y-8"></div>
+        <span class="text-[9px] font-headline font-bold uppercase tracking-[0.2em] text-secondary block mb-2">${doneLabel} — Piloto</span>
+        <div class="flex items-center gap-2 mb-1">
+          ${flagHtml}
+          <h2 class="text-base font-headline font-black uppercase tracking-tight leading-tight truncate">${driverName}</h2>
+        </div>
+        <p class="text-[10px] font-headline uppercase tracking-widest truncate" style="color:${driverColor}">${driverTeam}</p>
+      </div>
+      <div class="bg-surface-container-low p-4 relative overflow-hidden" style="border-top:2px solid ${constrColor}">
+        <div class="absolute top-0 right-0 w-16 h-16 bg-primary/5 -rotate-45 translate-x-8 -translate-y-8"></div>
+        <span class="text-[9px] font-headline font-bold uppercase tracking-[0.2em] text-secondary block mb-2">${doneLabel} — Constructor</span>
+        <h2 class="text-base font-headline font-black uppercase tracking-tight leading-tight truncate mt-1" style="color:${constrColor}">${constrName}</h2>
+        <p class="text-[10px] font-headline uppercase tracking-widest text-zinc-500 mt-1 truncate">${currentYear}</p>
+      </div>
+    </div>`;
+  // Last GP podium
+  const lastGPEl=document.getElementById('homeLastGP');
+  if(lastGPEl){
+    const lastIdx=racesDone-1;
+    if(lastIdx<0){lastGPEl.innerHTML='';}
+    else{
+      const r=cal[lastIdx];
+      const circuit=CAL_DATA.circuits[r.id]||{};
+      const gpName=circuit.name||r.id;
+      const fl=FLAGS&&FLAGS[r.id];
+      const flagHtml=fl?`<span class="fi fi-${fl} fi-4x3" style="display:inline-block;width:18px;height:12px;border-radius:1px;vertical-align:middle;margin-right:4px"></span>`:'';
+      // Find P1 P2 P3
+      const podium=[null,null,null];
+      for(const d of s.drivers){
+        const p=(pos[d.id]||[])[lastIdx];
+        if(p==='1'||p==='2'||p==='3'){
+          const pIdx=parseInt(p)-1;
+          const rcId=RACE_CONSTRUCTORS&&RACE_CONSTRUCTORS[currentYear]&&RACE_CONSTRUCTORS[currentYear][d.id]?RACE_CONSTRUCTORS[currentYear][d.id][lastIdx]:null;
+          const tObj=rcId?s.constructors.find(c=>c.id===rcId):null;
+          const color=tObj?tObj.color:d.color;
+          const team=tObj?tObj.name:d.team;
+          const pts=Math.round(((d.cum[lastIdx]||0)-(lastIdx>0?d.cum[lastIdx-1]||0:0))*10)/10;
+          const info=DRIVERS_INFO[d.id];
+          podium[pIdx]={name:info?info.name:d.name,color,team,pts};
+        }
+      }
+      const podiumColors=['#C9A84C','#A0A0A0','#A0522D'];
+      const podiumBg=['#C9A84C18','#A0A0A018','#A0522D18'];
+      const p1=podium[0];
+      const miniCard=(p,rank)=>{
+        const pc=podiumColors[rank-1];
+        const pb=podiumBg[rank-1];
+        if(!p)return`<div class="p-3 flex items-center justify-center mt-2" style="background:${pb};border-top:2px solid ${pc}"><span class="text-zinc-600 text-xs">—</span></div>`;
+        return`<div class="p-2.5 relative overflow-hidden mt-2" style="background:${pb};border-top:2px solid ${pc}">
+          <span class="text-[7px] font-headline font-bold block mb-0.5" style="color:${pc}">P${rank}</span>
+          <p class="text-[11px] font-headline font-black uppercase tracking-tight leading-tight truncate">${p.name}</p>
+          <p class="text-[8px] font-headline uppercase tracking-wide mt-0.5 truncate" style="color:${p.color}">${p.team}</p>
+          <span class="block text-[9px] font-headline font-bold text-zinc-400 mt-1">+${p.pts} pts</span>
+        </div>`;
+      };
+      lastGPEl.innerHTML=`
+        <div class="mb-2 flex items-center justify-between">
+          <span class="text-[9px] font-headline font-bold uppercase tracking-[0.2em] text-zinc-500">Último GP</span>
+          <span class="text-[9px] font-headline text-zinc-500">${flagHtml}R${r.round}</span>
+        </div>
+        <div class="p-4 relative overflow-hidden" style="background:${podiumBg[0]};border-top:2px solid ${podiumColors[0]}">
+          <div class="absolute top-0 right-0 w-16 h-16 -rotate-45 translate-x-8 -translate-y-8" style="background:${podiumColors[0]}18"></div>
+          <span class="text-[8px] font-headline font-bold block mb-2" style="color:${podiumColors[0]}">P1 · ${gpName}</span>
+          <h3 class="text-lg font-headline font-black uppercase tracking-tight leading-tight">${p1?p1.name:'—'}</h3>
+          <p class="text-[10px] font-headline uppercase tracking-wider mt-1.5 truncate" style="color:${p1?p1.color:'#888'}">${p1?p1.team:''}</p>
+          ${p1?`<span class="block text-[11px] font-headline font-bold text-zinc-400 mt-2">+${p1.pts} pts</span>`:''}
+        </div>
+        ${miniCard(podium[1],2)}
+        ${miniCard(podium[2],3)}`;
+    }
+  }
+  // Countdown to next GP
+  if(countdownInterval){clearInterval(countdownInterval);countdownInterval=null;}
+  const cdEl=document.getElementById('homeCountdown');
+  if(cdEl){
+    const nextIdx=racesDone;
+    if(nextIdx<cal.length){
+      const nr=cal[nextIdx];
+      const months={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+      const dp=nr.date.split(' ');
+      const utcH=20; // 20:00 UTC = 17:00 ART (UTC-3)
+      const raceDate=new Date(Date.UTC(parseInt(currentYear),months[dp[dp.length-1]],parseInt(dp[0]),utcH,0,0));
+      const artH=String(utcH-3).padStart(2,'0'); // 17:00 ARG
+      const circuit=CAL_DATA.circuits[nr.id]||{};
+      const fl=FLAGS&&FLAGS[nr.id];
+      const fHtml=fl?`<span class="fi fi-${fl} fi-4x3" style="display:inline-block;width:20px;height:14px;border-radius:1px;vertical-align:middle"></span>`:'';
+      cdEl.innerHTML=`
+        <div class="bg-surface-container-low p-4">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[9px] font-headline font-bold uppercase tracking-[0.2em] text-zinc-500">Próxima carrera</span>
+            <span class="text-xs font-headline font-bold text-zinc-300">~${artH}:00 <span class="text-zinc-500">ARG</span></span>
+          </div>
+          <div class="flex items-center gap-2 mb-4">
+            ${fHtml}
+            <span class="text-sm font-headline font-black uppercase tracking-tight">${circuit.name||nr.id}</span>
+            <span class="text-[10px] font-headline text-zinc-500 ml-auto shrink-0">R${nr.round} · ${nr.date}</span>
+          </div>
+          <div class="grid grid-cols-4 gap-2">
+            <div class="text-center"><p class="text-2xl font-headline font-black text-primary leading-none" id="cdDays">--</p><p class="text-[8px] font-headline uppercase tracking-widest text-zinc-500 mt-1">días</p></div>
+            <div class="text-center"><p class="text-2xl font-headline font-black text-primary leading-none" id="cdHours">--</p><p class="text-[8px] font-headline uppercase tracking-widest text-zinc-500 mt-1">horas</p></div>
+            <div class="text-center"><p class="text-2xl font-headline font-black text-primary leading-none" id="cdMins">--</p><p class="text-[8px] font-headline uppercase tracking-widest text-zinc-500 mt-1">min</p></div>
+            <div class="text-center"><p class="text-2xl font-headline font-black text-primary leading-none" id="cdSecs">--</p><p class="text-[8px] font-headline uppercase tracking-widest text-zinc-500 mt-1">seg</p></div>
+          </div>
+        </div>`;
+      function tick(){
+        const diff=raceDate.getTime()-Date.now();
+        const el=document.getElementById('cdDays');if(!el)return;
+        if(diff<=0){['cdDays','cdHours','cdMins','cdSecs'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent='0';});clearInterval(countdownInterval);return;}
+        document.getElementById('cdDays').textContent=Math.floor(diff/86400000);
+        document.getElementById('cdHours').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+        document.getElementById('cdMins').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+        document.getElementById('cdSecs').textContent=String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+      }
+      tick();countdownInterval=setInterval(tick,1000);
+    }else{cdEl.innerHTML='';}
+  }
+  // Winner strip
+  const strip=document.getElementById('homeWinnerStrip');
+  const stripScroll=document.getElementById('stripScroll');
+  const stripFadeR=document.getElementById('stripFadeR');
+  const stripFadeL=document.getElementById('stripFadeL');
+  function updateStripFade(){
+    if(!stripScroll)return;
+    const atEnd=stripScroll.scrollLeft+stripScroll.clientWidth>=stripScroll.scrollWidth-4;
+    const atStart=stripScroll.scrollLeft<=4;
+    if(stripFadeR)stripFadeR.style.opacity=atEnd?'0':'1';
+    if(stripFadeL)stripFadeL.style.opacity=atStart?'0':'1';
+  }
+  if(stripScroll){
+    stripScroll.removeEventListener('scroll',stripScroll._fadeHandler);
+    stripScroll._fadeHandler=updateStripFade;
+    stripScroll.addEventListener('scroll',updateStripFade,{passive:true});
+    // Drag to scroll
+    if(!stripScroll._dragInit){
+      stripScroll._dragInit=true;
+      let dragging=false,startX=0,scrollStart=0,moved=false;
+      stripScroll.style.cursor='grab';
+      stripScroll.addEventListener('mousedown',e=>{dragging=true;moved=false;startX=e.pageX;scrollStart=stripScroll.scrollLeft;stripScroll.style.cursor='grabbing';stripScroll.style.userSelect='none';});
+      window.addEventListener('mousemove',e=>{if(!dragging)return;const dx=e.pageX-startX;if(Math.abs(dx)>4)moved=true;stripScroll.scrollLeft=scrollStart-dx;});
+      window.addEventListener('mouseup',()=>{if(!dragging)return;dragging=false;stripScroll.style.cursor='grab';stripScroll.style.userSelect='';});
+      stripScroll.addEventListener('click',e=>{if(moved){e.stopPropagation();e.preventDefault();}},true);
+    }
+  }
+  if(strip){strip.innerHTML=cal.map((r,i)=>{
+    let winnerId='',winnerColor='',winnerLabel='···';
+    for(const d of s.drivers){
+      if((pos[d.id]||[])[i]==='1'){
+        winnerId=d.id;
+        const rcId=RACE_CONSTRUCTORS&&RACE_CONSTRUCTORS[currentYear]&&RACE_CONSTRUCTORS[currentYear][d.id]?RACE_CONSTRUCTORS[currentYear][d.id][i]:null;
+        const tObj=rcId?s.constructors.find(c=>c.id===rcId):null;
+        winnerColor=tObj?tObj.color:d.color;
+        winnerLabel=d.id;
+        break;
+      }
+    }
+    const ran=i<racesDone;
+    const fl=FLAGS&&FLAGS[r.id];
+    const flagHtml=fl?`<span class="fi fi-${fl} fi-4x3" style="display:inline-block;width:22px;height:15px;border-radius:1px;opacity:${winnerId?1:0.4}"></span>`:`<span style="width:22px;height:15px;display:inline-block"></span>`;
+    const borderColor=winnerId?winnerColor:(ran?'#52525b':'#3f3f46');
+    const bg=winnerId?winnerColor+'22':'transparent';
+    const labelColor=winnerId?winnerColor:(ran?'#71717a':'#3f3f46');
+    return `<button onclick="openGP(${i})" class="flex flex-col items-center gap-1 pt-2 pb-2 px-1.5 min-w-[46px] transition-opacity hover:opacity-80" style="background:${bg};border-top:2px solid ${borderColor}" title="R${r.round} ${r.id}${winnerId?' · '+winnerId:''}">
+      <span class="text-[8px] font-headline text-zinc-600 font-bold leading-none">${r.round}</span>
+      ${flagHtml}
+      <span class="text-[9px] font-headline font-black uppercase leading-none" style="color:${labelColor}">${ran?winnerLabel:'···'}</span>
+    </button>`;
+  }).join('');setTimeout(updateStripFade,0);}
+  // Driver wins chart
+  const dEntries=Object.entries(dWins).sort((a,b)=>b[1]-a[1]);
+  const dLabels=dEntries.map(([id])=>{const d=s.drivers.find(x=>x.id===id);return d?d.name:id;});
+  const dData=dEntries.map(([,w])=>w);
+  const dColorsArr=dEntries.map(([id])=>{const d=s.drivers.find(x=>x.id===id);return d?d.color:'#888';});
+  homeChartDriver=renderDonut('homeChartDriver',dLabels,dData,dColorsArr,'homeDriverLegend',homeChartDriver);
+  // Team wins chart
+  const tEntries=Object.entries(tWins).sort((a,b)=>b[1]-a[1]);
+  const tLabels=tEntries.map(([n])=>n);
+  const tData=tEntries.map(([,w])=>w);
+  const tColorsArr=tEntries.map(([n])=>tColors[n]||'#888');
+  homeChartTeam=renderDonut('homeChartTeam',tLabels,tData,tColorsArr,'homeTeamLegend',homeChartTeam);
 }
 
 // Poblar selector de años dinámicamente desde SEASONS

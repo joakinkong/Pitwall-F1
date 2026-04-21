@@ -21,6 +21,8 @@ select.year-select{appearance:none;background-image:url("data:image/svg+xml,%3Cs
 .stat-num{font-variant-numeric:tabular-nums;font-family:'Space Grotesk';font-weight:700}
 .season-row{transition:background .15s ease;cursor:pointer}
 .season-row:hover{background:#292a2b}
+.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}.no-scrollbar::-webkit-scrollbar{display:none}
+.strip-fade{position:relative}.strip-fade::after{content:'';position:absolute;top:0;right:0;width:40px;height:100%;background:linear-gradient(to right,transparent,#121314);pointer-events:none;z-index:1}
 .mini-chart-box{position:relative;height:180px;width:100%}
 .detail-hero{position:relative;overflow:hidden}
 .detail-hero::before{content:'';position:absolute;top:-50%;right:-20%;width:70%;height:200%;background:linear-gradient(45deg,transparent,var(--accent-color,#ffb4a7) 50%,transparent);opacity:.05;transform:rotate(25deg)}
