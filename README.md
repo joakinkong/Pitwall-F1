@@ -1,6 +1,6 @@
 # PIT WALL
 
-Seguimiento de la Fórmula 1 desde el año 2000 hasta la actualidad. Standings de pilotos y constructores, calendario de carreras, comparador y estadísticas por temporada.
+Seguimiento de la Fórmula 1 desde el año 1980 hasta la actualidad. Standings de pilotos y constructores, calendario de carreras, comparador y estadísticas por temporada.
 
 ## Stack
 
