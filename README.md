@@ -17,9 +17,16 @@ Personal F1 statistics app covering seasons from 1980 to 2026.
 - **Backend:** Python / FastAPI + SQLAlchemy
 - **Database:** SQLite (`f1.db`, not included in repo)
 
-## Setup
+## Viewing the app
 
-### 1. Install dependencies
+The app loads data from static JSON files in `pitwall/data/` — no server needed.
+Open `pitwall/index.html` directly, or visit the GitHub Pages URL.
+
+## Adding results after a GP
+
+The admin panel requires the backend running locally:
+
+### 1. Install dependencies (first time only)
 
 ```bash
 cd backend
@@ -33,16 +40,22 @@ cd backend
 uvicorn main:app --reload
 ```
 
-### 3. Open the app
-
-- App: http://localhost:8000
-- Admin panel: http://localhost:8000/admin
-
-> `f1.db` is required but not included in the repo (it's a binary file). Contact the repo owner to get a copy.
-
-## Adding results after a GP
+### 3. Enter results
 
 1. Go to http://localhost:8000/admin
 2. Select the season and race
 3. Enter finishing positions (1–20, R for retirement, D for DSQ)
-4. Save — all tabs update automatically
+4. Save
+
+### 4. Export and push
+
+```bash
+python export_static.py   # regenerates pitwall/data/ from f1.db
+git add pitwall/data
+git commit -m "GP results: <race name>"
+git push
+```
+
+GitHub Pages will reflect the new results automatically.
+
+> `f1.db` is not included in the repo. Contact the repo owner to get a copy.

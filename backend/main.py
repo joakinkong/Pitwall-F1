@@ -36,7 +36,7 @@ def serve_admin():
     return FileResponse(os.path.join(FRONTEND_DIR, "admin.html"))
 
 # Mount subdirectories at their natural paths (AFTER explicit routes)
-for subdir in ("css", "js", "circuits"):
+for subdir in ("css", "js", "circuits", "data"):
     subpath = os.path.join(FRONTEND_DIR, subdir)
     if os.path.isdir(subpath):
         app.mount(f"/{subdir}", StaticFiles(directory=subpath), name=subdir)

@@ -1,21 +1,19 @@
-// api.js — Cliente de la API FastAPI.
-// Se carga antes de app.js y popula los globales SEASONS, POSITIONS, etc.
+// api.js — Carga datos desde archivos JSON estáticos (pitwall/data/).
+// Para regenerar los JSON después de un GP: python export_static.py
 
-const API_BASE = 'http://localhost:8000/api';
 const _yearCache = {};
 
 async function _fetch(url) {
     const r = await fetch(url);
-    if (!r.ok) throw new Error(`API ${r.status}: ${url}`);
+    if (!r.ok) throw new Error(`404: ${url}`);
     return r.json();
 }
 
-// Carga los datos completos de una temporada y los pone en los globales.
 window.loadYearData = async function (year) {
     const y = String(year);
     if (_yearCache[y]) return;
 
-    const data = await _fetch(`${API_BASE}/seasons/${y}/full`);
+    const data = await _fetch(`data/seasons/${y}.json`);
 
     window.SEASONS[y] = data.season;
     window.POSITIONS[y] = data.positions;
@@ -26,23 +24,20 @@ window.loadYearData = async function (year) {
     _yearCache[y] = true;
 };
 
-// Inicializa todos los datos. Llamado automáticamente al cargar el DOM.
 window.initAppData = async function () {
     const loading = document.getElementById('loadingScreen');
 
     try {
-        const init = await _fetch(`${API_BASE}/init`);
+        const init = await _fetch('data/init.json');
 
-        // Datos estáticos globales
-        window.CAL_DATA    = { circuits: init.circuits, calendars: {} };
-        window.DRIVERS_INFO = init.drivers;
-        window.TEAMS_INFO   = init.teams;
-        window.FLAGS        = init.flags;
-        window.POSITIONS    = {};
-        window.SPRINTS      = {};
+        window.CAL_DATA         = { circuits: init.circuits, calendars: {} };
+        window.DRIVERS_INFO     = init.drivers;
+        window.TEAMS_INFO       = init.teams;
+        window.FLAGS            = init.flags;
+        window.POSITIONS        = {};
+        window.SPRINTS          = {};
         window.RACE_CONSTRUCTORS = {};
 
-        // Skeleton de todas las temporadas (para el selector de año)
         window.SEASONS = {};
         for (const [y, s] of Object.entries(init.seasons_list)) {
             window.SEASONS[y] = {
@@ -54,7 +49,6 @@ window.initAppData = async function () {
             };
         }
 
-        // Carga completa del año actual
         const defaultYear = '2026';
         await window.loadYearData(defaultYear);
 
@@ -67,14 +61,11 @@ window.initAppData = async function () {
             loading.innerHTML = `
                 <div style="text-align:center;color:#ffb4a7;padding:2rem;font-family:sans-serif">
                     <p style="font-size:1.2rem;margin-bottom:1rem;font-weight:bold">
-                        No se pudo conectar al servidor
+                        No se pudieron cargar los datos
                     </p>
-                    <p style="color:#aaa;margin-bottom:1.5rem">
-                        Asegurate de que el backend está corriendo:
+                    <p style="color:#aaa">
+                        Corré <code style="color:#47efda">python export_static.py</code> para generar los archivos de datos.
                     </p>
-                    <code style="background:#1b1c1d;color:#47efda;padding:8px 16px;border-radius:4px;display:inline-block">
-                        cd backend &amp;&amp; uvicorn main:app --reload
-                    </code>
                 </div>`;
         }
     }
