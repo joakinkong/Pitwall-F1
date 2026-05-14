@@ -13,6 +13,11 @@
 <link rel="stylesheet" href="css/styles.css"/>
 </head>
 <body class="dark selection:bg-primary selection:text-on-primary">
+<div id="loadingScreen" style="position:fixed;inset:0;z-index:9999;background:#121314;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem">
+  <span class="material-symbols-outlined" style="font-size:2.5rem;color:#ffb4a7;animation:spin 1s linear infinite">settings</span>
+  <p style="color:#e3e2e3;font-family:sans-serif;font-size:0.9rem;letter-spacing:0.1em">CARGANDO DATOS...</p>
+</div>
+<style>@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}</style>
 <header class="bg-[#121314] flex justify-between items-center px-6 py-4 w-full border-b border-white/5 sticky top-0 z-50">
 <div class="flex items-center gap-2" id="headerLeft"><span class="material-symbols-outlined text-red-600">leaderboard</span><h1 class="text-2xl font-black italic tracking-tighter text-[#ffb4a7] font-headline uppercase">PIT WALL</h1></div>
 <div id="headerRight"><select id="yearSelect" onchange="changeYear(this.value)" class="year-select bg-surface-container-lowest border border-outline-variant/40 text-primary font-headline font-bold text-sm px-3 py-2 cursor-pointer focus:outline-none focus:border-primary tracking-wider">
@@ -87,9 +92,7 @@
 <button onclick="showPage('standings')" id="navStandings" class="nav-btn flex flex-col items-center justify-center text-zinc-500 pt-2 pb-1 border-t-2 border-transparent"><span class="material-symbols-outlined">emoji_events</span><span class="text-[10px] uppercase tracking-widest font-bold">Standings</span></button>
 <button onclick="showPage('calendar')" id="navCalendar" class="nav-btn flex flex-col items-center justify-center text-zinc-500 pt-2 pb-1 border-t-2 border-transparent"><span class="material-symbols-outlined">calendar_today</span><span class="text-[10px] uppercase tracking-widest font-bold">Calendario</span></button>
 </nav>
-<script src="js/data.js?v=mia26b"></script>
-<script src="js/assets.js"></script>
-<script src="js/drivers-info.js"></script>
+<script src="js/api.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

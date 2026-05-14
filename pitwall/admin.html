@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PIT WALL — Admin</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { font-family: 'Inter', sans-serif; background: #121314; color: #e3e2e3; }
+  .card { background: #1b1c1d; border: 1px solid #2a2b2c; border-radius: 8px; }
+  .btn { padding: 6px 14px; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: opacity 0.2s; }
+  .btn:hover { opacity: 0.8; }
+  .btn-primary { background: #ffb4a7; color: #121314; }
+  .btn-secondary { background: #2a2b2c; color: #e3e2e3; border: 1px solid #3a3b3c; }
+  .btn-success { background: #47efda; color: #121314; }
+  .btn-danger { background: #dc2626; color: white; }
+  input, select, textarea { background: #0d0e0f; border: 1px solid #3a3b3c; border-radius: 6px; color: #e3e2e3; padding: 6px 10px; font-size: 0.85rem; width: 100%; outline: none; }
+  input:focus, select:focus, textarea:focus { border-color: #ffb4a7; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  th { text-align: left; padding: 8px 10px; color: #888; font-weight: 600; border-bottom: 1px solid #2a2b2c; }
+  td { padding: 6px 10px; border-bottom: 1px solid #1f2020; }
+  tr:hover td { background: #1f2020; }
+  .pos-input { width: 60px; text-align: center; }
+  .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: #47efda; color: #121314; padding: 10px 20px; border-radius: 6px; font-weight: 700; font-size: 0.9rem; z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<header style="background:#1b1c1d;border-bottom:1px solid #2a2b2c;padding:12px 24px;display:flex;align-items:center;gap:12px">
+  <span style="color:#ffb4a7;font-size:1.4rem">⚙️</span>
+  <h1 style="font-size:1.2rem;font-weight:900;color:#ffb4a7;letter-spacing:0.1em">PIT WALL ADMIN</h1>
+  <a href="/" style="margin-left:auto;color:#888;font-size:0.8rem;">← Ver app</a>
+</header>
+
+<div style="max-width:1100px;margin:0 auto;padding:24px">
+
+  <!-- Selector de temporada / carrera -->
+  <div class="card" style="padding:16px;margin-bottom:20px">
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <div>
+        <label style="font-size:0.75rem;color:#888;display:block;margin-bottom:4px">TEMPORADA</label>
+        <select id="adminYear" style="width:120px" onchange="loadSeasonCalendar()"></select>
+      </div>
+      <div>
+        <label style="font-size:0.75rem;color:#888;display:block;margin-bottom:4px">CARRERA</label>
+        <select id="adminRace" style="width:260px" onchange="loadRaceResults()"></select>
+      </div>
+      <div style="margin-top:18px">
+        <button class="btn btn-secondary" onclick="loadRaceResults()">Cargar resultados</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div style="display:flex;gap:4px;margin-bottom:16px">
+    <button class="btn btn-primary" id="tab-results" onclick="showTab('results')">Resultados de carrera</button>
+    <button class="btn btn-secondary" id="tab-sprint" onclick="showTab('sprint')">Sprint</button>
+    <button class="btn btn-secondary" id="tab-champion" onclick="showTab('champion')">Campeón</button>
+    <button class="btn btn-secondary" id="tab-drivers" onclick="showTab('drivers')">Pilotos</button>
+    <button class="btn btn-secondary" id="tab-teams" onclick="showTab('teams')">Equipos</button>
+    <button class="btn btn-secondary" id="tab-calendar" onclick="showTab('calendar')">Calendario</button>
+  </div>
+
+  <!-- ── Tab: Resultados ── -->
+  <div id="panel-results">
+    <div class="card" style="padding:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h2 style="font-weight:700;font-size:1rem">Resultados — <span id="raceTitle">Seleccioná una carrera</span></h2>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-secondary" onclick="addResultRow('resultsBody')">+ Piloto</button>
+          <button class="btn btn-success" onclick="saveResults()">Guardar</button>
+        </div>
+      </div>
+      <p style="font-size:0.75rem;color:#888;margin-bottom:10px">Posición: 1-20, R (retirado), D (DSQ/DNS), W (withdrew), vacío (no participó)</p>
+      <table>
+        <thead><tr>
+          <th>Piloto ID</th><th>Equipo ID</th><th>Pos</th><th>Puntos</th><th>Grid</th><th>Vueltas</th><th></th>
+        </tr></thead>
+        <tbody id="resultsBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── Tab: Sprint ── -->
+  <div id="panel-sprint" style="display:none">
+    <div class="card" style="padding:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h2 style="font-weight:700;font-size:1rem">Sprint — <span id="sprintTitle">Seleccioná una carrera</span></h2>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-secondary" onclick="addResultRow('sprintBody')">+ Piloto</button>
+          <button class="btn btn-success" onclick="saveSprint()">Guardar</button>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>Piloto ID</th><th>Equipo ID</th><th>Pos</th><th>Puntos</th><th></th></tr></thead>
+        <tbody id="sprintBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── Tab: Campeón ── -->
+  <div id="panel-champion" style="display:none">
+    <div class="card" style="padding:16px;max-width:400px">
+      <h2 style="font-weight:700;font-size:1rem;margin-bottom:16px">Campeón de temporada</h2>
+      <div style="margin-bottom:12px">
+        <label style="font-size:0.75rem;color:#888;display:block;margin-bottom:4px">PILOTO CAMPEÓN (ID)</label>
+        <input id="champDriver" type="text" placeholder="ej: VER"/>
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="font-size:0.75rem;color:#888;display:block;margin-bottom:4px">CONSTRUCTOR CAMPEÓN (ID)</label>
+        <input id="champConstructor" type="text" placeholder="ej: RBR"/>
+      </div>
+      <button class="btn btn-success" onclick="saveChampion()">Guardar campeón</button>
+    </div>
+  </div>
+
+  <!-- ── Tab: Pilotos ── -->
+  <div id="panel-drivers" style="display:none">
+    <div class="card" style="padding:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h2 style="font-weight:700;font-size:1rem">Pilotos</h2>
+        <button class="btn btn-secondary" onclick="showNewDriverForm()">+ Nuevo piloto</button>
+      </div>
+      <input type="text" id="driverSearch" placeholder="Buscar por nombre o ID..." style="margin-bottom:12px" oninput="filterDrivers()"/>
+      <table>
+        <thead><tr><th>ID</th><th>Nombre</th><th>Bandera</th><th>Número</th><th></th></tr></thead>
+        <tbody id="driversBody"></tbody>
+      </table>
+    </div>
+    <!-- Form edición -->
+    <div id="driverEditForm" class="card" style="padding:16px;margin-top:16px;display:none">
+      <h3 style="font-weight:700;margin-bottom:12px" id="driverFormTitle">Editar piloto</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div><label style="font-size:0.75rem;color:#888">ID</label><input id="dId" type="text"/></div>
+        <div><label style="font-size:0.75rem;color:#888">Nombre completo</label><input id="dName" type="text"/></div>
+        <div><label style="font-size:0.75rem;color:#888">Nacionalidad</label><input id="dNat" type="text"/></div>
+        <div><label style="font-size:0.75rem;color:#888">Flag (código ISO)</label><input id="dFlag" type="text" placeholder="ej: nl"/></div>
+        <div><label style="font-size:0.75rem;color:#888">Número</label><input id="dNum" type="number"/></div>
+        <div><label style="font-size:0.75rem;color:#888">Fecha nacimiento</label><input id="dDob" type="text" placeholder="YYYY-MM-DD"/></div>
+        <div><label style="font-size:0.75rem;color:#888">Año debut</label><input id="dDebut" type="number"/></div>
+      </div>
+      <div style="margin-top:10px"><label style="font-size:0.75rem;color:#888">Biografía</label><textarea id="dBio" rows="3"></textarea></div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn btn-success" onclick="saveDriver()">Guardar</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('driverEditForm').style.display='none'">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Tab: Equipos ── -->
+  <div id="panel-teams" style="display:none">
+    <div class="card" style="padding:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h2 style="font-weight:700;font-size:1rem">Equipos</h2>
+        <button class="btn btn-secondary" onclick="showNewTeamForm()">+ Nuevo equipo</button>
+      </div>
+      <table>
+        <thead><tr><th>ID</th><th>Nombre corto</th><th>Nombre oficial</th><th></th></tr></thead>
+        <tbody id="teamsBody"></tbody>
+      </table>
+    </div>
+    <div id="teamEditForm" class="card" style="padding:16px;margin-top:16px;display:none">
+      <h3 style="font-weight:700;margin-bottom:12px" id="teamFormTitle">Editar equipo</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div><label style="font-size:0.75rem;color:#888">ID</label><input id="tId" type="text"/></div>
+        <div><label style="font-size:0.75rem;color:#888">Nombre corto (displayName)</label><input id="tDisplay" type="text"/></div>
+        <div><label style="font-size:0.75rem;color:#888">Nombre oficial</label><input id="tName" type="text"/></div>
+        <div><label style="font-size:0.75rem;color:#888">Base</label><input id="tBase" type="text"/></div>
+        <div><label style="font-size:0.75rem;color:#888">Director</label><input id="tPrincipal" type="text"/></div>
+        <div><label style="font-size:0.75rem;color:#888">Fundado</label><input id="tFounded" type="text"/></div>
+        <div><label style="font-size:0.75rem;color:#888">Motor</label><input id="tEngine" type="text"/></div>
+      </div>
+      <div style="margin-top:10px"><label style="font-size:0.75rem;color:#888">Biografía</label><textarea id="tBio" rows="3"></textarea></div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn btn-success" onclick="saveTeam()">Guardar</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('teamEditForm').style.display='none'">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Tab: Calendario ── -->
+  <div id="panel-calendar" style="display:none">
+    <div class="card" style="padding:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h2 style="font-weight:700;font-size:1rem">Calendario <span id="calYear"></span></h2>
+        <button class="btn btn-secondary" onclick="showNewRaceForm()">+ Agregar carrera</button>
+      </div>
+      <table>
+        <thead><tr><th>Rnd</th><th>Circuito</th><th>Fecha</th><th>Sprint</th><th>Evento</th></tr></thead>
+        <tbody id="calendarBody"></tbody>
+      </table>
+    </div>
+    <div id="raceAddForm" class="card" style="padding:16px;margin-top:16px;display:none">
+      <h3 style="font-weight:700;margin-bottom:12px">Agregar carrera al calendario</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div><label style="font-size:0.75rem;color:#888">Round</label><input id="rcRound" type="number"/></div>
+        <div><label style="font-size:0.75rem;color:#888">Circuito ID (ej: BHR)</label><input id="rcCircuit" type="text"/></div>
+        <div><label style="font-size:0.75rem;color:#888">Fecha (display)</label><input id="rcDate" type="text" placeholder="ej: 15 Mar"/></div>
+        <div><label style="font-size:0.75rem;color:#888">Sprint</label>
+          <select id="rcSprint"><option value="0">No</option><option value="1">Sí</option></select></div>
+      </div>
+      <div style="margin-top:10px"><label style="font-size:0.75rem;color:#888">Descripción evento</label><input id="rcEvent" type="text"/></div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn btn-success" onclick="saveCalendarEntry()">Agregar</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('raceAddForm').style.display='none'">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+const API = 'http://localhost:8000/api';
+let currentRaceId = null;
+let allDrivers = [], allTeams = [];
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+async function init() {
+    await loadSeasons();
+    await loadDriversList();
+    await loadTeamsList();
+    showTab('results');
+}
+
+async function loadSeasons() {
+    const seasons = await apiFetch(`${API}/admin/seasons`);
+    const sel = document.getElementById('adminYear');
+    sel.innerHTML = '';
+    seasons.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.year;
+        opt.textContent = `${s.year} (${s.race_count} carreras)`;
+        sel.appendChild(opt);
+    });
+    if (seasons.length) await loadSeasonCalendar();
+}
+
+async function loadSeasonCalendar() {
+    const year = document.getElementById('adminYear').value;
+    document.getElementById('calYear').textContent = year;
+    const cal = await apiFetch(`${API}/admin/seasons/${year}/calendar`);
+    const sel = document.getElementById('adminRace');
+    sel.innerHTML = '';
+    cal.forEach(r => {
+        const opt = document.createElement('option');
+        opt.value = r.id;
+        opt.textContent = `R${r.round} — ${r.circuit_id} ${r.race_date || ''} ${r.is_sprint ? '⚡' : ''}`;
+        sel.appendChild(opt);
+    });
+
+    // Calendar table
+    const tbody = document.getElementById('calendarBody');
+    tbody.innerHTML = cal.map(r => `
+        <tr>
+            <td>${r.round}</td>
+            <td>${r.circuit_id}</td>
+            <td>${r.race_date || ''}</td>
+            <td>${r.is_sprint ? '⚡ Sí' : 'No'}</td>
+            <td style="color:#888;font-size:0.78rem">${r.event_description || ''}</td>
+        </tr>
+    `).join('');
+
+    // Load champion info
+    const season = await apiFetch(`${API}/admin/seasons`).catch(() => []);
+    const s = season.find(x => String(x.year) === String(year));
+    if (s) {
+        document.getElementById('champDriver').value = s.champion_driver || '';
+        document.getElementById('champConstructor').value = s.champion_constructor || '';
+    }
+
+    if (cal.length) await loadRaceResults();
+}
+
+async function loadRaceResults() {
+    currentRaceId = document.getElementById('adminRace').value;
+    const raceSel = document.getElementById('adminRace');
+    const label = raceSel.options[raceSel.selectedIndex]?.text || '';
+    document.getElementById('raceTitle').textContent = label;
+    document.getElementById('sprintTitle').textContent = label;
+
+    const results = await apiFetch(`${API}/admin/races/${currentRaceId}/results`);
+    renderResultsTable('resultsBody', results, true);
+
+    const sprints = await apiFetch(`${API}/admin/races/${currentRaceId}/sprint`);
+    renderResultsTable('sprintBody', sprints, false);
+}
+
+function renderResultsTable(bodyId, results, fullCols) {
+    const tbody = document.getElementById(bodyId);
+    tbody.innerHTML = '';
+    const sorted = [...results].sort((a, b) => {
+        const pa = parseInt(a.position) || 99;
+        const pb = parseInt(b.position) || 99;
+        return pa - pb;
+    });
+    sorted.forEach(r => addResultRow(bodyId, r, fullCols));
+}
+
+function addResultRow(bodyId, data = {}, fullCols = (bodyId === 'resultsBody')) {
+    const tbody = document.getElementById(bodyId);
+    const tr = document.createElement('tr');
+    const pts = data.points !== undefined ? data.points : 0;
+    if (fullCols) {
+        tr.innerHTML = `
+            <td><input type="text" value="${data.driver_id || ''}" placeholder="VER" style="width:70px"/></td>
+            <td><input type="text" value="${data.team_id || ''}" placeholder="RBR" style="width:70px"/></td>
+            <td><input type="text" value="${data.position || ''}" placeholder="1" class="pos-input" style="width:50px"/></td>
+            <td><input type="number" value="${pts}" step="0.5" style="width:65px"/></td>
+            <td><input type="number" value="${data.grid_position || ''}" style="width:50px"/></td>
+            <td><input type="number" value="${data.laps || ''}" style="width:55px"/></td>
+            <td><button onclick="this.closest('tr').remove()" class="btn btn-danger" style="padding:3px 8px">✕</button></td>
+        `;
+    } else {
+        tr.innerHTML = `
+            <td><input type="text" value="${data.driver_id || ''}" placeholder="VER" style="width:70px"/></td>
+            <td><input type="text" value="${data.team_id || ''}" placeholder="RBR" style="width:70px"/></td>
+            <td><input type="text" value="${data.position || ''}" placeholder="1" class="pos-input" style="width:50px"/></td>
+            <td><input type="number" value="${pts}" step="0.5" style="width:65px"/></td>
+            <td><button onclick="this.closest('tr').remove()" class="btn btn-danger" style="padding:3px 8px">✕</button></td>
+        `;
+    }
+    tbody.appendChild(tr);
+}
+
+// ── Save ──────────────────────────────────────────────────────────────────────
+async function saveResults() {
+    const rows = Array.from(document.getElementById('resultsBody').querySelectorAll('tr'));
+    const results = rows.map(tr => {
+        const inputs = tr.querySelectorAll('input');
+        return {
+            driver_id: inputs[0].value.trim(),
+            team_id: inputs[1].value.trim(),
+            position: inputs[2].value.trim(),
+            points: parseFloat(inputs[3].value) || 0,
+            grid_position: parseInt(inputs[4].value) || null,
+            laps: parseInt(inputs[5].value) || null,
+        };
+    }).filter(r => r.driver_id);
+
+    await apiPut(`${API}/admin/races/${currentRaceId}/results`, results);
+    toast('Resultados guardados ✓');
+}
+
+async function saveSprint() {
+    const rows = Array.from(document.getElementById('sprintBody').querySelectorAll('tr'));
+    const results = rows.map(tr => {
+        const inputs = tr.querySelectorAll('input');
+        return {
+            driver_id: inputs[0].value.trim(),
+            team_id: inputs[1].value.trim(),
+            position: inputs[2].value.trim(),
+            points: parseFloat(inputs[3].value) || 0,
+        };
+    }).filter(r => r.driver_id);
+
+    await apiPut(`${API}/admin/races/${currentRaceId}/sprint`, results);
+    toast('Sprint guardado ✓');
+}
+
+async function saveChampion() {
+    const year = document.getElementById('adminYear').value;
+    await apiPut(`${API}/admin/seasons/${year}/champion`, {
+        driver_id: document.getElementById('champDriver').value.trim() || null,
+        constructor_id: document.getElementById('champConstructor').value.trim() || null,
+    });
+    toast('Campeón guardado ✓');
+}
+
+// ── Drivers ───────────────────────────────────────────────────────────────────
+async function loadDriversList() {
+    allDrivers = await apiFetch(`${API}/admin/drivers`);
+    renderDriversTable(allDrivers);
+}
+
+function renderDriversTable(list) {
+    document.getElementById('driversBody').innerHTML = list.map(d => `
+        <tr>
+            <td style="font-family:monospace;font-weight:700">${d.id}</td>
+            <td>${d.name}</td>
+            <td><span class="fi fi-${d.flag || 'xx'}"></span> ${d.flag || ''}</td>
+            <td>${d.number || ''}</td>
+            <td><button class="btn btn-secondary" onclick="editDriver('${d.id}')">Editar</button></td>
+        </tr>
+    `).join('');
+}
+
+function filterDrivers() {
+    const q = document.getElementById('driverSearch').value.toLowerCase();
+    renderDriversTable(allDrivers.filter(d =>
+        d.name.toLowerCase().includes(q) || d.id.toLowerCase().includes(q)
+    ));
+}
+
+async function editDriver(id) {
+    const d = await apiFetch(`${API}/drivers/${id}`);
+    document.getElementById('dId').value = d.id;
+    document.getElementById('dName').value = d.name;
+    document.getElementById('dNat').value = d.nat;
+    document.getElementById('dFlag').value = d.flag;
+    document.getElementById('dNum').value = d.num;
+    document.getElementById('dDob').value = d.dob;
+    document.getElementById('dDebut').value = d.debut;
+    document.getElementById('dBio').value = d.bio;
+    document.getElementById('driverFormTitle').textContent = `Editar piloto: ${d.name}`;
+    document.getElementById('driverEditForm').style.display = 'block';
+    document.getElementById('dId').readOnly = true;
+    document.getElementById('driverEditForm').scrollIntoView({behavior:'smooth'});
+}
+
+function showNewDriverForm() {
+    ['dId','dName','dNat','dFlag','dNum','dDob','dDebut','dBio'].forEach(id => {
+        document.getElementById(id).value = '';
+    });
+    document.getElementById('dId').readOnly = false;
+    document.getElementById('driverFormTitle').textContent = 'Nuevo piloto';
+    document.getElementById('driverEditForm').style.display = 'block';
+}
+
+async function saveDriver() {
+    const id = document.getElementById('dId').value.trim();
+    if (!id) return toast('ID requerido');
+    const body = {
+        id, name: document.getElementById('dName').value,
+        nationality: document.getElementById('dNat').value,
+        flag: document.getElementById('dFlag').value,
+        number: parseInt(document.getElementById('dNum').value) || null,
+        dob: document.getElementById('dDob').value,
+        debut_year: parseInt(document.getElementById('dDebut').value) || null,
+        biography: document.getElementById('dBio').value,
+    };
+    const isNew = document.getElementById('dId').readOnly === false;
+    if (isNew) await apiPost(`${API}/admin/drivers`, body);
+    else await apiPut(`${API}/admin/drivers/${id}`, body);
+    await loadDriversList();
+    document.getElementById('driverEditForm').style.display = 'none';
+    toast('Piloto guardado ✓');
+}
+
+// ── Teams ─────────────────────────────────────────────────────────────────────
+async function loadTeamsList() {
+    allTeams = await apiFetch(`${API}/admin/teams`);
+    document.getElementById('teamsBody').innerHTML = allTeams.map(t => `
+        <tr>
+            <td style="font-family:monospace;font-weight:700">${t.id}</td>
+            <td>${t.display_name}</td>
+            <td style="color:#888;font-size:0.78rem">${t.full_name || ''}</td>
+            <td><button class="btn btn-secondary" onclick="editTeam('${t.id}')">Editar</button></td>
+        </tr>
+    `).join('');
+}
+
+async function editTeam(id) {
+    const t = await apiFetch(`${API}/teams/${id}`);
+    document.getElementById('tId').value = t.id;
+    document.getElementById('tDisplay').value = t.displayName;
+    document.getElementById('tName').value = t.name;
+    document.getElementById('tBase').value = t.base;
+    document.getElementById('tPrincipal').value = t.principal;
+    document.getElementById('tFounded').value = t.founded;
+    document.getElementById('tEngine').value = t.engine;
+    document.getElementById('tBio').value = t.bio;
+    document.getElementById('teamFormTitle').textContent = `Editar equipo: ${t.displayName}`;
+    document.getElementById('teamEditForm').style.display = 'block';
+    document.getElementById('tId').readOnly = true;
+    document.getElementById('teamEditForm').scrollIntoView({behavior:'smooth'});
+}
+
+function showNewTeamForm() {
+    ['tId','tDisplay','tName','tBase','tPrincipal','tFounded','tEngine','tBio'].forEach(id => {
+        document.getElementById(id).value = '';
+    });
+    document.getElementById('tId').readOnly = false;
+    document.getElementById('teamFormTitle').textContent = 'Nuevo equipo';
+    document.getElementById('teamEditForm').style.display = 'block';
+}
+
+async function saveTeam() {
+    const id = document.getElementById('tId').value.trim();
+    if (!id) return toast('ID requerido');
+    const body = {
+        id, display_name: document.getElementById('tDisplay').value,
+        full_name: document.getElementById('tName').value,
+        base: document.getElementById('tBase').value,
+        principal: document.getElementById('tPrincipal').value,
+        founded: document.getElementById('tFounded').value,
+        engine: document.getElementById('tEngine').value,
+        biography: document.getElementById('tBio').value,
+    };
+    const isNew = document.getElementById('tId').readOnly === false;
+    if (isNew) await apiPost(`${API}/admin/teams`, body);
+    else await apiPut(`${API}/admin/teams/${id}`, body);
+    await loadTeamsList();
+    document.getElementById('teamEditForm').style.display = 'none';
+    toast('Equipo guardado ✓');
+}
+
+// ── Calendar ──────────────────────────────────────────────────────────────────
+function showNewRaceForm() {
+    document.getElementById('raceAddForm').style.display = 'block';
+}
+
+async function saveCalendarEntry() {
+    const year = parseInt(document.getElementById('adminYear').value);
+    const body = {
+        year, round: parseInt(document.getElementById('rcRound').value),
+        circuit_id: document.getElementById('rcCircuit').value.trim(),
+        race_date: document.getElementById('rcDate').value,
+        is_sprint: parseInt(document.getElementById('rcSprint').value),
+        event_description: document.getElementById('rcEvent').value,
+    };
+    if (!body.round || !body.circuit_id) return toast('Round y circuito son requeridos');
+    await apiPost(`${API}/admin/seasons/${year}/calendar`, body);
+    document.getElementById('raceAddForm').style.display = 'none';
+    await loadSeasonCalendar();
+    toast('Carrera agregada ✓');
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+function showTab(name) {
+    ['results','sprint','champion','drivers','teams','calendar'].forEach(t => {
+        document.getElementById(`panel-${t}`).style.display = t === name ? 'block' : 'none';
+        const btn = document.getElementById(`tab-${t}`);
+        btn.className = t === name ? 'btn btn-primary' : 'btn btn-secondary';
+    });
+}
+
+// ── API helpers ───────────────────────────────────────────────────────────────
+async function apiFetch(url) {
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(`API ${r.status}: ${url}`);
+    return r.json();
+}
+
+async function apiPost(url, body) {
+    const r = await fetch(url, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+    if (!r.ok) { const t = await r.text(); throw new Error(t); }
+    return r.json();
+}
+
+async function apiPut(url, body) {
+    const r = await fetch(url, {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+    if (!r.ok) { const t = await r.text(); throw new Error(t); }
+    return r.json();
+}
+
+function toast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+init().catch(err => {
+    document.body.innerHTML = `<div style="padding:2rem;color:#ffb4a7;font-family:sans-serif">
+        <p style="font-size:1.2rem;font-weight:bold">⚠️ No se pudo conectar al backend</p>
+        <p style="color:#aaa;margin-top:1rem">Asegurate de que el servidor está corriendo:<br>
+        <code style="background:#1b1c1d;padding:4px 8px">cd backend && uvicorn main:app --reload</code></p>
+        <p style="color:#888;font-size:0.8rem;margin-top:0.5rem">${err.message}</p>
+    </div>`;
+});
+</script>
+</body>
+</html>

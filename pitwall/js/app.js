@@ -68,7 +68,7 @@ if(navStack.length>0){
 }
 }
 
-function changeYear(y){currentYear=y;document.getElementById('seasonTitle').textContent='SEASON '+y;const s=SEASONS[y];document.getElementById('raceCount').textContent=(s.completed?s.completed+'/'+s.races.length:s.races.length)+' Carreras';buildCompare();buildChart(currentTab);buildStandings(currentTab);if(currentPage==='home')buildHome();if(currentPage==='calendar')buildCalendar();updateSeasonStatus();}
+async function changeYear(y){if(window.loadYearData)await window.loadYearData(y);currentYear=y;document.getElementById('seasonTitle').textContent='SEASON '+y;const s=SEASONS[y];document.getElementById('raceCount').textContent=(s.completed?s.completed+'/'+s.races.length:s.races.length)+' Carreras';buildCompare();buildChart(currentTab);buildStandings(currentTab);if(currentPage==='home')buildHome();if(currentPage==='calendar')buildCalendar();updateSeasonStatus();}
 
 function buildChart(tab){const ctx=document.getElementById('mainChart').getContext('2d');if(chart)chart.destroy();const s=SEASONS[currentYear];let source=tab==='drivers'?s.drivers:s.constructors;
 const idA=document.getElementById('selectA')?.value,idB=document.getElementById('selectB')?.value;
@@ -836,14 +836,16 @@ function updateHomeCharts(){
   renderHomeCharts(metric);
 }
 
-// Poblar selector de años dinámicamente desde SEASONS
-(function(){
+// initApp es llamado por api.js una vez que los datos están cargados
+window.initApp = function(){
   const sel=document.getElementById('yearSelect');
+  // Limpiar opciones anteriores si se llama más de una vez
+  sel.innerHTML='';
   Object.keys(SEASONS).sort((a,b)=>+b-+a).forEach(y=>{
     const opt=document.createElement('option');
     opt.value=y;opt.textContent=y;
     if(y===currentYear)opt.selected=true;
     sel.appendChild(opt);
   });
-})();
-buildCompare();buildChart('drivers');buildStandings('drivers');updateSeasonStatus();showPage('home');
+  buildCompare();buildChart('drivers');buildStandings('drivers');updateSeasonStatus();showPage('home');
+};

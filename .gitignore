@@ -1,28 +1,26 @@
-# macOS
+# Database
+f1.db
+
+# Migration intermediate output
+migration/data_export/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.env
+venv/
+.venv/
+
+# OS
 .DS_Store
-
-# Windows
 Thumbs.db
-desktop.ini
 
-# Editores
+# IDE
 .vscode/
 .idea/
-*.swp
-*.swo
-
-# Node (por si en algún momento se agrega build)
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Logs
-*.log
-
-# Archivos temporales
-*.tmp
-*.bak
-
-# Claude Code
-.claude/
