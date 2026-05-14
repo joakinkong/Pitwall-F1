@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "backend"))
 from database import SessionLocal
 import crud
 
-OUT_DIR = os.path.join(os.path.dirname(__file__), "pitwall", "data")
+OUT_DIR = os.path.join(os.path.dirname(__file__), "docs", "data")
 SEASONS_DIR = os.path.join(OUT_DIR, "seasons")
 
 os.makedirs(SEASONS_DIR, exist_ok=True)
@@ -68,7 +68,7 @@ try:
         })
         print(f"  {year} OK")
 
-    print(f"\nListo. Archivos en pitwall/data/")
+    print(f"\nListo. Archivos en docs/data/")
 
 finally:
     db.close()

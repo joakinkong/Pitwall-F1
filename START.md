@@ -23,7 +23,7 @@ uvicorn main:app --reload
 El servidor corre en http://localhost:8000
 
 ### 4. Abrir la app
-- **App principal:** http://localhost:8000  (o abrir pitwall/index.html directamente)
+- **App principal:** http://localhost:8000  (o abrir docs/index.html directamente)
 - **Panel admin:**   http://localhost:8000/admin
 
 ---
@@ -41,7 +41,7 @@ El servidor corre en http://localhost:8000
 
 ```
 proyecto f1/
-├── pitwall/          ← Frontend (HTML/CSS/JS)
+├── docs/          ← Frontend (HTML/CSS/JS)
 │   ├── index.html    ← App principal
 │   ├── admin.html    ← Panel de administración
 │   └── js/api.js     ← Cliente que se conecta al backend

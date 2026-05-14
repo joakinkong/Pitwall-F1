@@ -19,7 +19,7 @@ Personal F1 statistics app covering seasons from 1980 to 2026.
 
 ## Viewing the app
 
-The app loads data from static JSON files in `pitwall/data/` — no server needed.
+The app loads data from static JSON files in `docs/data/` — no server needed.
 Open `pitwall/index.html` directly, or visit the GitHub Pages URL.
 
 ## Adding results after a GP
@@ -50,8 +50,8 @@ uvicorn main:app --reload
 ### 4. Export and push
 
 ```bash
-python export_static.py   # regenerates pitwall/data/ from f1.db
-git add pitwall/data
+python export_static.py   # regenerates docs/data/ from f1.db
+git add docs/data
 git commit -m "GP results: <race name>"
 git push
 ```

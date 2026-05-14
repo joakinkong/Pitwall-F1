@@ -25,7 +25,7 @@ app.include_router(data_router)
 app.include_router(admin_router)
 
 # Serve frontend static files
-FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "pitwall"))
+FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "docs"))
 
 @app.get("/")
 def serve_index():
