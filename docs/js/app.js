@@ -415,7 +415,8 @@ return results;
 }
 
 // ============ RENDER DE FICHA DE PILOTO ============
-function openDriverDetail(driverId){
+async function openDriverDetail(driverId){
+await _loadAllSeasons();
 const info=DRIVERS_INFO[driverId];
 const stats=calcDriverSeasonStats(driverId,currentYear);
 const nameStr=info?info.name:driverId;
@@ -501,7 +502,8 @@ showPage('driver');
 }
 
 // ============ RENDER DE FICHA DE EQUIPO ============
-function openTeamDetail(teamId){
+async function openTeamDetail(teamId){
+await _loadAllSeasons();
 const info=TEAMS_INFO[teamId];
 const stats=calcTeamSeasonStats(teamId,currentYear);
 const displayName=info?info.displayName:(stats?stats.name:teamId);

@@ -71,4 +71,12 @@ window.initAppData = async function () {
     }
 };
 
+// Carga todas las temporadas en paralelo (para trayectorias completas).
+window._loadAllSeasons = async function () {
+    const unloaded = Object.keys(window.SEASONS || {}).filter(
+        y => !window.SEASONS[y].drivers || window.SEASONS[y].drivers.length === 0
+    );
+    await Promise.all(unloaded.map(y => window.loadYearData(y)));
+};
+
 document.addEventListener('DOMContentLoaded', () => window.initAppData());
