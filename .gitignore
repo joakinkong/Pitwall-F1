@@ -1,6 +1,17 @@
 # Database
 f1.db
 
+# Downloaded libraries (not authored code)
+f1-circuits-svg-main/
+flag-icons-main/
+
+# Claude Code settings
+.claude/
+pitwall/.claude/
+
+# CSV source data (large, derivable from DB)
+CSV proyecto F1/
+
 # Migration intermediate output
 migration/data_export/
 
