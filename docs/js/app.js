@@ -720,9 +720,9 @@ function buildHome(){
       const nr=cal[nextIdx];
       const months={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
       const dp=nr.date.split(' ');
-      const utcH=20; // 20:00 UTC = 17:00 ART (UTC-3)
+      const utcH=nr.hour_utc!=null?nr.hour_utc:20;
       const raceDate=new Date(Date.UTC(parseInt(currentYear),months[dp[dp.length-1]],parseInt(dp[0]),utcH,0,0));
-      const artH=String(utcH-3).padStart(2,'0'); // 17:00 ARG
+      const artRaw=utcH-3;const artH=String(artRaw<0?artRaw+24:artRaw).padStart(2,'0');
       const circuit=CAL_DATA.circuits[nr.id]||{};
       const fl=FLAGS&&FLAGS[nr.id];
       const fHtml=fl?`<span class="fi fi-${fl} fi-4x3" style="display:inline-block;width:20px;height:14px;border-radius:1px;vertical-align:middle"></span>`:'';

@@ -370,6 +370,8 @@ def get_calendar(db: Session, year: int) -> list:
         }
         if r.is_sprint:
             entry["sprint"] = True
+        if r.race_hour_utc is not None:
+            entry["hour_utc"] = r.race_hour_utc
         result.append(entry)
     return result
 

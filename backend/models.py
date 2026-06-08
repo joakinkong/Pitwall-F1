@@ -63,6 +63,7 @@ class RaceCalendar(Base):
     race_date = Column(String)        # display string "2 Mar"
     is_sprint = Column(Integer, default=0)
     event_description = Column(String, default="")
+    race_hour_utc = Column(Integer, nullable=True)  # UTC hour of race start
     __table_args__ = (UniqueConstraint("year", "round"),)
 
 
