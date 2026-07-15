@@ -707,20 +707,40 @@ el respaldo manual — normalmente no hace falta tocarlo. El Action:
     ÚLTIMA carrera del calendario en vez de "todavía no hay ronda" — se
     agregó un chequeo explícito de índice antes de llamar a `jq` para evitar
     ese caso (improbable en la práctica para 2025+, pero barato de blindar).
-  **Sin probar en vivo (bloqueo, no de esta tarea):** no se pudo disparar un
-  run real de `workflow_dispatch` porque (a) `gh` CLI no está instalado en
-  esta máquina y (b) más importante: **todavía no se pusheó nada de esta
-  sesión** — ni este workflow ni sus dependencias (`scripts/sync_jolpica.py`,
-  `scripts/jolpica_map.json`, `scripts/validate_map.py`, los cambios de
-  esquema de la Feature D, etc.) existen en `main` del repo remoto todavía
-  (confirmado con `git log`: el último commit real es anterior a toda esta
-  tanda de trabajo). Validado en su lugar: el YAML parsea limpio
-  (`yaml.safe_load`), y la lógica de bash/`jq` del mensaje de commit se
-  probó por separado en Python contra los `seasons/2025.json` y `2026.json`
-  reales (da `ABU 2025` y `GBR 2026`, ambos correctos). **Pendiente**: correr
-  un `workflow_dispatch` real después de pushear, en los dos caminos (sin
-  novedades, y un error simulado si es fácil de forzar) — anotado para
-  cuando el dueño decida pushear el trabajo acumulado de esta sesión.
+  **Bloqueo inicial (resuelto):** nada de esta sesión estaba pusheado
+  todavía (`gh` CLI tampoco estaba instalado), así que no había forma de
+  disparar un `workflow_dispatch` real. El dueño autorizó pushear todo el
+  trabajo acumulado: se armaron 6 commits agrupados por área (ver hashes
+  `f40bf12`..`5590d92`) y se pusheó a `main`. `gh` se instaló vía `winget`
+  para poder disparar/leer runs, pero autenticarlo (`gh auth login`) se
+  frenó a propósito — es un paso de más allá de "pushear lo pendiente" y le
+  correspondía al dueño decidirlo. Se usó la API pública de GitHub sin auth
+  (vía `WebFetch`, curl local seguía bloqueado por el escaneo HTTPS de
+  Avast que el dueño había vuelto a activar) para el testeo en su lugar.
+  **Probado en vivo — run real
+  ([29417630776](https://github.com/joakinkong/Pitwall-F1/actions/runs/29417630776)),
+  disparado por el dueño vía `workflow_dispatch` sin especificar año
+  (default = 2026):** terminó en 22s, conclusión `success`. Recorrido el
+  camino **EXIT_WROTE con cambios reales** de punta a punta (no el
+  "sin novedades" que se esperaba al principio — Jolpica tenía datos más
+  nuevos que el `2026.json` local): "Correr sync_jolpica.py" OK, los dos
+  steps condicionados a error/sin-novedades quedaron correctamente
+  `skipped`, "Verificar cambios reales" y "Armar mensaje de commit"
+  corrieron, y el commit `541b7cc` "sync: resultados **GBR 2026** via
+  Jolpica" se pusheó solo — el nombre de GP coincide EXACTO con lo que
+  había dado la prueba de la lógica `jq` en Python antes de pushear (ronda
+  9 = GBR). Confirma que exit-code handling, la salvaguarda de `git diff`,
+  y el armado del mensaje de commit funcionan correctos contra la API real,
+  no solo en la simulación local.
+  **Hallazgo de paso**: el run dejó un aviso de deprecación (Node.js 20 →
+  forzado a 24 en el runner) para `actions/checkout@v4` y
+  `actions/setup-python@v5`. Se bumpearon a `@v7`/`@v6` (últimas versiones
+  estables al momento) en un commit de seguimiento — no rompe nada, la
+  interfaz `with:` usada acá (solo `python-version`) es compatible.
+  **Pendiente real**: probar el camino de error (año pre-2025, ej. `2020`,
+  debería fallar por la propia validación de `sync_jolpica.py`) — no se
+  hizo en esta ronda para no gastar más disparos manuales de los
+  necesarios; queda para la próxima vez que se toque el workflow.
 
 ---
 
