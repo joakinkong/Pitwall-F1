@@ -1,0 +1,147 @@
+name: Sync resultados F1 (Jolpica)
+
+# Corre scripts/sync_jolpica.py, que baja resultados de la API Jolpica-F1 y
+# actualiza docs/data/seasons/{year}.json + docs/data/init.json directo (sin
+# pasar por f1.db — ver CLAUDE.md § changelog "sync_jolpica.py" para la
+# política de fuente de verdad 2025+). Este workflow SOLO orquesta: toda la
+# lógica de validación/mapeo/escritura vive en el script.
+#
+# Exit codes de sync_jolpica.py (documentados también en el propio script):
+#   0  EXIT_WROTE       escribió datos nuevos -> hay algo que comitear
+#   3  EXIT_NO_CHANGES  sin novedades -> nada que comitear (job termina verde)
+#   1  EXIT_ERROR       error de validación/red -> el job FALLA, no comitea
+#      nada (causa típica: piloto/equipo nuevo sin mapear; ver CLAUDE.md
+#      § "Qué hacer si este Action falla").
+
+on:
+  schedule:
+    # Lunes 06:00 UTC — después de que termine el fin de semana de GP.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      year:
+        description: 'Año a sincronizar (vacío = año actual UTC)'
+        required: false
+        type: string
+
+# Evita que dos corridas pisen el mismo commit/push. No cancelamos una
+# corrida en curso (podría dejar un commit a medio hacer) — la siguiente
+# simplemente espera en cola.
+concurrency:
+  group: sync-jolpica-results
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Resolver año a sincronizar
+        id: year
+        run: |
+          YEAR="${{ github.event.inputs.year }}"
+          if [ -z "$YEAR" ]; then
+            YEAR=$(date -u +%Y)
+          fi
+          echo "Año a sincronizar: $YEAR"
+          echo "year=$YEAR" >> "$GITHUB_OUTPUT"
+
+      - name: Correr sync_jolpica.py
+        id: sync
+        run: |
+          # sync_jolpica.py usa 3 exit codes distintos (0/1/3) que este job
+          # necesita distinguir más adelante, así que desactivamos "set -e"
+          # (default de los steps `run:` de Actions) solo para este comando
+          # y capturamos el código a mano en vez de dejar que mate el step.
+          set +e
+          python scripts/sync_jolpica.py --year "${{ steps.year.outputs.year }}"
+          code=$?
+          set -e
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          echo "Exit code de sync_jolpica.py: $code"
+
+      - name: Fallar el job si sync_jolpica.py devolvió error
+        # Cualquier exit code que NO sea 0 (escribió) o 3 (sin novedades) se
+        # trata como error — incluye el 1 documentado (EXIT_ERROR) y también
+        # cualquier código inesperado (ej. 2 de argparse si el input --year
+        # viene mal formado). Mejor fallar fuerte que pasar en silencio.
+        if: steps.sync.outputs.exit_code != '0' && steps.sync.outputs.exit_code != '3'
+        run: |
+          echo "::error::sync_jolpica.py falló (exit ${{ steps.sync.outputs.exit_code }}) para ${{ steps.year.outputs.year }}. Ver el log del paso 'Correr sync_jolpica.py' arriba. Causa típica: piloto/equipo/circuito nuevo de Jolpica sin mapear -> correr 'python scripts/validate_map.py ${{ steps.year.outputs.year }}' localmente, agregar la entrada que falte a scripts/jolpica_map.json, commitear y volver a disparar este workflow. No se escribió ningún archivo (sync_jolpica.py no comitea nada si valida mal)."
+          exit 1
+
+      - name: Avisar si no hubo novedades
+        if: steps.sync.outputs.exit_code == '3'
+        run: echo "Sin novedades para ${{ steps.year.outputs.year }} — nada que comitear. Job OK."
+
+      - name: Verificar si hay cambios reales en docs/data
+        id: diff
+        if: steps.sync.outputs.exit_code == '0'
+        run: |
+          # Salvaguarda extra: aunque el script haya salido EXIT_WROTE, solo
+          # comiteamos si git realmente ve un diff en docs/data (defensa en
+          # profundidad, no confiamos ciegamente en el exit code).
+          if git diff --quiet -- docs/data; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "sync_jolpica.py salió EXIT_WROTE pero git no ve cambios en docs/data — no se comitea nada."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Armar mensaje de commit
+        id: msg
+        if: steps.sync.outputs.exit_code == '0' && steps.diff.outputs.changed == 'true'
+        run: |
+          YEAR="${{ steps.year.outputs.year }}"
+          FILE="docs/data/seasons/${YEAR}.json"
+          COMPLETED=$(jq -r '.season.completed // (.calendar | length)' "$FILE")
+          IDX=$((COMPLETED - 1))
+          GP=""
+          if [ "$IDX" -ge 0 ]; then
+            # ojo: jq soporta índices negativos (.calendar[-1] = último elemento),
+            # así que el guard de arriba es necesario — sin él, IDX=-1 devolvería
+            # la última carrera del calendario en vez de "no hay ronda completa".
+            GP=$(jq -r --argjson i "$IDX" '.calendar[$i].id // empty' "$FILE")
+          fi
+          if [ -z "$GP" ]; then
+            GP="$YEAR"
+          fi
+          echo "gp=$GP" >> "$GITHUB_OUTPUT"
+
+      - name: Commit y push a main
+        if: steps.sync.outputs.exit_code == '0' && steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/data
+          git commit -m "sync: resultados ${{ steps.msg.outputs.gp }} ${{ steps.year.outputs.year }} via Jolpica"
+          git push
+
+      - name: Resumen
+        if: always()
+        run: |
+          {
+            echo "### Sync Jolpica — ${{ steps.year.outputs.year || 'año no resuelto' }}"
+            case "${{ steps.sync.outputs.exit_code }}" in
+              0)
+                if [ "${{ steps.diff.outputs.changed }}" = "true" ]; then
+                  echo "✅ Escribió y comiteó: **${{ steps.msg.outputs.gp }} ${{ steps.year.outputs.year }}**"
+                else
+                  echo "⚠️ Salió EXIT_WROTE pero git no vio cambios reales — no se comiteó nada (revisar)."
+                fi
+                ;;
+              3) echo "✅ Sin novedades — nada que comitear." ;;
+              1) echo "❌ Error de validación/red — no se escribió nada. Ver detalle arriba." ;;
+              *) echo "⚠️ Exit code inesperado: ${{ steps.sync.outputs.exit_code }}" ;;
+            esac
+          } >> "$GITHUB_STEP_SUMMARY"
