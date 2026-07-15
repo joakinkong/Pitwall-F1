@@ -1,0 +1,880 @@
+{
+  "meta": {
+    "description": "Sistema de puntos del Campeonato del Mundo de F1 por año (1980–2026), para el simulador '¿y si...?'. Cada año describe el sistema REAL que rigió; el simulador aplica el sistema de otro año a las posiciones ya exportadas en docs/data/seasons/{year}.json (clave 'positions' para carrera, 'sprints' para sprint).",
+    "range": [
+      1980,
+      2026
+    ],
+    "verified_against": [
+      "https://en.wikipedia.org/wiki/List_of_Formula_One_World_Championship_points_scoring_systems",
+      "https://www.formula1points.com/"
+    ],
+    "limitations": [
+      "Vuelta rápida (2019–2024, +1 pt al top 10): el proyecto NO tiene datos de vuelta rápida, así que el simulador no puede otorgar ese punto. El flag 'fastest_lap_point' queda informativo. Al reproducir esas temporadas el simulador puede diferir del real hasta en 1 pt/carrera.",
+      "Medios puntos por carrera acortada (ej. Mónaco 1984, Australia 1991, Bélgica 2021): las posiciones exportadas NO marcan qué carreras se acortaron, así que el simulador otorga siempre puntos completos por posición. Limitación conocida; no se modela.",
+      "Puntos dobles del GP final 2014 (Abu Dhabi): anotado como special='double_points_final_round' en el año 2014, pero NO se aplica al recalcular (es una anomalía de una carrera, sin sentido aplicarla a otras temporadas). Al reproducir 2014 el total puede diferir del real.",
+      "Descartes: se modelan solo para el campeonato de PILOTOS. En 1980–1990 el campeonato de CONSTRUCTORES contaba todas las carreras (sin descarte), así que para constructores 'dropped_scores' no aplica.",
+      "Empates: el desempate oficial (cantidad de victorias, luego segundos puestos, etc.) es responsabilidad del código del simulador, no de este archivo."
+    ]
+  },
+  "systems": {
+    "classic_9": {
+      "label": "9-6-4-3-2-1 · top 6 (1980–1990)",
+      "points": [
+        9,
+        6,
+        4,
+        3,
+        2,
+        1
+      ]
+    },
+    "classic_10": {
+      "label": "10-6-4-3-2-1 · top 6 (1991–2002)",
+      "points": [
+        10,
+        6,
+        4,
+        3,
+        2,
+        1
+      ]
+    },
+    "top8_10": {
+      "label": "10-8-6-5-4-3-2-1 · top 8 (2003–2009)",
+      "points": [
+        10,
+        8,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ]
+    },
+    "modern_25": {
+      "label": "25-18-15-12-10-8-6-4-2-1 · top 10 (2010–2026)",
+      "points": [
+        25,
+        18,
+        15,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        1
+      ]
+    }
+  },
+  "sprint_systems": {
+    "sprint_top3": {
+      "label": "Sprint 3-2-1 · top 3 (2021)",
+      "points": [
+        3,
+        2,
+        1
+      ]
+    },
+    "sprint_top8": {
+      "label": "Sprint 8-7-6-5-4-3-2-1 · top 8 (2022+)",
+      "points": [
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ]
+    }
+  },
+  "years": {
+    "1980": {
+      "system": "classic_9",
+      "points": [
+        9,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": {
+        "mode": "split",
+        "halves": [
+          {
+            "races": 7,
+            "keep": 5
+          },
+          {
+            "races": 7,
+            "keep": 5
+          }
+        ]
+      },
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1981": {
+      "system": "classic_9",
+      "points": [
+        9,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": {
+        "mode": "best_n",
+        "keep": 11
+      },
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1982": {
+      "system": "classic_9",
+      "points": [
+        9,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": {
+        "mode": "best_n",
+        "keep": 11
+      },
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1983": {
+      "system": "classic_9",
+      "points": [
+        9,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": {
+        "mode": "best_n",
+        "keep": 11
+      },
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1984": {
+      "system": "classic_9",
+      "points": [
+        9,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": {
+        "mode": "best_n",
+        "keep": 11
+      },
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1985": {
+      "system": "classic_9",
+      "points": [
+        9,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": {
+        "mode": "best_n",
+        "keep": 11
+      },
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1986": {
+      "system": "classic_9",
+      "points": [
+        9,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": {
+        "mode": "best_n",
+        "keep": 11
+      },
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1987": {
+      "system": "classic_9",
+      "points": [
+        9,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": {
+        "mode": "best_n",
+        "keep": 11
+      },
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1988": {
+      "system": "classic_9",
+      "points": [
+        9,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": {
+        "mode": "best_n",
+        "keep": 11
+      },
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1989": {
+      "system": "classic_9",
+      "points": [
+        9,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": {
+        "mode": "best_n",
+        "keep": 11
+      },
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1990": {
+      "system": "classic_9",
+      "points": [
+        9,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": {
+        "mode": "best_n",
+        "keep": 11
+      },
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1991": {
+      "system": "classic_10",
+      "points": [
+        10,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1992": {
+      "system": "classic_10",
+      "points": [
+        10,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1993": {
+      "system": "classic_10",
+      "points": [
+        10,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1994": {
+      "system": "classic_10",
+      "points": [
+        10,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1995": {
+      "system": "classic_10",
+      "points": [
+        10,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1996": {
+      "system": "classic_10",
+      "points": [
+        10,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1997": {
+      "system": "classic_10",
+      "points": [
+        10,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1998": {
+      "system": "classic_10",
+      "points": [
+        10,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "1999": {
+      "system": "classic_10",
+      "points": [
+        10,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2000": {
+      "system": "classic_10",
+      "points": [
+        10,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2001": {
+      "system": "classic_10",
+      "points": [
+        10,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2002": {
+      "system": "classic_10",
+      "points": [
+        10,
+        6,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2003": {
+      "system": "top8_10",
+      "points": [
+        10,
+        8,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2004": {
+      "system": "top8_10",
+      "points": [
+        10,
+        8,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2005": {
+      "system": "top8_10",
+      "points": [
+        10,
+        8,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2006": {
+      "system": "top8_10",
+      "points": [
+        10,
+        8,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2007": {
+      "system": "top8_10",
+      "points": [
+        10,
+        8,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2008": {
+      "system": "top8_10",
+      "points": [
+        10,
+        8,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2009": {
+      "system": "top8_10",
+      "points": [
+        10,
+        8,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2010": {
+      "system": "modern_25",
+      "points": [
+        25,
+        18,
+        15,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2011": {
+      "system": "modern_25",
+      "points": [
+        25,
+        18,
+        15,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2012": {
+      "system": "modern_25",
+      "points": [
+        25,
+        18,
+        15,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2013": {
+      "system": "modern_25",
+      "points": [
+        25,
+        18,
+        15,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2014": {
+      "system": "modern_25",
+      "points": [
+        25,
+        18,
+        15,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null,
+      "special": "double_points_final_round"
+    },
+    "2015": {
+      "system": "modern_25",
+      "points": [
+        25,
+        18,
+        15,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2016": {
+      "system": "modern_25",
+      "points": [
+        25,
+        18,
+        15,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2017": {
+      "system": "modern_25",
+      "points": [
+        25,
+        18,
+        15,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2018": {
+      "system": "modern_25",
+      "points": [
+        25,
+        18,
+        15,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": null
+    },
+    "2019": {
+      "system": "modern_25",
+      "points": [
+        25,
+        18,
+        15,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": true,
+      "sprint": null
+    },
+    "2020": {
+      "system": "modern_25",
+      "points": [
+        25,
+        18,
+        15,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": true,
+      "sprint": null
+    },
+    "2021": {
+      "system": "modern_25",
+      "points": [
+        25,
+        18,
+        15,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": true,
+      "sprint": "sprint_top3"
+    },
+    "2022": {
+      "system": "modern_25",
+      "points": [
+        25,
+        18,
+        15,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": true,
+      "sprint": "sprint_top8"
+    },
+    "2023": {
+      "system": "modern_25",
+      "points": [
+        25,
+        18,
+        15,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": true,
+      "sprint": "sprint_top8"
+    },
+    "2024": {
+      "system": "modern_25",
+      "points": [
+        25,
+        18,
+        15,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": true,
+      "sprint": "sprint_top8"
+    },
+    "2025": {
+      "system": "modern_25",
+      "points": [
+        25,
+        18,
+        15,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": "sprint_top8"
+    },
+    "2026": {
+      "system": "modern_25",
+      "points": [
+        25,
+        18,
+        15,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        1
+      ],
+      "dropped_scores": null,
+      "fastest_lap_point": false,
+      "sprint": "sprint_top8"
+    }
+  }
+}

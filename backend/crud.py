@@ -3,7 +3,7 @@ Todas las consultas a la DB. Los métodos "for_frontend_*" devuelven datos en el
 formato exacto que el frontend espera (compatible con los objetos JS anteriores).
 """
 from sqlalchemy.orm import Session
-from sqlalchemy import text
+from sqlalchemy import text, bindparam, or_
 from models import (
     Driver, Team, Circuit, Season, SeasonTeamColor,
     RaceCalendar, RaceResult, SprintResult
@@ -158,10 +158,10 @@ def get_season_data(db: Session, year: int) -> dict | None:
 def _count_completed_races(db: Session, race_ids: list[int]) -> int:
     if not race_ids:
         return 0
-    placeholders = ",".join(str(r) for r in race_ids)
-    row = db.execute(
-        text(f"SELECT COUNT(DISTINCT race_id) FROM race_results WHERE race_id IN ({placeholders})")
-    ).fetchone()
+    stmt = text(
+        "SELECT COUNT(DISTINCT race_id) FROM race_results WHERE race_id IN :race_ids"
+    ).bindparams(bindparam("race_ids", expanding=True))
+    row = db.execute(stmt, {"race_ids": race_ids}).fetchone()
     return row[0] if row else 0
 
 
@@ -179,29 +179,29 @@ def _build_driver_standings(db: Session, year: int, race_ids: list[int], color_m
     if not race_ids:
         return []
 
-    placeholders = ",".join(str(r) for r in race_ids)
-
     # Total points per driver (using team from last race)
-    totals = db.execute(text(f"""
+    totals_stmt = text("""
         SELECT rr.driver_id, rr.team_id, SUM(rr.points) as total
         FROM race_results rr
-        WHERE rr.race_id IN ({placeholders})
+        WHERE rr.race_id IN :race_ids
         GROUP BY rr.driver_id, rr.team_id
         ORDER BY total DESC
-    """)).fetchall()
+    """).bindparams(bindparam("race_ids", expanding=True))
+    totals = db.execute(totals_stmt, {"race_ids": race_ids}).fetchall()
 
     if not totals:
         return []
 
     # Cumulative points per driver per round (one row per driver per round)
-    cum_rows = db.execute(text(f"""
+    cum_stmt = text("""
         SELECT rr.driver_id, rc.round, SUM(rr.points) as pts
         FROM race_results rr
         JOIN race_calendar rc ON rr.race_id = rc.id
-        WHERE rr.race_id IN ({placeholders})
+        WHERE rr.race_id IN :race_ids
         GROUP BY rr.driver_id, rc.round
         ORDER BY rr.driver_id, rc.round
-    """)).fetchall()
+    """).bindparams(bindparam("race_ids", expanding=True))
+    cum_rows = db.execute(cum_stmt, {"race_ids": race_ids}).fetchall()
 
     from collections import defaultdict as _dd
     _driver_rounds: dict[str, list[tuple]] = _dd(list)
@@ -246,28 +246,28 @@ def _build_constructor_standings(db: Session, year: int, race_ids: list[int], co
     if not race_ids:
         return []
 
-    placeholders = ",".join(str(r) for r in race_ids)
-
-    totals = db.execute(text(f"""
+    totals_stmt = text("""
         SELECT rr.team_id, SUM(rr.points) as total
         FROM race_results rr
-        WHERE rr.race_id IN ({placeholders})
+        WHERE rr.race_id IN :race_ids
         GROUP BY rr.team_id
         ORDER BY total DESC
-    """)).fetchall()
+    """).bindparams(bindparam("race_ids", expanding=True))
+    totals = db.execute(totals_stmt, {"race_ids": race_ids}).fetchall()
 
     if not totals:
         return []
 
     # Aggregate per team per round first, then cumulative
-    round_pts = db.execute(text(f"""
+    round_pts_stmt = text("""
         SELECT rr.team_id, rc.round, SUM(rr.points) as pts
         FROM race_results rr
         JOIN race_calendar rc ON rr.race_id = rc.id
-        WHERE rr.race_id IN ({placeholders})
+        WHERE rr.race_id IN :race_ids
         GROUP BY rr.team_id, rc.round
         ORDER BY rr.team_id, rc.round
-    """)).fetchall()
+    """).bindparams(bindparam("race_ids", expanding=True))
+    round_pts = db.execute(round_pts_stmt, {"race_ids": race_ids}).fetchall()
 
     from collections import defaultdict
     team_rounds: dict[str, list[tuple]] = defaultdict(list)
@@ -348,6 +348,101 @@ def get_positions(db: Session, year: int) -> dict:
             positions[driver_id][idx] = pos_text or ""
 
     return positions
+
+
+# ── Extended result fields (grid / quali / fastest lap) ─────────────────────────
+# Solo se cargan de 2025 en adelante (via automatización Jolpica o admin manual);
+# el histórico 1980-2024 queda congelado sin estos campos. El export usa
+# season_has_extended() para poner el flag "extended" en el JSON de temporada, y
+# el frontend oculta estas vistas cuando extended=false (ver CLAUDE.md).
+
+def _grid_like(db: Session, year: int, column) -> dict:
+    """Mirror de get_positions para una columna entera de RaceResult (grid/quali).
+    Devuelve {driver_id: [valor_por_ronda, ...]} con "" donde no hay dato."""
+    cal_rows = (
+        db.query(RaceCalendar)
+        .filter(RaceCalendar.year == year)
+        .order_by(RaceCalendar.round)
+        .all()
+    )
+    if not cal_rows:
+        return {}
+    race_id_to_idx = {r.id: i for i, r in enumerate(cal_rows)}
+    total = len(cal_rows)
+
+    rows = (
+        db.query(RaceResult.driver_id, RaceResult.race_id, column)
+        .filter(RaceResult.race_id.in_([r.id for r in cal_rows]))
+        .all()
+    )
+    out: dict[str, list[str]] = {}
+    for driver_id, race_id, value in rows:
+        idx = race_id_to_idx.get(race_id)
+        if idx is None:
+            continue
+        if driver_id not in out:
+            out[driver_id] = [""] * total
+        out[driver_id][idx] = "" if value is None else str(value)
+
+    # Descartar pilotos sin ningún dato en la columna (mantiene el JSON chico y
+    # evita filas vacías en temporadas parcialmente cargadas).
+    return {d: arr for d, arr in out.items() if any(v != "" for v in arr)}
+
+
+def get_grid(db: Session, year: int) -> dict:
+    """{driver_id: [grid_position_por_ronda]}. "" = sin dato en esa ronda."""
+    return _grid_like(db, year, RaceResult.grid_position)
+
+
+def get_quali(db: Session, year: int) -> dict:
+    """{driver_id: [quali_position_por_ronda]}. "" = sin dato en esa ronda."""
+    return _grid_like(db, year, RaceResult.quali_position)
+
+
+def get_fastest_laps(db: Session, year: int) -> dict:
+    """{ronda_idx (0-based, string en JSON): driver_id} — quién hizo la vuelta
+    rápida en cada ronda. Mismo patrón de indexado que get_sprints."""
+    cal_rows = (
+        db.query(RaceCalendar)
+        .filter(RaceCalendar.year == year)
+        .order_by(RaceCalendar.round)
+        .all()
+    )
+    race_id_to_idx = {r.id: i for i, r in enumerate(cal_rows)}
+    rows = (
+        db.query(RaceResult.driver_id, RaceResult.race_id)
+        .filter(
+            RaceResult.race_id.in_([r.id for r in cal_rows]),
+            RaceResult.fastest_lap == 1,
+        )
+        .all()
+    )
+    out: dict[int, str] = {}
+    for driver_id, race_id in rows:
+        idx = race_id_to_idx.get(race_id)
+        if idx is not None:
+            out[idx] = driver_id
+    return out
+
+
+def season_has_extended(db: Session, year: int) -> bool:
+    """True si la temporada tiene AL MENOS un dato de grid/quali/vuelta rápida.
+    Derivado de los datos (no hardcodeado a 2025) para que se autocorrija si el
+    dueño llegara a backfillear una temporada vieja."""
+    return (
+        db.query(RaceResult.id)
+        .join(RaceCalendar, RaceResult.race_id == RaceCalendar.id)
+        .filter(
+            RaceCalendar.year == year,
+            or_(
+                RaceResult.grid_position.isnot(None),
+                RaceResult.quali_position.isnot(None),
+                RaceResult.fastest_lap.isnot(None),
+            ),
+        )
+        .first()
+        is not None
+    )
 
 
 # ── Calendar ──────────────────────────────────────────────────────────────────
@@ -529,7 +624,8 @@ def upsert_race_results(db: Session, race_id: int, results: list[dict]):
             existing.position_text = r.get("position", existing.position_text)
             existing.points = r.get("points", existing.points)
             existing.grid_position = r.get("grid_position", existing.grid_position)
-            existing.laps = r.get("laps", existing.laps)
+            existing.quali_position = r.get("quali_position", existing.quali_position)
+            existing.fastest_lap = r.get("fastest_lap", existing.fastest_lap)
         else:
             db.add(RaceResult(
                 race_id=race_id,
@@ -538,7 +634,8 @@ def upsert_race_results(db: Session, race_id: int, results: list[dict]):
                 position_text=r.get("position", ""),
                 points=r.get("points", 0),
                 grid_position=r.get("grid_position"),
-                laps=r.get("laps"),
+                quali_position=r.get("quali_position"),
+                fastest_lap=r.get("fastest_lap"),
             ))
     db.commit()
 
@@ -614,7 +711,7 @@ def get_driver_history(db: Session, driver_id: str) -> list[dict]:
                rr.team_id,
                SUM(rr.points) as total,
                SUM(CASE WHEN rr.position_text = '1' THEN 1 ELSE 0 END) as wins,
-               SUM(CASE WHEN CAST(rr.position_text AS INTEGER) <= 3 AND rr.position_text NOT IN ('R','D','W','') THEN 1 ELSE 0 END) as podiums
+               SUM(CASE WHEN rr.position_text GLOB '[0-9]*' AND CAST(rr.position_text AS INTEGER) <= 3 THEN 1 ELSE 0 END) as podiums
         FROM race_results rr
         JOIN race_calendar rc ON rr.race_id = rc.id
         WHERE rr.driver_id = :driver_id
@@ -648,3 +745,167 @@ def get_team_history(db: Session, team_id: str) -> list[dict]:
     """), {"team_id": team_id}).fetchall()
 
     return [{"year": year, "points": total, "wins": wins} for year, total, wins in rows]
+
+
+# ── Records ──────────────────────────────────────────────────────────────────
+
+def most_wins_by_driver(db: Session, from_year: int, to_year: int, limit: int = 10) -> list[dict]:
+    rows = db.execute(text("""
+        SELECT rr.driver_id, COUNT(*) as wins
+        FROM race_results rr
+        JOIN race_calendar rc ON rr.race_id = rc.id
+        WHERE rc.year BETWEEN :from_year AND :to_year AND rr.position_text = '1'
+        GROUP BY rr.driver_id
+        ORDER BY wins DESC, rr.driver_id
+        LIMIT :limit
+    """), {"from_year": from_year, "to_year": to_year, "limit": limit}).fetchall()
+    names = _get_driver_display_names(db)
+    return [{"id": d, "name": names.get(d, d), "wins": w} for d, w in rows]
+
+
+def most_wins_by_team(db: Session, from_year: int, to_year: int, limit: int = 10) -> list[dict]:
+    rows = db.execute(text("""
+        SELECT rr.team_id, COUNT(*) as wins
+        FROM race_results rr
+        JOIN race_calendar rc ON rr.race_id = rc.id
+        WHERE rc.year BETWEEN :from_year AND :to_year AND rr.position_text = '1'
+        GROUP BY rr.team_id
+        ORDER BY wins DESC, rr.team_id
+        LIMIT :limit
+    """), {"from_year": from_year, "to_year": to_year, "limit": limit}).fetchall()
+    names = _get_team_display_names(db)
+    return [{"id": t, "name": names.get(t, t), "wins": w} for t, w in rows]
+
+
+def most_podiums_by_driver(db: Session, from_year: int, to_year: int, limit: int = 10) -> list[dict]:
+    """Podio = position_text numérico y <= 3. Nunca cuenta un código de no-clasificación
+    (ver NON_FINISH_CODES en constants.py) porque el filtro es puramente "es numérico"."""
+    rows = db.execute(text("""
+        SELECT rr.driver_id, COUNT(*) as podiums
+        FROM race_results rr
+        JOIN race_calendar rc ON rr.race_id = rc.id
+        WHERE rc.year BETWEEN :from_year AND :to_year
+          AND rr.position_text GLOB '[0-9]*' AND CAST(rr.position_text AS INTEGER) <= 3
+        GROUP BY rr.driver_id
+        ORDER BY podiums DESC, rr.driver_id
+        LIMIT :limit
+    """), {"from_year": from_year, "to_year": to_year, "limit": limit}).fetchall()
+    names = _get_driver_display_names(db)
+    return [{"id": d, "name": names.get(d, d), "podiums": p} for d, p in rows]
+
+
+def most_podiums_by_team(db: Session, from_year: int, to_year: int, limit: int = 10) -> list[dict]:
+    rows = db.execute(text("""
+        SELECT rr.team_id, COUNT(*) as podiums
+        FROM race_results rr
+        JOIN race_calendar rc ON rr.race_id = rc.id
+        WHERE rc.year BETWEEN :from_year AND :to_year
+          AND rr.position_text GLOB '[0-9]*' AND CAST(rr.position_text AS INTEGER) <= 3
+        GROUP BY rr.team_id
+        ORDER BY podiums DESC, rr.team_id
+        LIMIT :limit
+    """), {"from_year": from_year, "to_year": to_year, "limit": limit}).fetchall()
+    names = _get_team_display_names(db)
+    return [{"id": t, "name": names.get(t, t), "podiums": p} for t, p in rows]
+
+
+def best_win_streak(db: Session, from_year: int, to_year: int) -> dict | None:
+    """
+    Racha más larga de victorias consecutivas de un piloto. Considera solo las
+    carreras en las que el piloto efectivamente compitió (tiene fila en
+    race_results), en orden cronológico global (year, round) — por eso puede
+    cruzar temporadas.
+    """
+    rows = db.execute(text("""
+        SELECT rr.driver_id, rc.year, rc.round, rr.position_text
+        FROM race_results rr
+        JOIN race_calendar rc ON rr.race_id = rc.id
+        WHERE rc.year BETWEEN :from_year AND :to_year
+        ORDER BY rr.driver_id, rc.year, rc.round
+    """), {"from_year": from_year, "to_year": to_year}).fetchall()
+
+    best = None
+    cur_driver = None
+    cur_streak = 0
+    cur_start = None
+    for driver_id, year, round_num, pos in rows:
+        if driver_id != cur_driver:
+            cur_driver = driver_id
+            cur_streak = 0
+            cur_start = None
+        if pos == '1':
+            if cur_streak == 0:
+                cur_start = (year, round_num)
+            cur_streak += 1
+            if best is None or cur_streak > best["streak"]:
+                best = {
+                    "driver_id": driver_id, "streak": cur_streak,
+                    "from_year": cur_start[0], "from_round": cur_start[1],
+                    "to_year": year, "to_round": round_num,
+                }
+        else:
+            cur_streak = 0
+
+    if best is None:
+        return None
+    names = _get_driver_display_names(db)
+    best["driver_name"] = names.get(best["driver_id"], best["driver_id"])
+    return best
+
+
+def biggest_title_margin(db: Session, from_year: int, to_year: int) -> dict | None:
+    """
+    Mayor diferencia de puntos entre campeón y subcampeón, entre los títulos ya
+    decididos (Season.champion_driver_id no nulo) en el rango de años. Usa el
+    total de puntos de temporada por piloto (suma entre equipos, por si cambió
+    de equipo a mitad de año).
+    """
+    rows = db.execute(text("""
+        SELECT rc.year, rr.driver_id, SUM(rr.points) as total
+        FROM race_results rr
+        JOIN race_calendar rc ON rr.race_id = rc.id
+        JOIN seasons s ON s.year = rc.year
+        WHERE rc.year BETWEEN :from_year AND :to_year
+          AND s.champion_driver_id IS NOT NULL AND s.champion_driver_id != ''
+        GROUP BY rc.year, rr.driver_id
+        ORDER BY rc.year, total DESC
+    """), {"from_year": from_year, "to_year": to_year}).fetchall()
+
+    from collections import defaultdict
+    by_year: dict[int, list] = defaultdict(list)
+    for year, driver_id, total in rows:
+        by_year[year].append((driver_id, total))
+
+    best = None
+    for year, standings in by_year.items():
+        if len(standings) < 2:
+            continue
+        champ_id, champ_pts = standings[0]
+        runner_id, runner_pts = standings[1]
+        margin = round(champ_pts - runner_pts, 1)
+        if best is None or margin > best["margin"]:
+            best = {
+                "year": year,
+                "champion_id": champ_id, "champion_points": champ_pts,
+                "runnerup_id": runner_id, "runnerup_points": runner_pts,
+                "margin": margin,
+            }
+
+    if best is None:
+        return None
+    names = _get_driver_display_names(db)
+    best["champion_name"] = names.get(best["champion_id"], best["champion_id"])
+    best["runnerup_name"] = names.get(best["runnerup_id"], best["runnerup_id"])
+    return best
+
+
+def get_records_for_era(db: Session, from_year: int, to_year: int, limit: int = 10) -> dict:
+    """Agrupa todos los récords de una era en un dict, para export_static.py."""
+    return {
+        "most_wins_drivers": most_wins_by_driver(db, from_year, to_year, limit),
+        "most_wins_teams": most_wins_by_team(db, from_year, to_year, limit),
+        "most_podiums_drivers": most_podiums_by_driver(db, from_year, to_year, limit),
+        "most_podiums_teams": most_podiums_by_team(db, from_year, to_year, limit),
+        "win_streak": best_win_streak(db, from_year, to_year),
+        "title_margin": biggest_title_margin(db, from_year, to_year),
+    }
