@@ -8,12 +8,8 @@ cd backend
 pip install -r requirements.txt
 ```
 
-### 2. Migrar datos (requiere Node.js)
-```bash
-cd migration
-node extract_js_data.js      # extrae los datos de los JS → JSON
-python import_to_db.py       # importa JSON → SQLite (f1.db)
-```
+### 2. Nota sobre migración
+> ⚠️ La migración inicial (extracción de datos JS → JSON → SQLite) ya fue ejecutada. La carpeta `migration/` se eliminó del repo.
 
 ### 3. Arrancar el backend
 ```bash
@@ -48,8 +44,5 @@ proyecto f1/
 ├── backend/          ← API FastAPI + SQLite
 │   ├── main.py       ← Punto de entrada
 │   └── requirements.txt
-├── migration/        ← Scripts de migración (solo se usan una vez)
-│   ├── extract_js_data.js
-│   └── import_to_db.py
-└── f1.db             ← Base de datos SQLite (creada por la migración)
+└── f1.db             ← Base de datos SQLite
 ```
