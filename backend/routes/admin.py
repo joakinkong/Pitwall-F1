@@ -20,7 +20,8 @@ class RaceResultIn(BaseModel):
     position: str   # '1'-'20', 'R', 'D', 'W', '' (no participó)
     points: float = 0
     grid_position: Optional[int] = None
-    laps: Optional[int] = None
+    quali_position: Optional[int] = None
+    fastest_lap: Optional[int] = None   # 1 = vuelta rápida; None = sin dato
 
 
 class SprintResultIn(BaseModel):
@@ -136,7 +137,8 @@ def get_race_results(race_id: int, db: Session = Depends(get_db)):
             "position": r.position_text,
             "points": r.points,
             "grid_position": r.grid_position,
-            "laps": r.laps,
+            "quali_position": r.quali_position,
+            "fastest_lap": r.fastest_lap,
         }
         for r in rows
     ]

@@ -72,10 +72,10 @@
           <button class="btn btn-success" onclick="saveResults()">Guardar</button>
         </div>
       </div>
-      <p style="font-size:0.75rem;color:#888;margin-bottom:10px">Posición: 1-20, R (retirado), D (DSQ/DNS), W (withdrew), vacío (no participó)</p>
+      <p style="font-size:0.75rem;color:#888;margin-bottom:10px">Posición: 1-20, R (retirado), D (DSQ/DNS), W (withdrew), vacío (no participó). Grid/Quali/VR: solo 2025+ (el histórico queda sin estos datos).</p>
       <table>
         <thead><tr>
-          <th>Piloto ID</th><th>Equipo ID</th><th>Pos</th><th>Puntos</th><th>Grid</th><th>Vueltas</th><th></th>
+          <th>Piloto ID</th><th>Equipo ID</th><th>Pos</th><th>Puntos</th><th>Grid</th><th>Quali</th><th>VR</th><th></th>
         </tr></thead>
         <tbody id="resultsBody"></tbody>
       </table>
@@ -311,7 +311,8 @@ function addResultRow(bodyId, data = {}, fullCols = (bodyId === 'resultsBody')) 
             <td><input type="text" value="${data.position || ''}" placeholder="1" class="pos-input" style="width:50px"/></td>
             <td><input type="number" value="${pts}" step="0.5" style="width:65px"/></td>
             <td><input type="number" value="${data.grid_position || ''}" style="width:50px"/></td>
-            <td><input type="number" value="${data.laps || ''}" style="width:55px"/></td>
+            <td><input type="number" value="${data.quali_position || ''}" style="width:50px"/></td>
+            <td style="text-align:center"><input type="checkbox" ${data.fastest_lap ? 'checked' : ''}/></td>
             <td><button onclick="this.closest('tr').remove()" class="btn btn-danger" style="padding:3px 8px">✕</button></td>
         `;
     } else {
@@ -337,7 +338,8 @@ async function saveResults() {
             position: inputs[2].value.trim(),
             points: parseFloat(inputs[3].value) || 0,
             grid_position: parseInt(inputs[4].value) || null,
-            laps: parseInt(inputs[5].value) || null,
+            quali_position: parseInt(inputs[5].value) || null,
+            fastest_lap: inputs[6].checked ? 1 : null,
         };
     }).filter(r => r.driver_id);
 

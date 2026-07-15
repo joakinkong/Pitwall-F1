@@ -75,8 +75,9 @@ class RaceResult(Base):
     team_id = Column(String, nullable=False)
     position_text = Column(String)   # '1'-'20', 'R', 'D', 'W', ''
     points = Column(Float, default=0)
-    grid_position = Column(Integer, nullable=True)
-    laps = Column(Integer, nullable=True)
+    grid_position = Column(Integer, nullable=True)   # grilla de largada (post-penalizaciones)
+    quali_position = Column(Integer, nullable=True)  # clasificación final de quali
+    fastest_lap = Column(Integer, nullable=True)     # 1 = hizo la vuelta rápida; NULL = sin dato
     __table_args__ = (UniqueConstraint("race_id", "driver_id"),)
 
 
