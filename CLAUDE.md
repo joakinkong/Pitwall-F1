@@ -741,6 +741,27 @@ el respaldo manual — normalmente no hace falta tocarlo. El Action:
   debería fallar por la propia validación de `sync_jolpica.py`) — no se
   hizo en esta ronda para no gastar más disparos manuales de los
   necesarios; queda para la próxima vez que se toque el workflow.
+- **2026-07-15** — Backfill de `grid`/`quali`/`fastest_laps` para 2025 vía
+  `scripts/sync_jolpica.py --year 2025` (2026 ya estaba al día por las syncs
+  previas del workflow: exit 3 "sin cambios"). Corrido en el local del dueño,
+  con el escaneo HTTPS de Avast activo: hubo que usar `PITWALL_CA_INSECURE=1`
+  (el escape TLS que el propio script documenta para dev-local detrás de un
+  interceptor) y `PYTHONUTF8=1` (la consola cp1252 de Windows no podía imprimir
+  el `→` del diff semántico y crasheaba en `print` ANTES de escribir el JSON —
+  ninguno de los dos es bug del script). **Hallazgo importante:** el diff de
+  2025 NO fue solo aditivo. El script recalcula posiciones y standings desde
+  Jolpica (autoritativo por diseño) y los datos manuales de 2025 divergían:
+  varias posiciones reclasificadas (placeholders `DNS`/`R` → resultados reales,
+  ej. NOR r10/r15 `R → 18`, OCO r8 `12 → 7`), TSU `28 → 33` (+5 pts), Red Bull
+  constructor `449 → 451` / Racing Bulls `94 → 92`, y `race_constructors` de
+  LAW/TSU recortado de 4 a 2 rondas (refleja el swap de asientos RBR↔Racing
+  Bulls de media temporada). El campeón sigue siendo NOR (`champion_driver` se
+  preserva, el sync no lo toca). Ante la disyuntiva (viola el "diff solo
+  aditivo" pero corrige errores de carga manual), el dueño decidió aceptar
+  Jolpica como fuente de verdad y commitear los fixes. **Pendiente:** `f1.db`
+  local quedó desincronizado de estas correcciones 2025 — reconciliar con
+  `scripts/import_to_db.py` antes de confiar en `records.json` o en un
+  `export_static.py --force`.
 
 ---
 
