@@ -1,0 +1,91 @@
+{
+  "_doc": {
+    "description": "Mapeo entre IDs de la API Jolpica-F1 (formato Ergast: https://api.jolpi.ca/ergast/f1/...) e IDs internos de PIT WALL (códigos de 3 letras). Usado por scripts/validate_map.py y por la automatización de resultados (GitHub Action) que lo reusa. Alcance: SOLO temporadas 2025 y 2026 — el histórico 1980-2024 está congelado y no se toca vía Jolpica.",
+    "generated": "2026-07-15",
+    "generated_from": [
+      "https://api.jolpi.ca/ergast/f1/2025/drivers.json",
+      "https://api.jolpi.ca/ergast/f1/2025/constructors.json",
+      "https://api.jolpi.ca/ergast/f1/2025/races.json",
+      "https://api.jolpi.ca/ergast/f1/2026/drivers.json",
+      "https://api.jolpi.ca/ergast/f1/2026/constructors.json",
+      "https://api.jolpi.ca/ergast/f1/2026/races.json"
+    ],
+    "how_it_was_built": "Se cruzaron los tres endpoints de Jolpica para 2025 y 2026 contra docs/data/seasons/{2025,2026}.json (season.drivers para pilotos/equipos, calendar para carreras). Drivers: Jolpica trae un campo 'code' (código FIA de 3 letras) que coincide EXACTO con el id interno en el 100% de los 24 pilotos de ambas temporadas — match automático sin ambigüedad. Constructors: Jolpica no trae código corto, se matcheó por nombre contra displayName de TEAMS_INFO (init.json); 11 de 12 son match textual directo, 1 caso dudoso (ver 'uncertain_cases_needs_confirmation' abajo). Races: el match primario es por 'round' (Jolpica round N de un año == calendar round N del mismo año en el JSON local, ambos ordenados por fecha) — no hace falta tabla para esto, es posicional. circuitId se usa solo como verificación cruzada de que el round realmente corresponde al circuito esperado (detecta reordenamientos de calendario o el mapeo raro). Se verificaron los 24+22=46 rounds de 2025+2026 contra su circuitId: 0 conflictos.",
+    "how_to_add_a_new_driver_or_team": "Cuando debuta un piloto o equipo nuevo (o llega una temporada nueva, ej. 2027): 1) Correr `python scripts/validate_map.py <year>` — si falta un mapeo, el script FALLA y lista exactamente qué driverId/constructorId/circuitId de Jolpica no está en este archivo. 2) Buscar ese id en la respuesta de Jolpica (driver: campo 'code'; constructor: no trae code, hay que matchear el 'name' contra TEAMS_INFO en docs/data/init.json a mano) y agregar la entrada correspondiente en 'drivers', 'constructors' o 'races.circuits' de este JSON. 3) Volver a correr validate_map.py para confirmar que ya no falla. Listo — no hace falta tocar nada más, el Action reusa este mismo archivo.",
+    "uncertain_cases_needs_confirmation": [],
+    "resolved_cases": [
+      "constructors.rb -> RBT (RACING BULLS): Jolpica todavía usa el constructorId histórico 'rb' con name 'RB F1 Team' (heredado de cuando la escudería dejó de llamarse AlphaTauri en 2024). No hay match textual directo con el displayName interno 'RACING BULLS', pero es el mismo equipo — inferido por eliminación (es el único equipo de la parrilla 2025/2026 sin otro candidato de mapeo) y porque coincide con los pilotos que corren ahí (HAD/LAW en ambos años) contra el roster real de Racing Bulls. Confirmado por el dueño: sí, correcto — 2026-07-15."
+    ],
+    "not_mapped_on_purpose": "Jolpica devuelve pilotos reserva/test sin código FIA asignado (campo 'code': null, ej. 'paul_aron', 'luke_browning') que nunca corrieron una carrera real — no están en season.drivers de los JSON locales (que solo incluye pilotos con resultados), así que no tienen ni necesitan entrada acá. Si alguno debuta, aparece con 'code' no-nulo y el proceso de arriba lo captura."
+  },
+  "drivers": {
+    "albon": "ALB",
+    "alonso": "ALO",
+    "antonelli": "ANT",
+    "arvid_lindblad": "LIN",
+    "bearman": "BEA",
+    "bortoleto": "BOR",
+    "bottas": "BOT",
+    "colapinto": "COL",
+    "doohan": "DOO",
+    "gasly": "GAS",
+    "hadjar": "HAD",
+    "hamilton": "HAM",
+    "hulkenberg": "HUL",
+    "lawson": "LAW",
+    "leclerc": "LEC",
+    "max_verstappen": "VER",
+    "norris": "NOR",
+    "ocon": "OCO",
+    "perez": "PER",
+    "piastri": "PIA",
+    "russell": "RUS",
+    "sainz": "SAI",
+    "stroll": "STR",
+    "tsunoda": "TSU"
+  },
+  "constructors": {
+    "alpine": "ALP",
+    "aston_martin": "AMR",
+    "audi": "AUD",
+    "cadillac": "CAD",
+    "ferrari": "FER",
+    "haas": "HAS",
+    "mclaren": "MCL",
+    "mercedes": "MER",
+    "rb": "RBT",
+    "red_bull": "RBR",
+    "sauber": "SAU",
+    "williams": "WIL"
+  },
+  "races": {
+    "_doc": "Matching primario: por 'round' dentro del mismo año (Jolpica round N == calendar[N-1].round del seasons/{year}.json local), no requiere tabla. 'circuits' abajo es SOLO la verificación cruzada circuitId->código interno; validate_map.py la usa para confirmar que el round realmente corresponde al circuito esperado.",
+    "circuits": {
+      "albert_park": "AUS",
+      "americas": "USA",
+      "bahrain": "BHR",
+      "baku": "AZE",
+      "catalunya": "ESP",
+      "hungaroring": "HUN",
+      "imola": "EMI",
+      "interlagos": "SAO",
+      "jeddah": "SAU",
+      "losail": "QAT",
+      "madring": "MAD",
+      "marina_bay": "SGP",
+      "miami": "MIA",
+      "monaco": "MCO",
+      "monza": "ITA",
+      "red_bull_ring": "AUT",
+      "rodriguez": "MEX",
+      "shanghai": "CHN",
+      "silverstone": "GBR",
+      "spa": "BEL",
+      "suzuka": "JPN",
+      "vegas": "LAS",
+      "villeneuve": "CAN",
+      "yas_marina": "ABU",
+      "zandvoort": "NLD"
+    }
+  }
+}
