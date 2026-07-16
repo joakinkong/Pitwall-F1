@@ -47,11 +47,11 @@ function nonFinishPriority(code){const i=NON_FINISH_CODES.indexOf(code);return i
 function showPage(p,pushHistory){
 if(pushHistory!==false&&currentPage&&currentPage!==p)navStack.push(currentPage);
 currentPage=p;
-['pageHome','pageStandings','pageCalendar','pageGPDetail','pageDriverDetail','pageTeamDetail','pageResultsGrid','pageRecords','pageSimulator'].forEach(id=>{document.getElementById(id).style.display='none';});
-const pm={home:'pageHome',standings:'pageStandings',calendar:'pageCalendar',gpdetail:'pageGPDetail',driver:'pageDriverDetail',team:'pageTeamDetail',grid:'pageResultsGrid',records:'pageRecords',sim:'pageSimulator'};
+['pageHome','pageStandings','pageCalendar','pageGPDetail','pageDriverDetail','pageTeamDetail','pageResultsGrid','pageRecords','pageSimulator','pagePerformance'].forEach(id=>{document.getElementById(id).style.display='none';});
+const pm={home:'pageHome',standings:'pageStandings',calendar:'pageCalendar',gpdetail:'pageGPDetail',driver:'pageDriverDetail',team:'pageTeamDetail',grid:'pageResultsGrid',records:'pageRecords',sim:'pageSimulator',perf:'pagePerformance'};
 document.getElementById(pm[p]||'pageHome').style.display='block';
 document.getElementById('bottomNav').style.display='flex';
-const isDetail=['gpdetail','driver','team','grid','sim'].includes(p);
+const isDetail=['gpdetail','driver','team','grid','sim','perf'].includes(p);
 document.getElementById('backBtn').style.display=isDetail?'flex':'none';
 document.getElementById('headerLeft').style.display=isDetail?'none':'flex';
 document.getElementById('headerRight').style.display=(isDetail||p==='records')?'none':'flex';
@@ -59,11 +59,11 @@ const nh=document.getElementById('navHome'),ns=document.getElementById('navStand
 [nh,ns,nc,nr].forEach(b=>{b.className=b.className.replace('text-[#ffb4a7]','text-zinc-500').replace('border-[#ffb4a7]','border-transparent');b.querySelector('.material-symbols-outlined').style.fontVariationSettings="'FILL' 0";});
 let active=null;
 if(p==='home')active=nh;
-else if(p==='standings'||p==='driver'||p==='team'||p==='grid'||p==='sim')active=ns;
+else if(p==='standings'||p==='driver'||p==='team'||p==='grid'||p==='sim'||p==='perf')active=ns;
 else if(p==='calendar'||p==='gpdetail')active=nc;
 else if(p==='records')active=nr;
 if(active){active.className=active.className.replace('text-zinc-500','text-[#ffb4a7]').replace('border-transparent','border-[#ffb4a7]');active.querySelector('.material-symbols-outlined').style.fontVariationSettings="'FILL' 1";}
-if(p==='home')buildHome();if(p==='calendar')buildCalendar();if(p==='standings'){buildChart(currentTab);buildStandings(currentTab);updateSeasonStatus();}if(p==='records')buildRecords();if(p==='sim')buildSimulator();window.scrollTo(0,0);}
+if(p==='home')buildHome();if(p==='calendar')buildCalendar();if(p==='standings'){buildChart(currentTab);buildStandings(currentTab);updateSeasonStatus();updatePerformanceButtonVisibility();}if(p==='records')buildRecords();if(p==='sim')buildSimulator();if(p==='perf')buildPerformance();window.scrollTo(0,0);}
 
 function goBack(){
 if(navStack.length>0){
@@ -74,7 +74,7 @@ if(navStack.length>0){
 }
 }
 
-async function changeYear(y){if(window.loadYearData)await window.loadYearData(y);currentYear=y;document.getElementById('seasonTitle').textContent='SEASON '+y;const s=SEASONS[y];document.getElementById('raceCount').textContent=(s.completed?s.completed+'/'+s.races.length:s.races.length)+' Carreras';buildCompare();buildChart(currentTab);buildStandings(currentTab);if(currentPage==='home')buildHome();if(currentPage==='calendar')buildCalendar();updateSeasonStatus();}
+async function changeYear(y){if(window.loadYearData)await window.loadYearData(y);currentYear=y;document.getElementById('seasonTitle').textContent='SEASON '+y;const s=SEASONS[y];document.getElementById('raceCount').textContent=(s.completed?s.completed+'/'+s.races.length:s.races.length)+' Carreras';buildCompare();buildChart(currentTab);buildStandings(currentTab);if(currentPage==='home')buildHome();if(currentPage==='calendar')buildCalendar();updateSeasonStatus();updatePerformanceButtonVisibility();}
 
 function buildChart(tab){const ctx=document.getElementById('mainChart').getContext('2d');if(chart)chart.destroy();const s=SEASONS[currentYear];let source=tab==='drivers'?s.drivers:s.constructors;
 const idA=document.getElementById('selectA')?.value,idB=document.getElementById('selectB')?.value;
@@ -566,6 +566,245 @@ function renderSimulator(){
     <div class="mb-2"><h3 class="text-[10px] font-headline font-bold uppercase tracking-[0.3em] text-zinc-500">Clasificación simulada — ${year} con ${pointsSystemsData.systems[simSystemId].label}</h3><p class="text-[9px] text-zinc-600 mt-1">Δ compara contra la clasificación real de ${year} (P${1} = ${realOrder[0].name}${realDone?' · campeón':' · líder'}).</p></div>
     <div class="bg-surface-container-low border border-white/5 mb-4">${rows}</div>
     <div class="mb-4"><h3 class="text-[10px] font-headline font-bold uppercase tracking-[0.3em] text-zinc-500 mb-2">Limitaciones conocidas</h3><ul class="text-[9px] text-zinc-600 leading-relaxed list-disc pl-4">${limitations}</ul></div>`;
+}
+
+// RENDIMIENTO — puestos ganados/perdidos (grilla vs. carrera) y quali vs.
+// carrera. Solo existe para temporadas con datos extendidos (2025+, ver
+// clave "extended" en seasons/{year}.json — CLAUDE.md § Esquema de datos).
+// api.js no expone grid/quali/fastest_laps (solo carga season/positions/
+// calendar/sprints/race_constructors), así que esta sección hace su propio
+// fetch()+cache del JSON de temporada, igual que records.json/
+// points_systems.json en las secciones de arriba — no toca api.js.
+
+let extendedData={};              // year(string) -> {grid,quali,fastest_laps} | null
+let perfSortKey='net',perfSortDir=-1,perfExpandedDriver=null;
+let qualiSortKey='avg',qualiSortDir=-1;
+
+async function loadExtendedData(year){
+  const y=String(year);
+  if(extendedData[y]!==undefined)return extendedData[y];
+  try{
+    const r=await fetch('data/seasons/'+y+'.json');
+    if(!r.ok)throw new Error('404');
+    const data=await r.json();
+    extendedData[y]=(data.extended===true)?{grid:data.grid||{},quali:data.quali||{},fastest_laps:data.fastest_laps||{}}:null;
+  }catch(err){
+    extendedData[y]=null;
+  }
+  return extendedData[y];
+}
+
+async function updatePerformanceButtonVisibility(){
+  const btn=document.getElementById('btnPerformance');
+  if(!btn)return;
+  const yearAtCall=currentYear;
+  const ext=await loadExtendedData(yearAtCall);
+  if(currentYear!==yearAtCall)return; // el usuario ya cambió de año mientras esperábamos
+  btn.style.display=ext?'':'none';
+}
+
+function openPerformance(){
+  showPage('perf');
+}
+
+async function buildPerformance(){
+  const el=document.getElementById('performanceContent');
+  if(extendedData[String(currentYear)]===undefined){
+    el.innerHTML='<p class="text-xs text-zinc-500 italic text-center py-8">Cargando…</p>';
+    await loadExtendedData(currentYear);
+  }
+  renderPerformance();
+}
+
+// Compara un array de "posición base" (grid o quali) contra la posición
+// final, carrera por carrera. Los no clasificados (NON_FINISH_CODES) no
+// computan delta — quedan aparte en `nonClassified` con delta:null. Solo
+// cuenta rondas con dato base numérico Y ya corridas (posición final
+// numérica o código de no-clasificación; "" = carrera futura, se ignora).
+function computeDeltaStats(baseByDriver,positionsByDriver,driverIds,numRounds){
+  const out={};
+  for(const id of driverIds){
+    const baseArr=baseByDriver[id]||[];
+    const posArr=positionsByDriver[id]||[];
+    const rounds=[];
+    let gained=0,lost=0,nonClassified=0,racesWithData=0;
+    for(let i=0;i<numRounds;i++){
+      const baseNum=parseInt(baseArr[i]);
+      if(isNaN(baseNum))continue;
+      const finVal=posArr[i];
+      if(NON_FINISH_CODES.includes(finVal)){
+        nonClassified++;
+        rounds.push({idx:i,base:baseNum,finish:finVal,delta:null});
+        continue;
+      }
+      const finNum=parseInt(finVal);
+      if(isNaN(finNum))continue; // "" u otro no numérico: carrera sin correr todavía
+      racesWithData++;
+      const delta=baseNum-finNum; // positivo = ganó posiciones
+      if(delta>0)gained+=delta; else if(delta<0)lost+=-delta;
+      rounds.push({idx:i,base:baseNum,finish:finNum,delta});
+    }
+    out[id]={racesWithData,gained,lost,net:gained-lost,nonClassified,rounds};
+  }
+  return out;
+}
+
+function countPoles(qualiByDriver,driverIds,numRounds){
+  const poles={};
+  for(const id of driverIds){
+    const arr=qualiByDriver[id]||[];
+    let c=0;
+    for(let i=0;i<numRounds;i++){if(arr[i]==='1')c++;}
+    if(c>0)poles[id]=c;
+  }
+  return poles;
+}
+
+function perfSortedDrivers(stats,driverMeta,sortKey,sortDir){
+  return Object.keys(stats)
+    .filter(id=>stats[id].racesWithData>0||stats[id].nonClassified>0)
+    .map(id=>({id,...stats[id],name:driverMeta[id]?driverMeta[id].name:id,color:driverMeta[id]?driverMeta[id].color:'#888888'}))
+    .sort((a,b)=>(a[sortKey]-b[sortKey])*sortDir);
+}
+
+function setPerfSort(key){
+  if(perfSortKey===key)perfSortDir*=-1; else {perfSortKey=key;perfSortDir=-1;}
+  renderPerformance();
+}
+function setQualiSort(key){
+  if(qualiSortKey===key)qualiSortDir*=-1; else {qualiSortKey=key;qualiSortDir=-1;}
+  renderPerformance();
+}
+function togglePerfExpand(id){
+  perfExpandedDriver=(perfExpandedDriver===id)?null:id;
+  renderPerformance();
+}
+
+function perfSortHeader(label,key,currentKey,currentDir,onclickFn){
+  const active=key===currentKey;
+  const arrow=active?(currentDir===-1?' ▼':' ▲'):'';
+  const color=active?'text-primary':'text-zinc-500';
+  return `<th class="px-2 py-2 text-right cursor-pointer select-none" onclick="${onclickFn}('${key}')"><span class="text-[9px] font-headline font-bold uppercase tracking-widest ${color}">${label}${arrow}</span></th>`;
+}
+
+function perfRaceDetailRow(d,colspan){
+  const cal=CAL_DATA.calendars[currentYear]||[];
+  const items=d.rounds.map(r=>{
+    const gp=cal[r.idx]?cal[r.idx].id:('R'+(r.idx+1));
+    if(r.delta===null){
+      return `<div class="flex items-center justify-between py-1.5 px-3 border-b border-white/5 last:border-0"><span class="text-[10px] font-headline font-bold uppercase text-zinc-500">${gp}</span><span class="text-[10px] text-zinc-400">P${r.base} → <span class="text-red-400">${r.finish}</span></span></div>`;
+    }
+    const dColor=r.delta>0?'text-secondary':r.delta<0?'text-red-400':'text-zinc-500';
+    const dStr=r.delta>0?'+'+r.delta:String(r.delta);
+    return `<div class="flex items-center justify-between py-1.5 px-3 border-b border-white/5 last:border-0"><span class="text-[10px] font-headline font-bold uppercase text-zinc-500">${gp}</span><span class="text-[10px] text-zinc-400">P${r.base} → P${r.finish}</span><span class="text-[10px] font-headline font-bold tabular-nums ${dColor} w-10 text-right">${dStr}</span></div>`;
+  }).join('');
+  return `<tr><td colspan="${colspan}" class="p-0"><div class="bg-surface-container-lowest">${items}</div></td></tr>`;
+}
+
+function perfGainedLostSection(stats,driverMeta){
+  const drivers=perfSortedDrivers(stats,driverMeta,perfSortKey,perfSortDir);
+  if(drivers.length===0){
+    return `<div class="mb-6"><h3 class="text-[10px] font-headline font-bold uppercase tracking-[0.3em] text-zinc-500 mb-3">Puestos Ganados / Perdidos</h3><p class="text-xs text-zinc-500 italic text-center py-4">Sin datos de grilla todavía</p></div>`;
+  }
+  const headerRow=`<tr class="border-b border-white/10">
+    <th class="px-2 py-2 text-left"><span class="text-[9px] font-headline font-bold uppercase tracking-widest text-zinc-500">Piloto</span></th>
+    ${perfSortHeader('Neto','net',perfSortKey,perfSortDir,'setPerfSort')}
+    ${perfSortHeader('Ganadas','gained',perfSortKey,perfSortDir,'setPerfSort')}
+    ${perfSortHeader('Perdidas','lost',perfSortKey,perfSortDir,'setPerfSort')}
+    ${perfSortHeader('S/Clasif.','nonClassified',perfSortKey,perfSortDir,'setPerfSort')}
+  </tr>`;
+  const rows=drivers.map(d=>{
+    const netColor=d.net>0?'text-secondary':d.net<0?'text-red-400':'text-zinc-500';
+    const netStr=d.net>0?'+'+d.net:String(d.net);
+    const detailRow=perfExpandedDriver===d.id?perfRaceDetailRow(d,5):'';
+    return `<tr class="border-b border-white/5 last:border-0 cursor-pointer hover:bg-surface-container-high transition-colors" onclick="togglePerfExpand('${d.id}')">
+      <td class="px-2 py-2"><div class="flex items-center gap-2"><div class="w-1 h-5 flex-shrink-0" style="background:${d.color}"></div><span class="text-xs font-headline font-bold uppercase">${d.name}</span></div></td>
+      <td class="px-2 py-2 text-right"><span class="text-sm font-headline font-black tabular-nums ${netColor}">${netStr}</span></td>
+      <td class="px-2 py-2 text-right"><span class="text-xs font-headline font-bold tabular-nums text-secondary">+${d.gained}</span></td>
+      <td class="px-2 py-2 text-right"><span class="text-xs font-headline font-bold tabular-nums text-red-400">-${d.lost}</span></td>
+      <td class="px-2 py-2 text-right"><span class="text-xs font-headline font-bold tabular-nums text-zinc-500">${d.nonClassified}</span></td>
+    </tr>${detailRow}`;
+  }).join('');
+  return `<div class="mb-6">
+    <h3 class="text-[10px] font-headline font-bold uppercase tracking-[0.3em] text-zinc-500 mb-1">Puestos Ganados / Perdidos</h3>
+    <p class="text-[9px] text-zinc-600 mb-3">Grilla de largada vs. resultado final · tocá un piloto para ver carrera por carrera</p>
+    <div class="bg-surface-container-low border border-white/5 overflow-x-auto"><table class="w-full"><thead>${headerRow}</thead><tbody>${rows}</tbody></table></div>
+  </div>`;
+}
+
+function perfPolesSection(poles,driverMeta){
+  const items=Object.entries(poles).sort((a,b)=>b[1]-a[1]).map(([id,count])=>({id,name:driverMeta[id]?driverMeta[id].name:id,poles:count}));
+  return recordsLeaderboard('Poles — '+currentYear,items,'poles','openDriverDetail');
+}
+
+function perfQualiAggregate(qualiStats,driverMeta){
+  const out=[];
+  for(const id in qualiStats){
+    const deltas=qualiStats[id].rounds.filter(r=>r.delta!==null);
+    if(deltas.length===0)continue;
+    const avg=deltas.reduce((a,r)=>a+r.delta,0)/deltas.length;
+    let best=deltas[0],worst=deltas[0];
+    for(const r of deltas){if(r.delta>best.delta)best=r;if(r.delta<worst.delta)worst=r;}
+    out.push({id,name:driverMeta[id]?driverMeta[id].name:id,color:driverMeta[id]?driverMeta[id].color:'#888888',avg,best,worst,races:deltas.length});
+  }
+  return out;
+}
+
+function perfQualiSection(qualiStats,driverMeta){
+  const items=perfQualiAggregate(qualiStats,driverMeta);
+  if(items.length===0){
+    return `<div class="mb-6"><h3 class="text-[10px] font-headline font-bold uppercase tracking-[0.3em] text-zinc-500 mb-3">Quali vs. Carrera</h3><p class="text-xs text-zinc-500 italic text-center py-4">Sin datos de clasificación todavía</p></div>`;
+  }
+  items.sort((a,b)=>(a[qualiSortKey]-b[qualiSortKey])*qualiSortDir);
+  const cal=CAL_DATA.calendars[currentYear]||[];
+  const headerRow=`<tr class="border-b border-white/10">
+    <th class="px-2 py-2 text-left"><span class="text-[9px] font-headline font-bold uppercase tracking-widest text-zinc-500">Piloto</span></th>
+    ${perfSortHeader('Prom. Δ','avg',qualiSortKey,qualiSortDir,'setQualiSort')}
+    <th class="px-2 py-2 text-right"><span class="text-[9px] font-headline font-bold uppercase tracking-widest text-zinc-500">Mejor</span></th>
+    <th class="px-2 py-2 text-right"><span class="text-[9px] font-headline font-bold uppercase tracking-widest text-zinc-500">Peor</span></th>
+  </tr>`;
+  const rows=items.map(d=>{
+    const avgColor=d.avg>0?'text-secondary':d.avg<0?'text-red-400':'text-zinc-500';
+    const avgStr=(d.avg>0?'+':'')+d.avg.toFixed(1);
+    const bestGp=cal[d.best.idx]?cal[d.best.idx].id:'';
+    const worstGp=cal[d.worst.idx]?cal[d.worst.idx].id:'';
+    return `<tr class="border-b border-white/5 last:border-0">
+      <td class="px-2 py-2"><div class="flex items-center gap-2"><div class="w-1 h-5 flex-shrink-0" style="background:${d.color}"></div><span class="text-xs font-headline font-bold uppercase cursor-pointer hover:text-primary transition-colors" onclick="openDriverDetail('${d.id}')">${d.name}</span></div></td>
+      <td class="px-2 py-2 text-right"><span class="text-sm font-headline font-black tabular-nums ${avgColor}">${avgStr}</span></td>
+      <td class="px-2 py-2 text-right"><span class="text-[10px] font-headline font-bold tabular-nums text-secondary">+${d.best.delta} <span class="text-zinc-600">${bestGp}</span></span></td>
+      <td class="px-2 py-2 text-right"><span class="text-[10px] font-headline font-bold tabular-nums text-red-400">${d.worst.delta} <span class="text-zinc-600">${worstGp}</span></span></td>
+    </tr>`;
+  }).join('');
+  return `<div class="mb-6">
+    <h3 class="text-[10px] font-headline font-bold uppercase tracking-[0.3em] text-zinc-500 mb-1">Quali vs. Carrera</h3>
+    <p class="text-[9px] text-zinc-600 mb-3">Δ positivo = mejoró respecto a la clasificación</p>
+    <div class="bg-surface-container-low border border-white/5 overflow-x-auto"><table class="w-full"><thead>${headerRow}</thead><tbody>${rows}</tbody></table></div>
+  </div>`;
+}
+
+function renderPerformance(){
+  const el=document.getElementById('performanceContent');
+  const ext=extendedData[String(currentYear)];
+  if(!ext){
+    el.innerHTML=`<div class="mb-4"><span class="text-secondary text-[10px] font-bold uppercase tracking-[0.2em] font-headline mb-1 block">Rendimiento</span><h2 class="text-3xl font-headline font-bold leading-none tracking-tighter">SEASON ${currentYear}</h2></div><p class="text-xs text-zinc-500 italic text-center py-8">Esta temporada no tiene datos de grilla/clasificación (solo disponible desde 2025).</p>`;
+    return;
+  }
+  const s=SEASONS[currentYear];
+  const posData=POSITIONS[currentYear]||{};
+  const driverIds=s.drivers.map(d=>d.id);
+  const numRounds=(s.races||[]).length;
+  const driverMeta={};
+  s.drivers.forEach(d=>{driverMeta[d.id]=d;});
+
+  const gridStats=computeDeltaStats(ext.grid,posData,driverIds,numRounds);
+  const qualiStats=computeDeltaStats(ext.quali,posData,driverIds,numRounds);
+  const poles=countPoles(ext.quali,driverIds,numRounds);
+
+  el.innerHTML=
+    `<div class="mb-4"><span class="text-secondary text-[10px] font-bold uppercase tracking-[0.2em] font-headline mb-1 block">Rendimiento</span><h2 class="text-3xl font-headline font-bold leading-none tracking-tighter">SEASON ${currentYear}</h2></div>`+
+    perfGainedLostSection(gridStats,driverMeta)+
+    perfPolesSection(poles,driverMeta)+
+    perfQualiSection(qualiStats,driverMeta);
 }
 
 // GP DETAIL

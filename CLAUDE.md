@@ -762,6 +762,52 @@ el respaldo manual — normalmente no hace falta tocarlo. El Action:
   local quedó desincronizado de estas correcciones 2025 — reconciliar con
   `scripts/import_to_db.py` antes de confiar en `records.json` o en un
   `export_static.py --force`.
+- **2026-07-15** — Feature D (cierre): vista "Rendimiento" en
+  `docs/js/app.js`/`docs/index.html` — puestos ganados/perdidos (grilla vs.
+  resultado) y poles + quali vs. carrera, usando el `grid`/`quali` de las
+  temporadas 2025+ que recién quedaron pobladas por el backfill de arriba.
+  Nuevo botón `#btnPerformance` en Standings (grid de 3 columnas junto a
+  "Grilla" y "¿Y si...?"), **oculto por default en el HTML** y solo se
+  muestra si `updatePerformanceButtonVisibility()` confirma datos extendidos
+  para el año actual — evita el flash de un botón que llevaría a una página
+  vacía en 1980-2024.
+  **Por qué esta sección hace su propio `fetch()`:** `docs/js/api.js` (fuera
+  del alcance de esta tarea) solo extrae `season`/`positions`/`calendar`/
+  `sprints`/`race_constructors` de cada `seasons/{year}.json` — nunca guardó
+  `extended`/`grid`/`quali`/`fastest_laps` en variables globales. Mismo
+  patrón ya usado por Récords/Simulador: `loadExtendedData(year)` pide el
+  JSON de temporada de nuevo (el navegador lo sirve de HTTP cache la
+  segunda vez) y cachea el resultado — `{grid,quali,fastest_laps}` si
+  `extended===true`, `null` si no, así nunca se re-chequea una temporada ya
+  resuelta.
+  **Cálculo** (`computeDeltaStats`, compartido por ambas secciones ya que
+  "grilla vs. carrera" y "quali vs. carrera" son la misma operación con
+  distinto array base): por ronda, si la posición base (grid o quali) no es
+  numérica se ignora (temporada sin ese dato puntual); si la posición final
+  es un código de `NON_FINISH_CODES` no computa delta y queda aparte
+  (`nonClassified`, delta `null`, se pinta en rojo sin número al lado — la
+  tabla lo muestra pero no lo suma a ganadas/perdidas); si la posición final
+  es `""` (carrera todavía no corrida) se ignora directamente — así "solo
+  sobre las corridas" sale gratis del mismo chequeo, sin lógica de fecha
+  aparte. `delta = base - final` (positivo = ganó posiciones).
+  **UI**: tabla ordenable por columna (Neto/Ganadas/Perdidas/Sin Clasificar
+  — clic alterna asc/desc, con flecha indicando la columna activa), fila de
+  piloto expandible con el detalle carrera por carrera (grilla→resultado,
+  reusa el patrón de sticky/expand ya visto en otras vistas). Poles
+  reutiliza `recordsLeaderboard()` de la página Récords tal cual (mismo
+  shape `{id,name,[unitKey]}`) en vez de duplicar el render de un
+  leaderboard top-N. Quali vs. Carrera: promedio de delta + mejor/peor caso
+  (con el GP de cada extremo) por piloto, misma tabla ordenable.
+  **Validado**: 1988 (`extended` ausente) → botón oculto, página nunca se
+  abre, cero errores de consola. 2025 → botón visible; VER Brasil (SAO)
+  grilla P19 → carrera P3 (**+16**, un caso real y llamativo) coincide
+  exacto entre el cálculo a mano sobre el JSON crudo y lo que renderiza la
+  UI (confirmado leyendo el DOM del detalle expandido, no solo mirando un
+  screenshot); la ronda de AUT (VER retirado) se confirmó en el DOM sin
+  ningún número de delta al lado, solo el código en rojo — el filtro de "no
+  clasificados no computan delta" funciona. Ordenamiento por columna
+  probado en vivo (clic invierte de descendente a ascendente, cambia el
+  piloto en el tope de la tabla). Sin overflow horizontal en 420px.
 
 ---
 
