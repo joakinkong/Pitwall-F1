@@ -1,0 +1,9523 @@
+{
+  "_doc": {
+    "description": "Mapeo Jolpica-F1 -> IDs internos para el backfill historico 1950-1979. Alcance SOLO 1950-1979 (separado de scripts/jolpica_map.json, que es SOLO 2025-2026).",
+    "generated_by": "scripts/build_pre1980_map.py",
+    "review_needed": "Revisar 'flagged_for_review' antes de usar este mapa para escribir en f1.db. continuity=true significa 'se reusa un id ya existente en la DB' (mismo piloto/equipo/circuito que ya corre o corrio en 1980-2026); continuity=false es un id nuevo generado deterministicamente y sin colision con ningun id existente ni con otro asignado en este batch."
+  },
+  "flagged_for_review": [
+    "driver 'Chris Amon' (amon) posible match parcial por apellido con {'AMO'} -- revisar a mano, NO auto-asignado",
+    "driver 'Bill Aston' (aston) posible match parcial por apellido con {'GMZ'} -- revisar a mano, NO auto-asignado",
+    "driver 'Derek Bell' (bell) posible match parcial por apellido con {'BEL'} -- revisar a mano, NO auto-asignado",
+    "driver 'Dempsey Wilson' (dempsey_wilson) posible match parcial por apellido con {'DWI'} -- revisar a mano, NO auto-asignado",
+    "driver 'Duncan Hamilton' (duncan_hamilton) posible match parcial por apellido con {'HAM'} -- revisar a mano, NO auto-asignado",
+    "driver 'Elmer George' (george) posible match parcial por apellido con {'RUS'} -- revisar a mano, NO auto-asignado",
+    "driver 'Georges Berger' (georges_berger) posible match parcial por apellido con {'BER'} -- revisar a mano, NO auto-asignado",
+    "driver 'Ian Scheckter' (ian_scheckter) posible match parcial por apellido con {'SCK'} -- revisar a mano, NO auto-asignado",
+    "driver 'Jack Brabham' (jack_brabham) posible match parcial por apellido con {'DBM'} -- revisar a mano, NO auto-asignado",
+    "driver 'Max Jean' (jean) posible match parcial por apellido con {'ALE', 'JBL', 'JAR', 'JVR', 'JLS', 'JPJ'} -- revisar a mano, NO auto-asignado",
+    "driver 'Jo Schlesser' (jo_schlesser) posible match parcial por apellido con {'JLS'} -- revisar a mano, NO auto-asignado",
+    "driver 'Hermann Lang' (lang) posible match parcial por apellido con {'MGA'} -- revisar a mano, NO auto-asignado",
+    "driver 'Jackie Lewis' (lewis) posible match parcial por apellido con {'HAM'} -- revisar a mano, NO auto-asignado",
+    "driver 'Eugène Martin' (martin) posible match parcial por apellido con {'DON', 'BRU', 'PMT'} -- revisar a mano, NO auto-asignado",
+    "driver 'Jackie Oliver' (oliver) posible match parcial por apellido con {'BEA'} -- revisar a mano, NO auto-asignado",
+    "driver 'Torsten Palm' (palm) posible match parcial por apellido con {'PAL'} -- revisar a mano, NO auto-asignado",
+    "driver 'Franco Rol' (rol) posible match parcial por apellido con {'STR'} -- revisar a mano, NO auto-asignado",
+    "driver 'Peter Ryan' (ryan) posible match parcial por apellido con {'RHA'} -- revisar a mano, NO auto-asignado",
+    "driver 'Vic Wilson' (vic_wilson) posible match parcial por apellido con {'DWI'} -- revisar a mano, NO auto-asignado",
+    "driver 'Wilson Fittipaldi' (wilson_fittipaldi) posible match parcial por apellido con {'FIT', 'PFT'} -- revisar a mano, NO auto-asignado"
+  ],
+  "drivers": {
+    "farina": {
+      "code": "FAR",
+      "name": "Nino Farina",
+      "continuity": false,
+      "dob": "1906-10-30",
+      "nationality": "Italian",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955
+      ]
+    },
+    "fagioli": {
+      "code": "FAG",
+      "name": "Luigi Fagioli",
+      "continuity": false,
+      "dob": "1898-06-09",
+      "nationality": "Italian",
+      "years": [
+        1950,
+        1951
+      ]
+    },
+    "reg_parnell": {
+      "code": "PNE",
+      "name": "Reg Parnell",
+      "continuity": false,
+      "dob": "1911-07-02",
+      "nationality": "British",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1954
+      ]
+    },
+    "cabantous": {
+      "code": "CAB",
+      "name": "Yves Cabantous",
+      "continuity": false,
+      "dob": "1904-10-08",
+      "nationality": "French",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953
+      ]
+    },
+    "rosier": {
+      "code": "RSI",
+      "name": "Louis Rosier",
+      "continuity": false,
+      "dob": "1905-11-05",
+      "nationality": "French",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956
+      ]
+    },
+    "gerard": {
+      "code": "GER",
+      "name": "Bob Gerard",
+      "continuity": false,
+      "dob": "1914-01-19",
+      "nationality": "British",
+      "years": [
+        1950,
+        1951,
+        1953,
+        1954,
+        1956,
+        1957
+      ]
+    },
+    "harrison": {
+      "code": "HRI",
+      "name": "Cuth Harrison",
+      "continuity": false,
+      "dob": "1906-07-06",
+      "nationality": "British",
+      "years": [
+        1950
+      ]
+    },
+    "etancelin": {
+      "code": "ETA",
+      "name": "Philippe Étancelin",
+      "continuity": false,
+      "dob": "1896-12-28",
+      "nationality": "French",
+      "years": [
+        1950,
+        1951,
+        1952
+      ]
+    },
+    "hampshire": {
+      "code": "HMP",
+      "name": "David Hampshire",
+      "continuity": false,
+      "dob": "1917-12-29",
+      "nationality": "British",
+      "years": [
+        1950
+      ]
+    },
+    "fry": {
+      "code": "FRY",
+      "name": "Joe Fry",
+      "continuity": false,
+      "dob": "1915-10-26",
+      "nationality": "British",
+      "years": [
+        1950
+      ]
+    },
+    "shawe_taylor": {
+      "code": "SAW",
+      "name": "Brian Shawe Taylor",
+      "continuity": false,
+      "dob": "1915-01-28",
+      "nationality": "British",
+      "years": [
+        1950,
+        1951
+      ]
+    },
+    "claes": {
+      "code": "CLA",
+      "name": "Johnny Claes",
+      "continuity": false,
+      "dob": "1916-08-11",
+      "nationality": "Belgian",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1955
+      ]
+    },
+    "fangio": {
+      "code": "FAN",
+      "name": "Juan Fangio",
+      "continuity": false,
+      "dob": "1911-06-24",
+      "nationality": "Argentine",
+      "years": [
+        1950,
+        1951,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958
+      ]
+    },
+    "kelly": {
+      "code": "KLL",
+      "name": "Joe Kelly",
+      "continuity": false,
+      "dob": "1913-03-13",
+      "nationality": "Irish",
+      "years": [
+        1950,
+        1951
+      ]
+    },
+    "bira": {
+      "code": "BIR",
+      "name": "Prince Bira",
+      "continuity": false,
+      "dob": "1914-07-15",
+      "nationality": "Thai",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954
+      ]
+    },
+    "murray": {
+      "code": "MUR",
+      "name": "David Murray",
+      "continuity": false,
+      "dob": "1909-12-28",
+      "nationality": "British",
+      "years": [
+        1950,
+        1951,
+        1952
+      ]
+    },
+    "crossley": {
+      "code": "CSL",
+      "name": "Geoff Crossley",
+      "continuity": false,
+      "dob": "1921-05-11",
+      "nationality": "British",
+      "years": [
+        1950
+      ]
+    },
+    "graffenried": {
+      "code": "DEG",
+      "name": "Toulo de Graffenried",
+      "continuity": false,
+      "dob": "1914-05-18",
+      "nationality": "Swiss",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1956
+      ]
+    },
+    "chiron": {
+      "code": "CIR",
+      "name": "Louis Chiron",
+      "continuity": false,
+      "dob": "1899-08-03",
+      "nationality": "Monegasque",
+      "years": [
+        1950,
+        1951,
+        1953,
+        1955,
+        1956
+      ]
+    },
+    "martin": {
+      "code": "MRT",
+      "name": "Eugène Martin",
+      "continuity": false,
+      "dob": "1915-03-24",
+      "nationality": "French",
+      "years": [
+        1950
+      ]
+    },
+    "rolt": {
+      "code": "RLT",
+      "name": "Tony Rolt",
+      "continuity": false,
+      "dob": "1918-10-16",
+      "nationality": "British",
+      "years": [
+        1950,
+        1953,
+        1955
+      ]
+    },
+    "peter_walker": {
+      "code": "WAL",
+      "name": "Peter Walker",
+      "continuity": false,
+      "dob": "1912-10-07",
+      "nationality": "British",
+      "years": [
+        1950,
+        1951,
+        1955
+      ]
+    },
+    "leslie_johnson": {
+      "code": "JSO",
+      "name": "Leslie Johnson",
+      "continuity": false,
+      "dob": "1912-03-22",
+      "nationality": "British",
+      "years": [
+        1950
+      ]
+    },
+    "ascari": {
+      "code": "ASC",
+      "name": "Alberto Ascari",
+      "continuity": false,
+      "dob": "1918-07-13",
+      "nationality": "Italian",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955
+      ]
+    },
+    "sommer": {
+      "code": "SOM",
+      "name": "Raymond Sommer",
+      "continuity": false,
+      "dob": "1906-08-31",
+      "nationality": "French",
+      "years": [
+        1950
+      ]
+    },
+    "villoresi": {
+      "code": "VLL",
+      "name": "Luigi Villoresi",
+      "continuity": false,
+      "dob": "1909-05-16",
+      "nationality": "Italian",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956
+      ]
+    },
+    "gonzalez": {
+      "code": "GON",
+      "name": "José Froilán González",
+      "continuity": false,
+      "dob": "1922-10-05",
+      "nationality": "Argentine",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1960
+      ]
+    },
+    "manzon": {
+      "code": "MNZ",
+      "name": "Robert Manzon",
+      "continuity": false,
+      "dob": "1917-04-12",
+      "nationality": "French",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956
+      ]
+    },
+    "trintignant": {
+      "code": "TRI",
+      "name": "Maurice Trintignant",
+      "continuity": false,
+      "dob": "1917-10-30",
+      "nationality": "French",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964
+      ]
+    },
+    "rol": {
+      "code": "ROL",
+      "name": "Franco Rol",
+      "continuity": false,
+      "dob": "1908-06-05",
+      "nationality": "Italian",
+      "years": [
+        1950,
+        1951,
+        1952
+      ]
+    },
+    "schell": {
+      "code": "SEL",
+      "name": "Harry Schell",
+      "continuity": false,
+      "dob": "1921-06-29",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "whitehead": {
+      "code": "WIT",
+      "name": "Peter Whitehead",
+      "continuity": false,
+      "dob": "1914-11-12",
+      "nationality": "British",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954
+      ]
+    },
+    "pian": {
+      "code": "ALP",
+      "name": "Alfredo Pián",
+      "continuity": false,
+      "dob": "1912-10-21",
+      "nationality": "Argentine",
+      "years": [
+        1950
+      ]
+    },
+    "parsons": {
+      "code": "PRS",
+      "name": "Johnnie Parsons",
+      "continuity": false,
+      "dob": "1918-07-04",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958
+      ]
+    },
+    "holland": {
+      "code": "HOL",
+      "name": "Bill Holland",
+      "continuity": false,
+      "dob": "1907-12-18",
+      "nationality": "American",
+      "years": [
+        1950,
+        1953
+      ]
+    },
+    "rose": {
+      "code": "RSE",
+      "name": "Mauri Rose",
+      "continuity": false,
+      "dob": "1906-05-26",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951
+      ]
+    },
+    "green": {
+      "code": "GRE",
+      "name": "Cecil Green",
+      "continuity": false,
+      "dob": "1919-09-30",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951
+      ]
+    },
+    "bettenhausen": {
+      "code": "BET",
+      "name": "Tony Bettenhausen",
+      "continuity": false,
+      "dob": "1916-09-12",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "chitwood": {
+      "code": "CIT",
+      "name": "Joie Chitwood",
+      "continuity": false,
+      "dob": "1912-04-14",
+      "nationality": "American",
+      "years": [
+        1950
+      ]
+    },
+    "wallard": {
+      "code": "WLL",
+      "name": "Lee Wallard",
+      "continuity": false,
+      "dob": "1910-09-07",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951
+      ]
+    },
+    "faulkner": {
+      "code": "FAU",
+      "name": "Walt Faulkner",
+      "continuity": false,
+      "dob": "1920-02-16",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1953,
+        1954,
+        1955
+      ]
+    },
+    "george_connor": {
+      "code": "CNN",
+      "name": "George Connor",
+      "continuity": false,
+      "dob": "1906-08-16",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1952
+      ]
+    },
+    "paul_russo": {
+      "code": "PRU",
+      "name": "Paul Russo",
+      "continuity": false,
+      "dob": "1914-04-10",
+      "nationality": "American",
+      "years": [
+        1950,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959
+      ]
+    },
+    "flaherty": {
+      "code": "FLA",
+      "name": "Pat Flaherty",
+      "continuity": false,
+      "dob": "1926-01-06",
+      "nationality": "American",
+      "years": [
+        1950,
+        1953,
+        1954,
+        1955,
+        1956,
+        1959
+      ]
+    },
+    "fohr": {
+      "code": "FOH",
+      "name": "Myron Fohr",
+      "continuity": false,
+      "dob": "1912-06-17",
+      "nationality": "American",
+      "years": [
+        1950
+      ]
+    },
+    "darter": {
+      "code": "CRT",
+      "name": "Duane Carter",
+      "continuity": false,
+      "dob": "1913-05-05",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1959,
+        1960
+      ]
+    },
+    "hellings": {
+      "code": "HLI",
+      "name": "Mack Hellings",
+      "continuity": false,
+      "dob": "1915-09-14",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951
+      ]
+    },
+    "mcgrath": {
+      "code": "MCG",
+      "name": "Jack McGrath",
+      "continuity": false,
+      "dob": "1919-10-08",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955
+      ]
+    },
+    "ruttman": {
+      "code": "RUT",
+      "name": "Troy Ruttman",
+      "continuity": false,
+      "dob": "1930-03-11",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1954,
+        1956,
+        1957,
+        1958,
+        1960
+      ]
+    },
+    "hartley": {
+      "code": "HTL",
+      "name": "Gene Hartley",
+      "continuity": false,
+      "dob": "1926-01-28",
+      "nationality": "American",
+      "years": [
+        1950,
+        1952,
+        1953,
+        1954,
+        1956,
+        1957,
+        1959,
+        1960
+      ]
+    },
+    "davies": {
+      "code": "DVI",
+      "name": "Jimmy Davies",
+      "continuity": false,
+      "dob": "1929-08-08",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1953,
+        1954,
+        1955
+      ]
+    },
+    "mcdowell": {
+      "code": "MCD",
+      "name": "Johnny McDowell",
+      "continuity": false,
+      "dob": "1915-01-29",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1952
+      ]
+    },
+    "walt_brown": {
+      "code": "BWN",
+      "name": "Walt Brown",
+      "continuity": false,
+      "dob": "1911-12-30",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951
+      ]
+    },
+    "webb": {
+      "code": "WBB",
+      "name": "Travis Webb",
+      "continuity": false,
+      "dob": "1910-10-08",
+      "nationality": "American",
+      "years": [
+        1950,
+        1952,
+        1953,
+        1954
+      ]
+    },
+    "hoyt": {
+      "code": "HOY",
+      "name": "Jerry Hoyt",
+      "continuity": false,
+      "dob": "1929-01-29",
+      "nationality": "American",
+      "years": [
+        1950,
+        1953,
+        1954,
+        1955
+      ]
+    },
+    "ader": {
+      "code": "ADE",
+      "name": "Walt Ader",
+      "continuity": false,
+      "dob": "1913-12-15",
+      "nationality": "American",
+      "years": [
+        1950
+      ]
+    },
+    "holmes": {
+      "code": "HLM",
+      "name": "Jackie Holmes",
+      "continuity": false,
+      "dob": "1920-09-04",
+      "nationality": "American",
+      "years": [
+        1950,
+        1953
+      ]
+    },
+    "rathmann": {
+      "code": "RHM",
+      "name": "Jim Rathmann",
+      "continuity": false,
+      "dob": "1928-07-16",
+      "nationality": "American",
+      "years": [
+        1950,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "banks": {
+      "code": "BNK",
+      "name": "Henry Banks",
+      "continuity": false,
+      "dob": "1913-06-14",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1952
+      ]
+    },
+    "schindler": {
+      "code": "SIN",
+      "name": "Bill Schindler",
+      "continuity": false,
+      "dob": "1909-03-06",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1952
+      ]
+    },
+    "levrett": {
+      "code": "LVR",
+      "name": "Bayliss Levrett",
+      "continuity": false,
+      "dob": "1914-02-14",
+      "nationality": "American",
+      "years": [
+        1950
+      ]
+    },
+    "cantrell": {
+      "code": "CTR",
+      "name": "Bill Cantrell",
+      "continuity": false,
+      "dob": "1908-01-31",
+      "nationality": "American",
+      "years": [
+        1950
+      ]
+    },
+    "agabashian": {
+      "code": "AGA",
+      "name": "Fred Agabashian",
+      "continuity": false,
+      "dob": "1913-08-21",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957
+      ]
+    },
+    "jackson": {
+      "code": "JAC",
+      "name": "Jimmy Jackson",
+      "continuity": false,
+      "dob": "1910-07-25",
+      "nationality": "American",
+      "years": [
+        1950,
+        1954
+      ]
+    },
+    "hanks": {
+      "code": "HAN",
+      "name": "Sam Hanks",
+      "continuity": false,
+      "dob": "1914-07-13",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957
+      ]
+    },
+    "dick_rathmann": {
+      "code": "RTH",
+      "name": "Dick Rathmann",
+      "continuity": false,
+      "dob": "1924-01-06",
+      "nationality": "American",
+      "years": [
+        1950,
+        1956,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "dinsmore": {
+      "code": "DNS",
+      "name": "Duke Dinsmore",
+      "continuity": false,
+      "dob": "1913-04-10",
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1953,
+        1956
+      ]
+    },
+    "bonetto": {
+      "code": "BNE",
+      "name": "Felice Bonetto",
+      "continuity": false,
+      "dob": "1903-06-09",
+      "nationality": "Italian",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953
+      ]
+    },
+    "pagani": {
+      "code": "PAG",
+      "name": "Nello Pagani",
+      "continuity": false,
+      "dob": "1911-10-11",
+      "nationality": "Italian",
+      "years": [
+        1950
+      ]
+    },
+    "branca": {
+      "code": "BCA",
+      "name": "Toni Branca",
+      "continuity": false,
+      "dob": "1916-09-15",
+      "nationality": "Swiss",
+      "years": [
+        1950,
+        1951
+      ]
+    },
+    "levegh": {
+      "code": "LEV",
+      "name": "Pierre Levegh",
+      "continuity": false,
+      "dob": "1905-12-22",
+      "nationality": "French",
+      "years": [
+        1950,
+        1951
+      ]
+    },
+    "chaboud": {
+      "code": "CBO",
+      "name": "Eugène Chaboud",
+      "continuity": false,
+      "dob": "1907-04-12",
+      "nationality": "French",
+      "years": [
+        1950,
+        1951
+      ]
+    },
+    "pozzi": {
+      "code": "POZ",
+      "name": "Charles Pozzi",
+      "continuity": false,
+      "dob": "1909-08-27",
+      "nationality": "French",
+      "years": [
+        1950
+      ]
+    },
+    "serafini": {
+      "code": "SRA",
+      "name": "Dorino Serafini",
+      "continuity": false,
+      "dob": "1909-07-22",
+      "nationality": "Italian",
+      "years": [
+        1950
+      ]
+    },
+    "guy_mairesse": {
+      "code": "MAI",
+      "name": "Guy Mairesse",
+      "continuity": false,
+      "dob": "1910-08-10",
+      "nationality": "French",
+      "years": [
+        1950,
+        1951
+      ]
+    },
+    "taruffi": {
+      "code": "TUF",
+      "name": "Piero Taruffi",
+      "continuity": false,
+      "dob": "1906-10-12",
+      "nationality": "Italian",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1954,
+        1955,
+        1956
+      ]
+    },
+    "biondetti": {
+      "code": "BIO",
+      "name": "Clemente Biondetti",
+      "continuity": false,
+      "dob": "1898-08-18",
+      "nationality": "Italian",
+      "years": [
+        1950
+      ]
+    },
+    "louveau": {
+      "code": "LOU",
+      "name": "Henri Louveau",
+      "continuity": false,
+      "dob": "1910-01-25",
+      "nationality": "French",
+      "years": [
+        1950,
+        1951
+      ]
+    },
+    "comotti": {
+      "code": "CMO",
+      "name": "Franco Comotti",
+      "continuity": false,
+      "dob": "1906-07-24",
+      "nationality": "Italian",
+      "years": [
+        1950,
+        1952
+      ]
+    },
+    "sanesi": {
+      "code": "SAN",
+      "name": "Consalvo Sanesi",
+      "continuity": false,
+      "dob": "1911-03-28",
+      "nationality": "Italian",
+      "years": [
+        1950,
+        1951
+      ]
+    },
+    "pietsch": {
+      "code": "PTS",
+      "name": "Paul Pietsch",
+      "continuity": false,
+      "dob": "1911-06-20",
+      "nationality": "German",
+      "years": [
+        1950,
+        1951,
+        1952
+      ]
+    },
+    "moss": {
+      "code": "MSS",
+      "name": "Stirling Moss",
+      "continuity": false,
+      "dob": "1929-09-17",
+      "nationality": "British",
+      "years": [
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960,
+        1961
+      ]
+    },
+    "fischer": {
+      "code": "FSC",
+      "name": "Rudi Fischer",
+      "continuity": false,
+      "dob": "1912-04-19",
+      "nationality": "Swiss",
+      "years": [
+        1951,
+        1952
+      ]
+    },
+    "abecassis": {
+      "code": "ABE",
+      "name": "George Abecassis",
+      "continuity": false,
+      "dob": "1913-03-21",
+      "nationality": "British",
+      "years": [
+        1951,
+        1952
+      ]
+    },
+    "hirt": {
+      "code": "HIR",
+      "name": "Peter Hirt",
+      "continuity": false,
+      "dob": "1910-03-30",
+      "nationality": "Swiss",
+      "years": [
+        1951,
+        1952,
+        1953
+      ]
+    },
+    "nazaruk": {
+      "code": "NAZ",
+      "name": "Mike Nazaruk",
+      "continuity": false,
+      "dob": "1921-10-02",
+      "nationality": "American",
+      "years": [
+        1951,
+        1953,
+        1954
+      ]
+    },
+    "ayulo": {
+      "code": "AYU",
+      "name": "Manny Ayulo",
+      "continuity": false,
+      "dob": "1921-10-20",
+      "nationality": "American",
+      "years": [
+        1951,
+        1952,
+        1953,
+        1954
+      ]
+    },
+    "linden": {
+      "code": "LDE",
+      "name": "Andy Linden",
+      "continuity": false,
+      "dob": "1922-04-05",
+      "nationality": "American",
+      "years": [
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957
+      ]
+    },
+    "ball": {
+      "code": "BAL",
+      "name": "Bobby Ball",
+      "continuity": false,
+      "dob": "1925-08-26",
+      "nationality": "American",
+      "years": [
+        1951,
+        1952
+      ]
+    },
+    "forberg": {
+      "code": "FOR",
+      "name": "Carl Forberg",
+      "continuity": false,
+      "dob": "1911-03-04",
+      "nationality": "American",
+      "years": [
+        1951
+      ]
+    },
+    "nalon": {
+      "code": "NAL",
+      "name": "Duke Nalon",
+      "continuity": false,
+      "dob": "1913-03-02",
+      "nationality": "American",
+      "years": [
+        1951,
+        1952,
+        1953
+      ]
+    },
+    "force": {
+      "code": "FRC",
+      "name": "Gene Force",
+      "continuity": false,
+      "dob": "1916-06-15",
+      "nationality": "American",
+      "years": [
+        1951,
+        1960
+      ]
+    },
+    "scarborough": {
+      "code": "SCA",
+      "name": "Carl Scarborough",
+      "continuity": false,
+      "dob": "1914-07-03",
+      "nationality": "American",
+      "years": [
+        1951,
+        1953
+      ]
+    },
+    "mackey": {
+      "code": "MKE",
+      "name": "Bill Mackey",
+      "continuity": false,
+      "dob": "1927-12-15",
+      "nationality": "American",
+      "years": [
+        1951
+      ]
+    },
+    "stevenson": {
+      "code": "SEV",
+      "name": "Chuck Stevenson",
+      "continuity": false,
+      "dob": "1919-10-15",
+      "nationality": "American",
+      "years": [
+        1951,
+        1952,
+        1953,
+        1954,
+        1960
+      ]
+    },
+    "miller": {
+      "code": "MLL",
+      "name": "Chet Miller",
+      "continuity": false,
+      "dob": "1902-07-19",
+      "nationality": "American",
+      "years": [
+        1951,
+        1952
+      ]
+    },
+    "ward": {
+      "code": "WRD",
+      "name": "Rodger Ward",
+      "continuity": false,
+      "dob": "1921-01-10",
+      "nationality": "American",
+      "years": [
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960,
+        1963
+      ]
+    },
+    "griffith": {
+      "code": "GIF",
+      "name": "Cliff Griffith",
+      "continuity": false,
+      "dob": "1916-02-06",
+      "nationality": "American",
+      "years": [
+        1951,
+        1952,
+        1956
+      ]
+    },
+    "vukovich": {
+      "code": "VUK",
+      "name": "Bill Vukovich",
+      "continuity": false,
+      "dob": "1918-12-13",
+      "nationality": "American",
+      "years": [
+        1951,
+        1952,
+        1953,
+        1954,
+        1955
+      ]
+    },
+    "james": {
+      "code": "JAM",
+      "name": "Joe James",
+      "continuity": false,
+      "dob": "1925-05-23",
+      "nationality": "American",
+      "years": [
+        1951,
+        1952
+      ]
+    },
+    "andre_pilette": {
+      "code": "PIL",
+      "name": "André Pilette",
+      "continuity": false,
+      "dob": "1918-10-06",
+      "nationality": "Belgian",
+      "years": [
+        1951,
+        1953,
+        1954,
+        1956,
+        1964
+      ]
+    },
+    "gordini": {
+      "code": "GOR",
+      "name": "Aldo Gordini",
+      "continuity": false,
+      "dob": "1921-05-20",
+      "nationality": "French",
+      "years": [
+        1951
+      ]
+    },
+    "simon": {
+      "code": "SIM",
+      "name": "André Simon",
+      "continuity": false,
+      "dob": "1920-01-05",
+      "nationality": "French",
+      "years": [
+        1951,
+        1952,
+        1955,
+        1956,
+        1957
+      ]
+    },
+    "marimon": {
+      "code": "MRI",
+      "name": "Onofre Marimón",
+      "continuity": false,
+      "dob": "1923-12-19",
+      "nationality": "Argentine",
+      "years": [
+        1951,
+        1953,
+        1954
+      ]
+    },
+    "duncan_hamilton": {
+      "code": "HMI",
+      "name": "Duncan Hamilton",
+      "continuity": false,
+      "dob": "1920-04-30",
+      "nationality": "British",
+      "years": [
+        1951,
+        1952,
+        1953
+      ]
+    },
+    "parker": {
+      "code": "FOT",
+      "name": "Philip Fotheringham-Parker",
+      "continuity": false,
+      "dob": "1907-09-22",
+      "nationality": "British",
+      "years": [
+        1951
+      ]
+    },
+    "john_james": {
+      "code": "JME",
+      "name": "John James",
+      "continuity": false,
+      "dob": "1914-05-10",
+      "nationality": "British",
+      "years": [
+        1951
+      ]
+    },
+    "swaters": {
+      "code": "SRS",
+      "name": "Jacques Swaters",
+      "continuity": false,
+      "dob": "1926-10-30",
+      "nationality": "American",
+      "years": [
+        1951,
+        1953,
+        1954
+      ]
+    },
+    "landi": {
+      "code": "LND",
+      "name": "Chico Landi",
+      "continuity": false,
+      "dob": "1907-07-14",
+      "nationality": "Brazilian",
+      "years": [
+        1951,
+        1952,
+        1953,
+        1956
+      ]
+    },
+    "richardson": {
+      "code": "RCH",
+      "name": "Ken Richardson",
+      "continuity": false,
+      "dob": "1911-08-21",
+      "nationality": "British",
+      "years": [
+        1951
+      ]
+    },
+    "godia": {
+      "code": "GOD",
+      "name": "Paco Godia",
+      "continuity": false,
+      "dob": "1921-03-21",
+      "nationality": "Spanish",
+      "years": [
+        1951,
+        1954,
+        1956,
+        1957,
+        1958
+      ]
+    },
+    "grignard": {
+      "code": "GIG",
+      "name": "Georges Grignard",
+      "continuity": false,
+      "dob": "1905-07-25",
+      "nationality": "French",
+      "years": [
+        1951
+      ]
+    },
+    "jover": {
+      "code": "JOV",
+      "name": "Juan Jover",
+      "continuity": false,
+      "dob": "1903-11-23",
+      "nationality": "Spanish",
+      "years": [
+        1951
+      ]
+    },
+    "behra": {
+      "code": "BEH",
+      "name": "Jean Behra",
+      "continuity": false,
+      "dob": "1921-02-16",
+      "nationality": "French",
+      "years": [
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959
+      ]
+    },
+    "wharton": {
+      "code": "WHA",
+      "name": "Ken Wharton",
+      "continuity": false,
+      "dob": "1916-03-21",
+      "nationality": "British",
+      "years": [
+        1952,
+        1953,
+        1954,
+        1955
+      ]
+    },
+    "alan_brown": {
+      "code": "BRO",
+      "name": "Alan Brown",
+      "continuity": false,
+      "dob": "1919-11-20",
+      "nationality": "British",
+      "years": [
+        1952,
+        1953,
+        1954
+      ]
+    },
+    "brandon": {
+      "code": "BND",
+      "name": "Eric Brandon",
+      "continuity": false,
+      "dob": "1920-07-18",
+      "nationality": "British",
+      "years": [
+        1952,
+        1954
+      ]
+    },
+    "macklin": {
+      "code": "MKL",
+      "name": "Lance Macklin",
+      "continuity": false,
+      "dob": "1919-09-02",
+      "nationality": "British",
+      "years": [
+        1952,
+        1953,
+        1954,
+        1955
+      ]
+    },
+    "collins": {
+      "code": "CLL",
+      "name": "Peter Collins",
+      "continuity": false,
+      "dob": "1931-11-06",
+      "nationality": "British",
+      "years": [
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958
+      ]
+    },
+    "hans_stuck": {
+      "code": "VON",
+      "name": "Hans von Stuck",
+      "continuity": false,
+      "dob": "1900-12-27",
+      "nationality": "German",
+      "years": [
+        1952,
+        1953
+      ]
+    },
+    "ulmen": {
+      "code": "ULM",
+      "name": "Toni Ulmen",
+      "continuity": false,
+      "dob": "1906-01-25",
+      "nationality": "German",
+      "years": [
+        1952
+      ]
+    },
+    "terra": {
+      "code": "DET",
+      "name": "Max de Terra",
+      "continuity": false,
+      "dob": "1918-10-06",
+      "nationality": "Swiss",
+      "years": [
+        1952,
+        1953
+      ]
+    },
+    "cross": {
+      "code": "COS",
+      "name": "Art Cross",
+      "continuity": false,
+      "dob": "1918-01-24",
+      "nationality": "American",
+      "years": [
+        1952,
+        1953,
+        1954,
+        1955
+      ]
+    },
+    "bryan": {
+      "code": "BRY",
+      "name": "Jimmy Bryan",
+      "continuity": false,
+      "dob": "1926-01-28",
+      "nationality": "American",
+      "years": [
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "reece": {
+      "code": "REE",
+      "name": "Jimmy Reece",
+      "continuity": false,
+      "dob": "1929-11-17",
+      "nationality": "American",
+      "years": [
+        1952,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958
+      ]
+    },
+    "rigsby": {
+      "code": "RIG",
+      "name": "Jim Rigsby",
+      "continuity": false,
+      "dob": "1923-06-06",
+      "nationality": "American",
+      "years": [
+        1952
+      ]
+    },
+    "fonder": {
+      "code": "FND",
+      "name": "George Fonder",
+      "continuity": false,
+      "dob": "1917-06-22",
+      "nationality": "American",
+      "years": [
+        1952,
+        1954
+      ]
+    },
+    "johnson": {
+      "code": "JHN",
+      "name": "Eddie Johnson",
+      "continuity": false,
+      "dob": "1919-02-10",
+      "nationality": "American",
+      "years": [
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "sweikert": {
+      "code": "SWE",
+      "name": "Bob Sweikert",
+      "continuity": false,
+      "dob": "1926-05-20",
+      "nationality": "American",
+      "years": [
+        1952,
+        1953,
+        1954,
+        1955,
+        1956
+      ]
+    },
+    "bob_scott": {
+      "code": "SCO",
+      "name": "Bob Scott",
+      "continuity": false,
+      "dob": "1928-10-04",
+      "nationality": "American",
+      "years": [
+        1952,
+        1953,
+        1954
+      ]
+    },
+    "hawthorn": {
+      "code": "HWT",
+      "name": "Mike Hawthorn",
+      "continuity": false,
+      "dob": "1929-04-10",
+      "nationality": "British",
+      "years": [
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958
+      ]
+    },
+    "frere": {
+      "code": "FER",
+      "name": "Paul Frère",
+      "continuity": false,
+      "dob": "1917-01-30",
+      "nationality": "Belgian",
+      "years": [
+        1952,
+        1953,
+        1954,
+        1955,
+        1956
+      ]
+    },
+    "tornaco": {
+      "code": "DRN",
+      "name": "Charles de Tornaco",
+      "continuity": false,
+      "dob": "1927-06-07",
+      "nationality": "Belgian",
+      "years": [
+        1952
+      ]
+    },
+    "laurent": {
+      "code": "LUR",
+      "name": "Roger Laurent",
+      "continuity": false,
+      "dob": "1913-02-21",
+      "nationality": "Belgian",
+      "years": [
+        1952
+      ]
+    },
+    "legat": {
+      "code": "LEG",
+      "name": "Arthur Legat",
+      "continuity": false,
+      "dob": "1898-11-01",
+      "nationality": "Belgian",
+      "years": [
+        1952,
+        1953
+      ]
+    },
+    "obrien": {
+      "code": "OBR",
+      "name": "Robert O'Brien",
+      "continuity": false,
+      "dob": "1908-04-11",
+      "nationality": "American",
+      "years": [
+        1952
+      ]
+    },
+    "gaze": {
+      "code": "GAZ",
+      "name": "Tony Gaze",
+      "continuity": false,
+      "dob": "1920-02-03",
+      "nationality": "Australian",
+      "years": [
+        1952
+      ]
+    },
+    "charrington": {
+      "code": "MNT",
+      "name": "Robin Montgomerie-Charrington",
+      "continuity": false,
+      "dob": "1915-06-23",
+      "nationality": "British",
+      "years": [
+        1952
+      ]
+    },
+    "carini": {
+      "code": "CAR",
+      "name": "Piero Carini",
+      "continuity": false,
+      "dob": "1921-03-06",
+      "nationality": "Italian",
+      "years": [
+        1952,
+        1953
+      ]
+    },
+    "poore": {
+      "code": "POO",
+      "name": "Dennis Poore",
+      "continuity": false,
+      "dob": "1916-08-19",
+      "nationality": "British",
+      "years": [
+        1952
+      ]
+    },
+    "thompson": {
+      "code": "THO",
+      "name": "Eric Thompson",
+      "continuity": false,
+      "dob": "1919-11-04",
+      "nationality": "British",
+      "years": [
+        1952
+      ]
+    },
+    "salvadori": {
+      "code": "SLV",
+      "name": "Roy Salvadori",
+      "continuity": false,
+      "dob": "1922-05-12",
+      "nationality": "British",
+      "years": [
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960,
+        1961,
+        1962
+      ]
+    },
+    "downing": {
+      "code": "DOW",
+      "name": "Ken Downing",
+      "continuity": false,
+      "dob": "1917-12-05",
+      "nationality": "British",
+      "years": [
+        1952
+      ]
+    },
+    "graham_whitehead": {
+      "code": "WHI",
+      "name": "Graham Whitehead",
+      "continuity": false,
+      "dob": "1922-04-15",
+      "nationality": "British",
+      "years": [
+        1952
+      ]
+    },
+    "mcalpine": {
+      "code": "MCA",
+      "name": "Kenneth McAlpine",
+      "continuity": false,
+      "dob": "1920-09-21",
+      "nationality": "British",
+      "years": [
+        1952,
+        1953,
+        1955
+      ]
+    },
+    "bianco": {
+      "code": "BCO",
+      "name": "Gino Bianco",
+      "continuity": false,
+      "dob": "1916-07-22",
+      "nationality": "Brazilian",
+      "years": [
+        1952
+      ]
+    },
+    "crook": {
+      "code": "COO",
+      "name": "Tony Crook",
+      "continuity": false,
+      "dob": "1920-02-16",
+      "nationality": "British",
+      "years": [
+        1952,
+        1953
+      ]
+    },
+    "cantoni": {
+      "code": "CNT",
+      "name": "Eitel Cantoni",
+      "continuity": false,
+      "dob": "1906-10-04",
+      "nationality": "Uruguayan",
+      "years": [
+        1952
+      ]
+    },
+    "aston": {
+      "code": "AST",
+      "name": "Bill Aston",
+      "continuity": false,
+      "dob": "1900-03-29",
+      "nationality": "British",
+      "years": [
+        1952
+      ]
+    },
+    "riess": {
+      "code": "RIE",
+      "name": "Fritz Riess",
+      "continuity": false,
+      "dob": "1922-07-11",
+      "nationality": "German",
+      "years": [
+        1952
+      ]
+    },
+    "niedermayr": {
+      "code": "NIE",
+      "name": "Helmut Niedermayr",
+      "continuity": false,
+      "dob": "1915-11-29",
+      "nationality": "German",
+      "years": [
+        1952
+      ]
+    },
+    "klenk": {
+      "code": "KLE",
+      "name": "Hans Klenk",
+      "continuity": false,
+      "dob": "1919-10-28",
+      "nationality": "German",
+      "years": [
+        1952
+      ]
+    },
+    "klodwig": {
+      "code": "KLO",
+      "name": "Ernst Klodwig",
+      "continuity": false,
+      "dob": "1903-05-23",
+      "nationality": "East German",
+      "years": [
+        1952,
+        1953
+      ]
+    },
+    "heeks": {
+      "code": "HEE",
+      "name": "Willi Heeks",
+      "continuity": false,
+      "dob": "1922-02-13",
+      "nationality": "German",
+      "years": [
+        1952,
+        1953
+      ]
+    },
+    "brudes": {
+      "code": "BUD",
+      "name": "Adolf Brudes",
+      "continuity": false,
+      "dob": "1899-10-15",
+      "nationality": "German",
+      "years": [
+        1952
+      ]
+    },
+    "balsa": {
+      "code": "BLS",
+      "name": "Marcel Balsa",
+      "continuity": false,
+      "dob": "1909-01-01",
+      "nationality": "French",
+      "years": [
+        1952
+      ]
+    },
+    "bechem": {
+      "code": "BEC",
+      "name": "Günther Bechem",
+      "continuity": false,
+      "dob": "1921-12-21",
+      "nationality": "German",
+      "years": [
+        1952,
+        1953
+      ]
+    },
+    "krause": {
+      "code": "KRA",
+      "name": "Rudolf Krause",
+      "continuity": false,
+      "dob": "1907-03-30",
+      "nationality": "East German",
+      "years": [
+        1952,
+        1953
+      ]
+    },
+    "schoeller": {
+      "code": "SHO",
+      "name": "Rudolf Schoeller",
+      "continuity": false,
+      "dob": "1902-04-27",
+      "nationality": "Swiss",
+      "years": [
+        1952
+      ]
+    },
+    "helfrich": {
+      "code": "HEL",
+      "name": "Theo Helfrich",
+      "continuity": false,
+      "dob": "1913-05-13",
+      "nationality": "German",
+      "years": [
+        1952,
+        1953,
+        1954
+      ]
+    },
+    "peters": {
+      "code": "PTE",
+      "name": "Josef Peters",
+      "continuity": false,
+      "dob": "1914-09-16",
+      "nationality": "German",
+      "years": [
+        1952
+      ]
+    },
+    "flinterman": {
+      "code": "FLI",
+      "name": "Jan Flinterman",
+      "continuity": false,
+      "dob": "1919-10-02",
+      "nationality": "Dutch",
+      "years": [
+        1952
+      ]
+    },
+    "lof": {
+      "code": "VND",
+      "name": "Dries van der Lof",
+      "continuity": false,
+      "dob": "1919-08-23",
+      "nationality": "Dutch",
+      "years": [
+        1952
+      ]
+    },
+    "bayol": {
+      "code": "BAY",
+      "name": "Élie Bayol",
+      "continuity": false,
+      "dob": "1914-02-28",
+      "nationality": "French",
+      "years": [
+        1952,
+        1953,
+        1954,
+        1955,
+        1956
+      ]
+    },
+    "galvez": {
+      "code": "GLV",
+      "name": "Oscar Gálvez",
+      "continuity": false,
+      "dob": "1913-08-17",
+      "nationality": "Argentine",
+      "years": [
+        1953
+      ]
+    },
+    "john_barber": {
+      "code": "BBE",
+      "name": "John Barber",
+      "continuity": false,
+      "dob": "1929-07-22",
+      "nationality": "British",
+      "years": [
+        1953
+      ]
+    },
+    "menditeguy": {
+      "code": "MEN",
+      "name": "Carlos Menditeguy",
+      "continuity": false,
+      "dob": "1914-08-10",
+      "nationality": "Argentine",
+      "years": [
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1960
+      ]
+    },
+    "birger": {
+      "code": "BRG",
+      "name": "Pablo Birger",
+      "continuity": false,
+      "dob": "1924-01-07",
+      "nationality": "Argentine",
+      "years": [
+        1953,
+        1955
+      ]
+    },
+    "cruz": {
+      "code": "CRU",
+      "name": "Adolfo Cruz",
+      "continuity": false,
+      "dob": "1923-06-28",
+      "nationality": "Argentine",
+      "years": [
+        1953
+      ]
+    },
+    "daywalt": {
+      "code": "DAY",
+      "name": "Jimmy Daywalt",
+      "continuity": false,
+      "dob": "1924-08-28",
+      "nationality": "American",
+      "years": [
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1959
+      ]
+    },
+    "mccoy": {
+      "code": "MCO",
+      "name": "Ernie McCoy",
+      "continuity": false,
+      "dob": "1921-02-19",
+      "nationality": "American",
+      "years": [
+        1953,
+        1954
+      ]
+    },
+    "mantz": {
+      "code": "MTZ",
+      "name": "Johnny Mantz",
+      "continuity": false,
+      "dob": "1918-09-18",
+      "nationality": "American",
+      "years": [
+        1953
+      ]
+    },
+    "teague": {
+      "code": "TEA",
+      "name": "Marshall Teague",
+      "continuity": false,
+      "dob": "1921-02-22",
+      "nationality": "American",
+      "years": [
+        1953,
+        1954,
+        1957
+      ]
+    },
+    "thomson": {
+      "code": "TMS",
+      "name": "Johnny Thomson",
+      "continuity": false,
+      "dob": "1922-04-09",
+      "nationality": "American",
+      "years": [
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "freeland": {
+      "code": "FEE",
+      "name": "Don Freeland",
+      "continuity": false,
+      "dob": "1925-03-25",
+      "nationality": "American",
+      "years": [
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "niday": {
+      "code": "NID",
+      "name": "Cal Niday",
+      "continuity": false,
+      "dob": "1914-04-29",
+      "nationality": "American",
+      "years": [
+        1953,
+        1954,
+        1955
+      ]
+    },
+    "mieres": {
+      "code": "MIE",
+      "name": "Roberto Mieres",
+      "continuity": false,
+      "dob": "1924-12-03",
+      "nationality": "Argentine",
+      "years": [
+        1953,
+        1954,
+        1955
+      ]
+    },
+    "wacker": {
+      "code": "WAC",
+      "name": "Fred Wacker",
+      "continuity": false,
+      "dob": "1918-07-10",
+      "nationality": "American",
+      "years": [
+        1953,
+        1954
+      ]
+    },
+    "georges_berger": {
+      "code": "BGE",
+      "name": "Georges Berger",
+      "continuity": false,
+      "dob": "1918-09-14",
+      "nationality": "Belgian",
+      "years": [
+        1953,
+        1954
+      ]
+    },
+    "jimmy_stewart": {
+      "code": "SWA",
+      "name": "Jimmy Stewart",
+      "continuity": false,
+      "dob": "1931-03-06",
+      "nationality": "British",
+      "years": [
+        1953
+      ]
+    },
+    "fairman": {
+      "code": "FAI",
+      "name": "Jack Fairman",
+      "continuity": false,
+      "dob": "1913-03-15",
+      "nationality": "British",
+      "years": [
+        1953,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960,
+        1961
+      ]
+    },
+    "ian_stewart": {
+      "code": "SEW",
+      "name": "Ian Stewart",
+      "continuity": false,
+      "dob": "1929-07-15",
+      "nationality": "British",
+      "years": [
+        1953
+      ]
+    },
+    "herrmann": {
+      "code": "HMA",
+      "name": "Hans Herrmann",
+      "continuity": false,
+      "dob": "1928-02-23",
+      "nationality": "German",
+      "years": [
+        1953,
+        1954,
+        1955,
+        1957,
+        1958,
+        1959,
+        1960,
+        1961
+      ]
+    },
+    "nuckey": {
+      "code": "NUC",
+      "name": "Rodney Nuckey",
+      "continuity": false,
+      "dob": "1929-06-26",
+      "nationality": "British",
+      "years": [
+        1953,
+        1954
+      ]
+    },
+    "seidel": {
+      "code": "SEI",
+      "name": "Wolfgang Seidel",
+      "continuity": false,
+      "dob": "1926-07-04",
+      "nationality": "German",
+      "years": [
+        1953,
+        1958,
+        1960,
+        1961,
+        1962
+      ]
+    },
+    "barth": {
+      "code": "BRT",
+      "name": "Edgar Barth",
+      "continuity": false,
+      "dob": "1917-01-26",
+      "nationality": "German",
+      "years": [
+        1953,
+        1957,
+        1958,
+        1960,
+        1961,
+        1964
+      ]
+    },
+    "karch": {
+      "code": "KRC",
+      "name": "Oswald Karch",
+      "continuity": false,
+      "dob": "1917-03-06",
+      "nationality": "German",
+      "years": [
+        1953
+      ]
+    },
+    "fitzau": {
+      "code": "FTZ",
+      "name": "Theo Fitzau",
+      "continuity": false,
+      "dob": "1923-02-10",
+      "nationality": "East German",
+      "years": [
+        1953
+      ]
+    },
+    "adolff": {
+      "code": "ADO",
+      "name": "Kurt Adolff",
+      "continuity": false,
+      "dob": "1921-11-05",
+      "nationality": "German",
+      "years": [
+        1953
+      ]
+    },
+    "bauer": {
+      "code": "BAU",
+      "name": "Erwin Bauer",
+      "continuity": false,
+      "dob": "1912-07-17",
+      "nationality": "German",
+      "years": [
+        1953
+      ]
+    },
+    "loof": {
+      "code": "LOO",
+      "name": "Ernst Loof",
+      "continuity": false,
+      "dob": "1907-07-04",
+      "nationality": "German",
+      "years": [
+        1953
+      ]
+    },
+    "lang": {
+      "code": "LNG",
+      "name": "Hermann Lang",
+      "continuity": false,
+      "dob": "1909-04-06",
+      "nationality": "German",
+      "years": [
+        1953,
+        1954
+      ]
+    },
+    "scherrer": {
+      "code": "SRR",
+      "name": "Albert Scherrer",
+      "continuity": false,
+      "dob": "1908-02-28",
+      "nationality": "Swiss",
+      "years": [
+        1953
+      ]
+    },
+    "musso": {
+      "code": "MUS",
+      "name": "Luigi Musso",
+      "continuity": false,
+      "dob": "1924-07-28",
+      "nationality": "Italian",
+      "years": [
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958
+      ]
+    },
+    "mantovani": {
+      "code": "MTO",
+      "name": "Sergio Mantovani",
+      "continuity": false,
+      "dob": "1929-05-22",
+      "nationality": "Italian",
+      "years": [
+        1953,
+        1954,
+        1955
+      ]
+    },
+    "maglioli": {
+      "code": "MGL",
+      "name": "Umberto Maglioli",
+      "continuity": false,
+      "dob": "1928-06-05",
+      "nationality": "Italian",
+      "years": [
+        1953,
+        1954,
+        1955,
+        1956,
+        1957
+      ]
+    },
+    "fitch": {
+      "code": "FTC",
+      "name": "John Fitch",
+      "continuity": false,
+      "dob": "1917-08-04",
+      "nationality": "American",
+      "years": [
+        1953,
+        1955
+      ]
+    },
+    "loyer": {
+      "code": "LOY",
+      "name": "Roger Loyer",
+      "continuity": false,
+      "dob": "1907-08-05",
+      "nationality": "French",
+      "years": [
+        1954
+      ]
+    },
+    "daponte": {
+      "code": "DAP",
+      "name": "Jorge Daponte",
+      "continuity": false,
+      "dob": "1923-06-05",
+      "nationality": "Argentine",
+      "years": [
+        1954
+      ]
+    },
+    "crockett": {
+      "code": "CRO",
+      "name": "Larry Crockett",
+      "continuity": false,
+      "dob": "1926-10-23",
+      "nationality": "American",
+      "years": [
+        1954
+      ]
+    },
+    "elisian": {
+      "code": "ELI",
+      "name": "Ed Elisian",
+      "continuity": false,
+      "dob": "1926-12-09",
+      "nationality": "American",
+      "years": [
+        1954,
+        1955,
+        1956,
+        1957,
+        1958
+      ]
+    },
+    "armi": {
+      "code": "ARM",
+      "name": "Frank Armi",
+      "continuity": false,
+      "dob": "1918-10-12",
+      "nationality": "American",
+      "years": [
+        1954
+      ]
+    },
+    "connor": {
+      "code": "OON",
+      "name": "Pat O'Connor",
+      "continuity": false,
+      "dob": "1928-10-09",
+      "nationality": "American",
+      "years": [
+        1954,
+        1955,
+        1956,
+        1957,
+        1958
+      ]
+    },
+    "kladis": {
+      "code": "KLA",
+      "name": "Danny Kladis",
+      "continuity": false,
+      "dob": "1917-02-10",
+      "nationality": "American",
+      "years": [
+        1954
+      ]
+    },
+    "duncan": {
+      "code": "DUN",
+      "name": "Len Duncan",
+      "continuity": false,
+      "dob": "1911-07-25",
+      "nationality": "American",
+      "years": [
+        1954
+      ]
+    },
+    "homeier": {
+      "code": "HOM",
+      "name": "Bill Homeier",
+      "continuity": false,
+      "dob": "1918-08-31",
+      "nationality": "American",
+      "years": [
+        1954,
+        1955,
+        1960
+      ]
+    },
+    "kling": {
+      "code": "KNG",
+      "name": "Karl Kling",
+      "continuity": false,
+      "dob": "1910-09-16",
+      "nationality": "German",
+      "years": [
+        1954,
+        1955
+      ]
+    },
+    "pollet": {
+      "code": "POL",
+      "name": "Jacques Pollet",
+      "continuity": false,
+      "dob": "1922-07-02",
+      "nationality": "French",
+      "years": [
+        1954,
+        1955
+      ]
+    },
+    "beauman": {
+      "code": "BUM",
+      "name": "Don Beauman",
+      "continuity": false,
+      "dob": "1928-07-26",
+      "nationality": "British",
+      "years": [
+        1954
+      ]
+    },
+    "marr": {
+      "code": "MRR",
+      "name": "Leslie Marr",
+      "continuity": false,
+      "dob": "1922-08-14",
+      "nationality": "British",
+      "years": [
+        1954,
+        1955
+      ]
+    },
+    "thorne": {
+      "code": "TOR",
+      "name": "Leslie Thorne",
+      "continuity": false,
+      "dob": "1916-06-23",
+      "nationality": "British",
+      "years": [
+        1954
+      ]
+    },
+    "gould": {
+      "code": "GUL",
+      "name": "Horace Gould",
+      "continuity": false,
+      "dob": "1918-09-20",
+      "nationality": "British",
+      "years": [
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1960
+      ]
+    },
+    "whitehouse": {
+      "code": "WTE",
+      "name": "Bill Whitehouse",
+      "continuity": false,
+      "dob": "1909-04-01",
+      "nationality": "British",
+      "years": [
+        1954
+      ]
+    },
+    "flockhart": {
+      "code": "FLO",
+      "name": "Ron Flockhart",
+      "continuity": false,
+      "dob": "1923-06-16",
+      "nationality": "British",
+      "years": [
+        1954,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "riseley_prichard": {
+      "code": "RIS",
+      "name": "John Riseley-Prichard",
+      "continuity": false,
+      "dob": "1924-01-17",
+      "nationality": "British",
+      "years": [
+        1954
+      ]
+    },
+    "bucci": {
+      "code": "BUC",
+      "name": "Clemar Bucci",
+      "continuity": false,
+      "dob": "1920-09-04",
+      "nationality": "Argentine",
+      "years": [
+        1954,
+        1955
+      ]
+    },
+    "volonterio": {
+      "code": "VOL",
+      "name": "Ottorino Volonterio",
+      "continuity": false,
+      "dob": "1917-12-07",
+      "nationality": "Swiss",
+      "years": [
+        1954,
+        1956,
+        1957
+      ]
+    },
+    "iglesias": {
+      "code": "IGL",
+      "name": "Jesús Iglesias",
+      "continuity": false,
+      "dob": "1922-02-22",
+      "nationality": "Argentine",
+      "years": [
+        1955
+      ]
+    },
+    "castellotti": {
+      "code": "CAS",
+      "name": "Eugenio Castellotti",
+      "continuity": false,
+      "dob": "1930-10-10",
+      "nationality": "Italian",
+      "years": [
+        1955,
+        1956,
+        1957
+      ]
+    },
+    "uria": {
+      "code": "URI",
+      "name": "Alberto Uria",
+      "continuity": false,
+      "dob": "1924-07-11",
+      "nationality": "Uruguayan",
+      "years": [
+        1955,
+        1956
+      ]
+    },
+    "perdisa": {
+      "code": "PRD",
+      "name": "Cesare Perdisa",
+      "continuity": false,
+      "dob": "1932-10-21",
+      "nationality": "Italian",
+      "years": [
+        1955,
+        1956,
+        1957
+      ]
+    },
+    "herman": {
+      "code": "HRM",
+      "name": "Al Herman",
+      "continuity": false,
+      "dob": "1927-03-15",
+      "nationality": "American",
+      "years": [
+        1955,
+        1956,
+        1957,
+        1959,
+        1960
+      ]
+    },
+    "weyant": {
+      "code": "WEY",
+      "name": "Chuck Weyant",
+      "continuity": false,
+      "dob": "1923-04-03",
+      "nationality": "American",
+      "years": [
+        1955,
+        1957,
+        1958,
+        1959
+      ]
+    },
+    "templeman": {
+      "code": "TEM",
+      "name": "Shorty Templeman",
+      "continuity": false,
+      "dob": "1919-08-12",
+      "nationality": "American",
+      "years": [
+        1955,
+        1958,
+        1960
+      ]
+    },
+    "andrews": {
+      "code": "ADR",
+      "name": "Keith Andrews",
+      "continuity": false,
+      "dob": "1920-06-15",
+      "nationality": "American",
+      "years": [
+        1955,
+        1956
+      ]
+    },
+    "russo": {
+      "code": "ERU",
+      "name": "Eddie Russo",
+      "continuity": false,
+      "dob": "1925-11-19",
+      "nationality": "American",
+      "years": [
+        1955,
+        1956,
+        1957,
+        1960
+      ]
+    },
+    "ray_crawford": {
+      "code": "CWF",
+      "name": "Ray Crawford",
+      "continuity": false,
+      "dob": "1915-10-26",
+      "nationality": "American",
+      "years": [
+        1955,
+        1956,
+        1959
+      ]
+    },
+    "keller": {
+      "code": "KEL",
+      "name": "Al Keller",
+      "continuity": false,
+      "dob": "1920-04-11",
+      "nationality": "American",
+      "years": [
+        1955,
+        1956,
+        1957,
+        1958,
+        1959
+      ]
+    },
+    "boyd": {
+      "code": "BOY",
+      "name": "Johnny Boyd",
+      "continuity": false,
+      "dob": "1926-08-19",
+      "nationality": "American",
+      "years": [
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "ramos": {
+      "code": "DAS",
+      "name": "Hernando da Silva Ramos",
+      "continuity": false,
+      "dob": "1925-12-07",
+      "nationality": "Brazilian",
+      "years": [
+        1955,
+        1956
+      ]
+    },
+    "sparken": {
+      "code": "SPA",
+      "name": "Mike Sparken",
+      "continuity": false,
+      "dob": "1930-06-16",
+      "nationality": "French",
+      "years": [
+        1955
+      ]
+    },
+    "jack_brabham": {
+      "code": "BAB",
+      "name": "Jack Brabham",
+      "continuity": false,
+      "dob": "1926-04-02",
+      "nationality": "Australian",
+      "years": [
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970
+      ]
+    },
+    "lucas": {
+      "code": "LCA",
+      "name": "Jean Lucas",
+      "continuity": false,
+      "dob": "1917-04-25",
+      "nationality": "French",
+      "years": [
+        1955
+      ]
+    },
+    "piotti": {
+      "code": "PIO",
+      "name": "Luigi Piotti",
+      "continuity": false,
+      "dob": "1913-10-27",
+      "nationality": "Italian",
+      "years": [
+        1955,
+        1956,
+        1957
+      ]
+    },
+    "gerini": {
+      "code": "GRI",
+      "name": "Gerino Gerini",
+      "continuity": false,
+      "dob": "1928-08-10",
+      "nationality": "Italian",
+      "years": [
+        1956,
+        1958
+      ]
+    },
+    "gendebien": {
+      "code": "GND",
+      "name": "Olivier Gendebien",
+      "continuity": false,
+      "dob": "1924-01-12",
+      "nationality": "Belgian",
+      "years": [
+        1956,
+        1958,
+        1959,
+        1960,
+        1961
+      ]
+    },
+    "oscar_gonzalez": {
+      "code": "GNZ",
+      "name": "Óscar González",
+      "continuity": false,
+      "dob": "1923-11-10",
+      "nationality": "Uruguayan",
+      "years": [
+        1956
+      ]
+    },
+    "brooks": {
+      "code": "BOO",
+      "name": "Tony Brooks",
+      "continuity": false,
+      "dob": "1932-02-25",
+      "nationality": "British",
+      "years": [
+        1956,
+        1957,
+        1958,
+        1959,
+        1960,
+        1961
+      ]
+    },
+    "veith": {
+      "code": "VEI",
+      "name": "Bob Veith",
+      "continuity": false,
+      "dob": "1926-11-01",
+      "nationality": "American",
+      "years": [
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "christie": {
+      "code": "CHR",
+      "name": "Bob Christie",
+      "continuity": false,
+      "dob": "1924-04-04",
+      "nationality": "American",
+      "years": [
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "garrett": {
+      "code": "GRR",
+      "name": "Billy Garrett",
+      "continuity": false,
+      "dob": "1933-04-24",
+      "nationality": "American",
+      "years": [
+        1956,
+        1958
+      ]
+    },
+    "tolan": {
+      "code": "TOL",
+      "name": "Johnnie Tolan",
+      "continuity": false,
+      "dob": "1917-10-22",
+      "nationality": "American",
+      "years": [
+        1956,
+        1957,
+        1958
+      ]
+    },
+    "turner": {
+      "code": "TUR",
+      "name": "Jack Turner",
+      "continuity": false,
+      "dob": "1920-02-12",
+      "nationality": "American",
+      "years": [
+        1956,
+        1957,
+        1958,
+        1959
+      ]
+    },
+    "scotti": {
+      "code": "STT",
+      "name": "Piero Scotti",
+      "continuity": false,
+      "dob": "1909-11-11",
+      "nationality": "Italian",
+      "years": [
+        1956
+      ]
+    },
+    "portago": {
+      "code": "DPO",
+      "name": "Alfonso de Portago",
+      "continuity": false,
+      "dob": "1928-10-11",
+      "nationality": "Spanish",
+      "years": [
+        1956,
+        1957
+      ]
+    },
+    "chapman": {
+      "code": "CPM",
+      "name": "Colin Chapman",
+      "continuity": false,
+      "dob": "1928-05-19",
+      "nationality": "British",
+      "years": [
+        1956
+      ]
+    },
+    "titterington": {
+      "code": "TIT",
+      "name": "Desmond Titterington",
+      "continuity": false,
+      "dob": "1928-05-01",
+      "nationality": "British",
+      "years": [
+        1956
+      ]
+    },
+    "halford": {
+      "code": "HAL",
+      "name": "Bruce Halford",
+      "continuity": false,
+      "dob": "1931-05-18",
+      "nationality": "British",
+      "years": [
+        1956,
+        1957,
+        1959,
+        1960
+      ]
+    },
+    "scott_Brown": {
+      "code": "SOT",
+      "name": "Archie Scott Brown",
+      "continuity": false,
+      "dob": "1927-05-13",
+      "nationality": "British",
+      "years": [
+        1956
+      ]
+    },
+    "emery": {
+      "code": "EME",
+      "name": "Paul Emery",
+      "continuity": false,
+      "dob": "1916-11-12",
+      "nationality": "British",
+      "years": [
+        1956
+      ]
+    },
+    "milhoux": {
+      "code": "MLH",
+      "name": "André Milhoux",
+      "continuity": false,
+      "dob": "1928-12-09",
+      "nationality": "Belgian",
+      "years": [
+        1956
+      ]
+    },
+    "scarlatti": {
+      "code": "SRL",
+      "name": "Giorgio Scarlatti",
+      "continuity": false,
+      "dob": "1921-10-02",
+      "nationality": "Italian",
+      "years": [
+        1956,
+        1957,
+        1958,
+        1959,
+        1960,
+        1961
+      ]
+    },
+    "bonnier": {
+      "code": "BNN",
+      "name": "Jo Bonnier",
+      "continuity": false,
+      "dob": "1930-01-31",
+      "nationality": "Swedish",
+      "years": [
+        1956,
+        1957,
+        1958,
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971
+      ]
+    },
+    "leston": {
+      "code": "LES",
+      "name": "Les Leston",
+      "continuity": false,
+      "dob": "1920-12-16",
+      "nationality": "British",
+      "years": [
+        1956,
+        1957
+      ]
+    },
+    "trips": {
+      "code": "VNT",
+      "name": "Wolfgang von Trips",
+      "continuity": false,
+      "dob": "1928-05-04",
+      "nationality": "German",
+      "years": [
+        1956,
+        1957,
+        1958,
+        1959,
+        1960,
+        1961
+      ]
+    },
+    "tomaso": {
+      "code": "DTO",
+      "name": "Alessandro de Tomaso",
+      "continuity": false,
+      "dob": "1928-07-10",
+      "nationality": "Argentine",
+      "years": [
+        1957,
+        1959
+      ]
+    },
+    "gregory": {
+      "code": "GEG",
+      "name": "Masten Gregory",
+      "continuity": false,
+      "dob": "1932-02-29",
+      "nationality": "American",
+      "years": [
+        1957,
+        1958,
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1965
+      ]
+    },
+    "lewis-evans": {
+      "code": "LWI",
+      "name": "Stuart Lewis-Evans",
+      "continuity": false,
+      "dob": "1930-04-20",
+      "nationality": "British",
+      "years": [
+        1957,
+        1958
+      ]
+    },
+    "bueb": {
+      "code": "BEB",
+      "name": "Ivor Bueb",
+      "continuity": false,
+      "dob": "1923-06-06",
+      "nationality": "British",
+      "years": [
+        1957,
+        1958,
+        1959
+      ]
+    },
+    "edmunds": {
+      "code": "EDM",
+      "name": "Don Edmunds",
+      "continuity": false,
+      "dob": "1930-09-23",
+      "nationality": "American",
+      "years": [
+        1957
+      ]
+    },
+    "sachs": {
+      "code": "SAC",
+      "name": "Eddie Sachs",
+      "continuity": false,
+      "dob": "1927-05-28",
+      "nationality": "American",
+      "years": [
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "magill": {
+      "code": "MGI",
+      "name": "Mike Magill",
+      "continuity": false,
+      "dob": "1920-02-08",
+      "nationality": "American",
+      "years": [
+        1957,
+        1958,
+        1959
+      ]
+    },
+    "cheesbourg": {
+      "code": "CEE",
+      "name": "Bill Cheesbourg",
+      "continuity": false,
+      "dob": "1927-06-12",
+      "nationality": "American",
+      "years": [
+        1957,
+        1958,
+        1959
+      ]
+    },
+    "george": {
+      "code": "GEO",
+      "name": "Elmer George",
+      "continuity": false,
+      "dob": "1928-07-15",
+      "nationality": "American",
+      "years": [
+        1957
+      ]
+    },
+    "macdowel": {
+      "code": "MAC",
+      "name": "Mike MacDowel",
+      "continuity": false,
+      "dob": "1932-09-13",
+      "nationality": "British",
+      "years": [
+        1957
+      ]
+    },
+    "mackay-fraser": {
+      "code": "MKA",
+      "name": "Herbert MacKay-Fraser",
+      "continuity": false,
+      "dob": "1927-06-23",
+      "nationality": "American",
+      "years": [
+        1957
+      ]
+    },
+    "naylor": {
+      "code": "NAY",
+      "name": "Brian Naylor",
+      "continuity": false,
+      "dob": "1923-03-24",
+      "nationality": "British",
+      "years": [
+        1957,
+        1958,
+        1959,
+        1960,
+        1961
+      ]
+    },
+    "beaufort": {
+      "code": "DEB",
+      "name": "Carel Godin de Beaufort",
+      "continuity": false,
+      "dob": "1934-04-10",
+      "nationality": "Dutch",
+      "years": [
+        1957,
+        1958,
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964
+      ]
+    },
+    "marsh": {
+      "code": "MRS",
+      "name": "Tony Marsh",
+      "continuity": false,
+      "dob": "1931-07-20",
+      "nationality": "British",
+      "years": [
+        1957,
+        1958,
+        1961,
+        1962
+      ]
+    },
+    "england": {
+      "code": "ENG",
+      "name": "Paul England",
+      "continuity": false,
+      "dob": "1929-03-28",
+      "nationality": "Australian",
+      "years": [
+        1957
+      ]
+    },
+    "gibson": {
+      "code": "GIB",
+      "name": "Dick Gibson",
+      "continuity": false,
+      "dob": "1918-04-16",
+      "nationality": "British",
+      "years": [
+        1957,
+        1958
+      ]
+    },
+    "allison": {
+      "code": "ALI",
+      "name": "Cliff Allison",
+      "continuity": false,
+      "dob": "1932-02-08",
+      "nationality": "British",
+      "years": [
+        1958,
+        1959,
+        1960,
+        1961
+      ]
+    },
+    "hill": {
+      "code": "GHI",
+      "name": "Graham Hill",
+      "continuity": false,
+      "dob": "1929-02-15",
+      "nationality": "British",
+      "years": [
+        1958,
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975
+      ]
+    },
+    "george_amick": {
+      "code": "AIC",
+      "name": "George Amick",
+      "continuity": false,
+      "dob": "1924-10-24",
+      "nationality": "American",
+      "years": [
+        1958
+      ]
+    },
+    "larson": {
+      "code": "LRS",
+      "name": "Jud Larson",
+      "continuity": false,
+      "dob": "1923-01-21",
+      "nationality": "American",
+      "years": [
+        1958,
+        1959
+      ]
+    },
+    "dempsey_wilson": {
+      "code": "WIL",
+      "name": "Dempsey Wilson",
+      "continuity": false,
+      "dob": "1927-03-11",
+      "nationality": "American",
+      "years": [
+        1958,
+        1960
+      ]
+    },
+    "foyt": {
+      "code": "FOY",
+      "name": "Anthony Foyt",
+      "continuity": false,
+      "dob": "1935-01-16",
+      "nationality": "American",
+      "years": [
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "goldsmith": {
+      "code": "GOL",
+      "name": "Paul Goldsmith",
+      "continuity": false,
+      "dob": "1925-10-02",
+      "nationality": "American",
+      "years": [
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "jerry_unser": {
+      "code": "UNS",
+      "name": "Jerry Unser",
+      "continuity": false,
+      "dob": "1932-11-15",
+      "nationality": "American",
+      "years": [
+        1958
+      ]
+    },
+    "sutton": {
+      "code": "SON",
+      "name": "Len Sutton",
+      "continuity": false,
+      "dob": "1925-08-09",
+      "nationality": "American",
+      "years": [
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "bisch": {
+      "code": "BIS",
+      "name": "Art Bisch",
+      "continuity": false,
+      "dob": "1926-11-10",
+      "nationality": "American",
+      "years": [
+        1958
+      ]
+    },
+    "filippis": {
+      "code": "DEF",
+      "name": "Maria de Filippis",
+      "continuity": false,
+      "dob": "1926-11-11",
+      "nationality": "Italian",
+      "years": [
+        1958
+      ]
+    },
+    "phil_hill": {
+      "code": "PHI",
+      "name": "Phil Hill",
+      "continuity": false,
+      "dob": "1927-04-20",
+      "nationality": "American",
+      "years": [
+        1958,
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964
+      ]
+    },
+    "shelby": {
+      "code": "SLB",
+      "name": "Carroll Shelby",
+      "continuity": false,
+      "dob": "1923-01-11",
+      "nationality": "American",
+      "years": [
+        1958,
+        1959
+      ]
+    },
+    "burgess": {
+      "code": "BUR",
+      "name": "Ian Burgess",
+      "continuity": false,
+      "dob": "1930-07-06",
+      "nationality": "British",
+      "years": [
+        1958,
+        1959,
+        1960,
+        1961,
+        1962,
+        1963
+      ]
+    },
+    "stacey": {
+      "code": "STA",
+      "name": "Alan Stacey",
+      "continuity": false,
+      "dob": "1933-08-29",
+      "nationality": "British",
+      "years": [
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "mclaren": {
+      "code": "MCL",
+      "name": "Bruce McLaren",
+      "continuity": false,
+      "dob": "1937-08-30",
+      "nationality": "New Zealander",
+      "years": [
+        1958,
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970
+      ]
+    },
+    "goethals": {
+      "code": "GOE",
+      "name": "Christian Goethals",
+      "continuity": false,
+      "dob": "1928-08-04",
+      "nationality": "Belgian",
+      "years": [
+        1958
+      ]
+    },
+    "cabianca": {
+      "code": "CBI",
+      "name": "Giulio Cabianca",
+      "continuity": false,
+      "dob": "1923-02-19",
+      "nationality": "Italian",
+      "years": [
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "la_caze": {
+      "code": "LAC",
+      "name": "Robert La Caze",
+      "continuity": false,
+      "dob": "1917-02-26",
+      "nationality": "French",
+      "years": [
+        1958
+      ]
+    },
+    "guelfi": {
+      "code": "GUE",
+      "name": "André Guelfi",
+      "continuity": false,
+      "dob": "1919-05-06",
+      "nationality": "French",
+      "years": [
+        1958
+      ]
+    },
+    "picard": {
+      "code": "PCA",
+      "name": "François Picard",
+      "continuity": false,
+      "dob": "1921-04-26",
+      "nationality": "French",
+      "years": [
+        1958
+      ]
+    },
+    "bridger": {
+      "code": "BRI",
+      "name": "Tom Bridger",
+      "continuity": false,
+      "dob": "1934-06-24",
+      "nationality": "British",
+      "years": [
+        1958
+      ]
+    },
+    "arnold": {
+      "code": "ANO",
+      "name": "Chuck Arnold",
+      "continuity": false,
+      "dob": "1926-05-30",
+      "nationality": "American",
+      "years": [
+        1959
+      ]
+    },
+    "mcwithey": {
+      "code": "MCW",
+      "name": "Jim McWithey",
+      "continuity": false,
+      "dob": "1927-07-04",
+      "nationality": "American",
+      "years": [
+        1959,
+        1960
+      ]
+    },
+    "branson": {
+      "code": "BNS",
+      "name": "Don Branson",
+      "continuity": false,
+      "dob": "1920-06-02",
+      "nationality": "American",
+      "years": [
+        1959,
+        1960
+      ]
+    },
+    "grim": {
+      "code": "GIM",
+      "name": "Bobby Grim",
+      "continuity": false,
+      "dob": "1924-09-04",
+      "nationality": "American",
+      "years": [
+        1959,
+        1960
+      ]
+    },
+    "amick": {
+      "code": "AMI",
+      "name": "Red Amick",
+      "continuity": false,
+      "dob": "1929-01-19",
+      "nationality": "American",
+      "years": [
+        1959,
+        1960
+      ]
+    },
+    "ireland": {
+      "code": "IRE",
+      "name": "Innes Ireland",
+      "continuity": false,
+      "dob": "1930-06-12",
+      "nationality": "British",
+      "years": [
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966
+      ]
+    },
+    "orey": {
+      "code": "DOR",
+      "name": "Fritz d'Orey",
+      "continuity": false,
+      "dob": "1938-03-25",
+      "nationality": "Brazilian",
+      "years": [
+        1959
+      ]
+    },
+    "gurney": {
+      "code": "GUR",
+      "name": "Dan Gurney",
+      "continuity": false,
+      "dob": "1931-04-13",
+      "nationality": "American",
+      "years": [
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1970
+      ]
+    },
+    "davis": {
+      "code": "DIS",
+      "name": "Colin Davis",
+      "continuity": false,
+      "dob": "1933-07-29",
+      "nationality": "British",
+      "years": [
+        1959,
+        1962
+      ]
+    },
+    "fontes": {
+      "code": "FNT",
+      "name": "Azdrubal Fontes",
+      "continuity": false,
+      "dob": "1922-12-26",
+      "nationality": "Uruguayan",
+      "years": [
+        1959
+      ]
+    },
+    "bristow": {
+      "code": "BST",
+      "name": "Chris Bristow",
+      "continuity": false,
+      "dob": "1937-12-02",
+      "nationality": "British",
+      "years": [
+        1959,
+        1960
+      ]
+    },
+    "henry_taylor": {
+      "code": "TAY",
+      "name": "Henry Taylor",
+      "continuity": false,
+      "dob": "1932-12-16",
+      "nationality": "British",
+      "years": [
+        1959,
+        1960,
+        1961
+      ]
+    },
+    "ashdown": {
+      "code": "ASH",
+      "name": "Peter Ashdown",
+      "continuity": false,
+      "dob": "1934-10-16",
+      "nationality": "British",
+      "years": [
+        1959
+      ]
+    },
+    "piper": {
+      "code": "PIP",
+      "name": "David Piper",
+      "continuity": false,
+      "dob": "1930-12-02",
+      "nationality": "British",
+      "years": [
+        1959,
+        1960
+      ]
+    },
+    "mike_taylor": {
+      "code": "TYL",
+      "name": "Mike Taylor",
+      "continuity": false,
+      "dob": "1934-04-24",
+      "nationality": "British",
+      "years": [
+        1959,
+        1960
+      ]
+    },
+    "cabral": {
+      "code": "CBR",
+      "name": "Mário de Araújo Cabral",
+      "continuity": false,
+      "dob": "1934-01-15",
+      "nationality": "Portuguese",
+      "years": [
+        1959,
+        1960,
+        1963,
+        1964
+      ]
+    },
+    "blanchard": {
+      "code": "BLA",
+      "name": "Harry Blanchard",
+      "continuity": false,
+      "dob": "1929-06-13",
+      "nationality": "American",
+      "years": [
+        1959
+      ]
+    },
+    "constantine": {
+      "code": "CON",
+      "name": "George Constantine",
+      "continuity": false,
+      "dob": "1918-02-22",
+      "nationality": "American",
+      "years": [
+        1959
+      ]
+    },
+    "said": {
+      "code": "SID",
+      "name": "Bob Said",
+      "continuity": false,
+      "dob": "1932-05-05",
+      "nationality": "American",
+      "years": [
+        1959
+      ]
+    },
+    "cade": {
+      "code": "CAD",
+      "name": "Phil Cade",
+      "continuity": false,
+      "dob": "1916-06-12",
+      "nationality": "American",
+      "years": [
+        1959
+      ]
+    },
+    "larreta": {
+      "code": "LRR",
+      "name": "Alberto Rodriguez Larreta",
+      "continuity": false,
+      "dob": "1934-01-14",
+      "nationality": "Argentine",
+      "years": [
+        1960
+      ]
+    },
+    "bonomi": {
+      "code": "BNO",
+      "name": "Roberto Bonomi",
+      "continuity": false,
+      "dob": "1919-09-30",
+      "nationality": "Argentine",
+      "years": [
+        1960
+      ]
+    },
+    "munaron": {
+      "code": "MUN",
+      "name": "Gino Munaron",
+      "continuity": false,
+      "dob": "1928-04-02",
+      "nationality": "Italian",
+      "years": [
+        1960
+      ]
+    },
+    "estefano": {
+      "code": "EST",
+      "name": "Nasif Estéfano",
+      "continuity": false,
+      "dob": "1932-11-18",
+      "nationality": "Argentine",
+      "years": [
+        1960,
+        1963
+      ]
+    },
+    "chimeri": {
+      "code": "CIM",
+      "name": "Ettore Chimeri",
+      "continuity": false,
+      "dob": "1921-06-04",
+      "nationality": "Venezuelan",
+      "years": [
+        1960
+      ]
+    },
+    "creus": {
+      "code": "CRE",
+      "name": "Antonio Creus",
+      "continuity": false,
+      "dob": "1924-10-28",
+      "nationality": "Spanish",
+      "years": [
+        1960
+      ]
+    },
+    "ginther": {
+      "code": "GIN",
+      "name": "Richie Ginther",
+      "continuity": false,
+      "dob": "1930-08-05",
+      "nationality": "American",
+      "years": [
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966
+      ]
+    },
+    "surtees": {
+      "code": "SUR",
+      "name": "John Surtees",
+      "continuity": false,
+      "dob": "1934-02-11",
+      "nationality": "British",
+      "years": [
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972
+      ]
+    },
+    "ruby": {
+      "code": "RUB",
+      "name": "Lloyd Ruby",
+      "continuity": false,
+      "dob": "1928-01-12",
+      "nationality": "American",
+      "years": [
+        1960,
+        1961
+      ]
+    },
+    "tingelstad": {
+      "code": "TIN",
+      "name": "Bud Tingelstad",
+      "continuity": false,
+      "dob": "1928-04-04",
+      "nationality": "American",
+      "years": [
+        1960
+      ]
+    },
+    "hurtubise": {
+      "code": "HUR",
+      "name": "Jim Hurtubise",
+      "continuity": false,
+      "dob": "1932-12-05",
+      "nationality": "American",
+      "years": [
+        1960
+      ]
+    },
+    "weiler": {
+      "code": "WEI",
+      "name": "Wayne Weiler",
+      "continuity": false,
+      "dob": "1934-12-09",
+      "nationality": "American",
+      "years": [
+        1960
+      ]
+    },
+    "clark": {
+      "code": "CRK",
+      "name": "Jim Clark",
+      "continuity": false,
+      "dob": "1936-03-04",
+      "nationality": "British",
+      "years": [
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968
+      ]
+    },
+    "reventlow": {
+      "code": "REV",
+      "name": "Lance Reventlow",
+      "continuity": false,
+      "dob": "1936-02-24",
+      "nationality": "American",
+      "years": [
+        1960
+      ]
+    },
+    "daigh": {
+      "code": "DAI",
+      "name": "Chuck Daigh",
+      "continuity": false,
+      "dob": "1923-11-29",
+      "nationality": "American",
+      "years": [
+        1960
+      ]
+    },
+    "bianchi": {
+      "code": "BNC",
+      "name": "Lucien Bianchi",
+      "continuity": false,
+      "dob": "1934-11-10",
+      "nationality": "Belgian",
+      "years": [
+        1960,
+        1961,
+        1962,
+        1963,
+        1965,
+        1968
+      ]
+    },
+    "mairesse": {
+      "code": "MIR",
+      "name": "Willy Mairesse",
+      "continuity": false,
+      "dob": "1928-10-01",
+      "nationality": "Belgian",
+      "years": [
+        1960,
+        1961,
+        1962,
+        1963
+      ]
+    },
+    "greene": {
+      "code": "GEE",
+      "name": "Keith Greene",
+      "continuity": false,
+      "dob": "1938-01-05",
+      "nationality": "British",
+      "years": [
+        1960,
+        1961,
+        1962
+      ]
+    },
+    "drogo": {
+      "code": "DRO",
+      "name": "Piero Drogo",
+      "continuity": false,
+      "dob": "1926-08-08",
+      "nationality": "Italian",
+      "years": [
+        1960
+      ]
+    },
+    "gamble": {
+      "code": "GAM",
+      "name": "Fred Gamble",
+      "continuity": false,
+      "dob": "1932-03-17",
+      "nationality": "American",
+      "years": [
+        1960
+      ]
+    },
+    "thiele": {
+      "code": "THI",
+      "name": "Alfonso Thiele",
+      "continuity": false,
+      "dob": "1920-04-05",
+      "nationality": "Italian",
+      "years": [
+        1960,
+        1961
+      ]
+    },
+    "vic_wilson": {
+      "code": "WLS",
+      "name": "Vic Wilson",
+      "continuity": false,
+      "dob": "1931-04-14",
+      "nationality": "British",
+      "years": [
+        1960,
+        1966
+      ]
+    },
+    "owen": {
+      "code": "OWE",
+      "name": "Arthur Owen",
+      "continuity": false,
+      "dob": "1915-03-23",
+      "nationality": "British",
+      "years": [
+        1960
+      ]
+    },
+    "hall": {
+      "code": "HLL",
+      "name": "Jim Hall",
+      "continuity": false,
+      "dob": "1935-07-23",
+      "nationality": "American",
+      "years": [
+        1960,
+        1961,
+        1962,
+        1963
+      ]
+    },
+    "lovely": {
+      "code": "LVE",
+      "name": "Pete Lovely",
+      "continuity": false,
+      "dob": "1926-04-11",
+      "nationality": "American",
+      "years": [
+        1960,
+        1969,
+        1970,
+        1971
+      ]
+    },
+    "drake": {
+      "code": "DRA",
+      "name": "Bob Drake",
+      "continuity": false,
+      "dob": "1919-12-14",
+      "nationality": "American",
+      "years": [
+        1960
+      ]
+    },
+    "may": {
+      "code": "MAY",
+      "name": "Michael May",
+      "continuity": false,
+      "dob": "1934-08-18",
+      "nationality": "Swiss",
+      "years": [
+        1961
+      ]
+    },
+    "trevor_taylor": {
+      "code": "TTA",
+      "name": "Trevor Taylor",
+      "continuity": false,
+      "dob": "1936-12-26",
+      "nationality": "British",
+      "years": [
+        1961,
+        1962,
+        1963,
+        1964,
+        1966
+      ]
+    },
+    "lewis": {
+      "code": "LEW",
+      "name": "Jackie Lewis",
+      "continuity": false,
+      "dob": "1936-11-01",
+      "nationality": "British",
+      "years": [
+        1961,
+        1962
+      ]
+    },
+    "bandini": {
+      "code": "BAN",
+      "name": "Lorenzo Bandini",
+      "continuity": false,
+      "dob": "1935-12-21",
+      "nationality": "Italian",
+      "years": [
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967
+      ]
+    },
+    "baghetti": {
+      "code": "BAG",
+      "name": "Giancarlo Baghetti",
+      "continuity": false,
+      "dob": "1934-12-25",
+      "nationality": "Italian",
+      "years": [
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967
+      ]
+    },
+    "collomb": {
+      "code": "CLO",
+      "name": "Bernard Collomb",
+      "continuity": false,
+      "dob": "1930-10-07",
+      "nationality": "French",
+      "years": [
+        1961,
+        1962,
+        1963
+      ]
+    },
+    "bordeu": {
+      "code": "BRD",
+      "name": "Juan Manuel Bordeu",
+      "continuity": false,
+      "dob": "1934-01-28",
+      "nationality": "Argentine",
+      "years": [
+        1961
+      ]
+    },
+    "maggs": {
+      "code": "MGG",
+      "name": "Tony Maggs",
+      "continuity": false,
+      "dob": "1937-02-09",
+      "nationality": "South African",
+      "years": [
+        1961,
+        1962,
+        1963,
+        1964,
+        1965
+      ]
+    },
+    "parnell": {
+      "code": "PRN",
+      "name": "Tim Parnell",
+      "continuity": false,
+      "dob": "1932-06-25",
+      "nationality": "British",
+      "years": [
+        1961
+      ]
+    },
+    "ashmore": {
+      "code": "AHM",
+      "name": "Gerry Ashmore",
+      "continuity": false,
+      "dob": "1936-07-25",
+      "nationality": "British",
+      "years": [
+        1961,
+        1962
+      ]
+    },
+    "natili": {
+      "code": "NAT",
+      "name": "Massimo Natili",
+      "continuity": false,
+      "dob": "1935-07-28",
+      "nationality": "Italian",
+      "years": [
+        1961
+      ]
+    },
+    "monteverdi": {
+      "code": "MTE",
+      "name": "Peter Monteverdi",
+      "continuity": false,
+      "dob": "1934-06-07",
+      "nationality": "Swiss",
+      "years": [
+        1961
+      ]
+    },
+    "pirocchi": {
+      "code": "POC",
+      "name": "Renato Pirocchi",
+      "continuity": false,
+      "dob": "1933-03-26",
+      "nationality": "Italian",
+      "years": [
+        1961
+      ]
+    },
+    "duke": {
+      "code": "DUK",
+      "name": "Geoff Duke",
+      "continuity": false,
+      "dob": "1923-03-29",
+      "nationality": "British",
+      "years": [
+        1961
+      ]
+    },
+    "campbell-jones": {
+      "code": "CMP",
+      "name": "John Campbell-Jones",
+      "continuity": false,
+      "dob": "1930-01-21",
+      "nationality": "British",
+      "years": [
+        1961,
+        1962,
+        1963
+      ]
+    },
+    "starrabba": {
+      "code": "SAB",
+      "name": "Gaetano Starrabba",
+      "continuity": false,
+      "dob": "1932-12-03",
+      "nationality": "Italian",
+      "years": [
+        1961,
+        1963
+      ]
+    },
+    "ricardo_rodriguez": {
+      "code": "ROD",
+      "name": "Ricardo Rodríguez",
+      "continuity": false,
+      "dob": "1942-02-14",
+      "nationality": "Mexican",
+      "years": [
+        1961,
+        1962
+      ]
+    },
+    "vaccarella": {
+      "code": "VAC",
+      "name": "Nino Vaccarella",
+      "continuity": false,
+      "dob": "1933-03-04",
+      "nationality": "Italian",
+      "years": [
+        1961,
+        1962,
+        1965
+      ]
+    },
+    "bussinello": {
+      "code": "BUS",
+      "name": "Roberto Bussinello",
+      "continuity": false,
+      "dob": "1927-10-04",
+      "nationality": "Italian",
+      "years": [
+        1961,
+        1962,
+        1965
+      ]
+    },
+    "lippi": {
+      "code": "LIP",
+      "name": "Roberto Lippi",
+      "continuity": false,
+      "dob": "1926-10-17",
+      "nationality": "Italian",
+      "years": [
+        1961
+      ]
+    },
+    "prinoth": {
+      "code": "PRI",
+      "name": "Ernesto Prinoth",
+      "continuity": false,
+      "dob": "1923-04-15",
+      "nationality": "Italian",
+      "years": [
+        1961
+      ]
+    },
+    "boffa": {
+      "code": "BOF",
+      "name": "Menato Boffa",
+      "continuity": false,
+      "dob": "1930-01-04",
+      "nationality": "Italian",
+      "years": [
+        1961
+      ]
+    },
+    "penske": {
+      "code": "PEN",
+      "name": "Roger Penske",
+      "continuity": false,
+      "dob": "1937-02-20",
+      "nationality": "American",
+      "years": [
+        1961,
+        1962
+      ]
+    },
+    "ryan": {
+      "code": "RYA",
+      "name": "Peter Ryan",
+      "continuity": false,
+      "dob": "1940-06-10",
+      "nationality": "Canadian",
+      "years": [
+        1961
+      ]
+    },
+    "sharp": {
+      "code": "SHA",
+      "name": "Hap Sharp",
+      "continuity": false,
+      "dob": "1928-01-01",
+      "nationality": "American",
+      "years": [
+        1961,
+        1962,
+        1963,
+        1964
+      ]
+    },
+    "hansgen": {
+      "code": "HNS",
+      "name": "Walt Hansgen",
+      "continuity": false,
+      "dob": "1919-10-28",
+      "nationality": "American",
+      "years": [
+        1961,
+        1963,
+        1964
+      ]
+    },
+    "ken_miles": {
+      "code": "MIL",
+      "name": "Ken Miles",
+      "continuity": false,
+      "dob": "1918-11-01",
+      "nationality": "British",
+      "years": [
+        1961
+      ]
+    },
+    "pon": {
+      "code": "PON",
+      "name": "Ben Pon",
+      "continuity": false,
+      "dob": "1936-12-09",
+      "nationality": "Dutch",
+      "years": [
+        1962
+      ]
+    },
+    "slotemaker": {
+      "code": "SLO",
+      "name": "Rob Slotemaker",
+      "continuity": false,
+      "dob": "1929-06-13",
+      "nationality": "Dutch",
+      "years": [
+        1962
+      ]
+    },
+    "siffert": {
+      "code": "SFF",
+      "name": "Jo Siffert",
+      "continuity": false,
+      "dob": "1936-07-07",
+      "nationality": "Swiss",
+      "years": [
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971
+      ]
+    },
+    "schiller": {
+      "code": "SHI",
+      "name": "Heinz Schiller",
+      "continuity": false,
+      "dob": "1930-01-25",
+      "nationality": "Swiss",
+      "years": [
+        1962
+      ]
+    },
+    "arundell": {
+      "code": "ARU",
+      "name": "Peter Arundell",
+      "continuity": false,
+      "dob": "1933-11-08",
+      "nationality": "British",
+      "years": [
+        1962,
+        1963,
+        1964,
+        1966
+      ]
+    },
+    "abate": {
+      "code": "ABA",
+      "name": "Carlo Abate",
+      "continuity": false,
+      "dob": "1932-07-10",
+      "nationality": "Italian",
+      "years": [
+        1962,
+        1963
+      ]
+    },
+    "settember": {
+      "code": "SET",
+      "name": "Tony Settember",
+      "continuity": false,
+      "dob": "1926-07-10",
+      "nationality": "American",
+      "years": [
+        1962,
+        1963
+      ]
+    },
+    "chamberlain": {
+      "code": "CMB",
+      "name": "Jay Chamberlain",
+      "continuity": false,
+      "dob": "1925-12-29",
+      "nationality": "American",
+      "years": [
+        1962
+      ]
+    },
+    "shelly": {
+      "code": "SLL",
+      "name": "Tony Shelly",
+      "continuity": false,
+      "dob": "1937-02-02",
+      "nationality": "New Zealander",
+      "years": [
+        1962
+      ]
+    },
+    "walter": {
+      "code": "WLT",
+      "name": "Heini Walter",
+      "continuity": false,
+      "dob": "1927-07-28",
+      "nationality": "Swiss",
+      "years": [
+        1962
+      ]
+    },
+    "kuhnke": {
+      "code": "KUH",
+      "name": "Kurt Kuhnke",
+      "continuity": false,
+      "dob": "1910-04-30",
+      "nationality": "German",
+      "years": [
+        1962
+      ]
+    },
+    "schroeder": {
+      "code": "SHR",
+      "name": "Rob Schroeder",
+      "continuity": false,
+      "dob": "1926-05-11",
+      "nationality": "British",
+      "years": [
+        1962
+      ]
+    },
+    "mayer": {
+      "code": "MYE",
+      "name": "Timmy Mayer",
+      "continuity": false,
+      "dob": "1938-02-22",
+      "nationality": "American",
+      "years": [
+        1962
+      ]
+    },
+    "lederle": {
+      "code": "LED",
+      "name": "Neville Lederle",
+      "continuity": false,
+      "dob": "1938-09-25",
+      "nationality": "South African",
+      "years": [
+        1962,
+        1963
+      ]
+    },
+    "love": {
+      "code": "LOV",
+      "name": "John Love",
+      "continuity": false,
+      "dob": "1924-12-07",
+      "nationality": "Rhodesian",
+      "years": [
+        1962,
+        1963,
+        1965,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972
+      ]
+    },
+    "johnstone": {
+      "code": "JNS",
+      "name": "Bruce Johnstone",
+      "continuity": false,
+      "dob": "1937-01-30",
+      "nationality": "South African",
+      "years": [
+        1962
+      ]
+    },
+    "pieterse": {
+      "code": "PIE",
+      "name": "Ernie Pieterse",
+      "continuity": false,
+      "dob": "1938-07-04",
+      "nationality": "South African",
+      "years": [
+        1962,
+        1963
+      ]
+    },
+    "serrurier": {
+      "code": "SRU",
+      "name": "Doug Serrurier",
+      "continuity": false,
+      "dob": "1920-12-09",
+      "nationality": "South African",
+      "years": [
+        1962,
+        1963
+      ]
+    },
+    "harris": {
+      "code": "HRR",
+      "name": "Mike Harris",
+      "continuity": false,
+      "dob": "1939-05-25",
+      "nationality": "South African",
+      "years": [
+        1962
+      ]
+    },
+    "hocking": {
+      "code": "HOC",
+      "name": "Gary Hocking",
+      "continuity": false,
+      "dob": "1937-09-30",
+      "nationality": "Rhodesian",
+      "years": [
+        1962
+      ]
+    },
+    "vyver": {
+      "code": "VDE",
+      "name": "Syd van der Vyver",
+      "continuity": false,
+      "dob": "1920-06-01",
+      "nationality": "South African",
+      "years": [
+        1962
+      ]
+    },
+    "tingle": {
+      "code": "TNG",
+      "name": "Sam Tingle",
+      "continuity": false,
+      "dob": "1921-08-24",
+      "nationality": "Rhodesian",
+      "years": [
+        1962,
+        1963,
+        1965,
+        1967,
+        1968,
+        1969
+      ]
+    },
+    "amon": {
+      "code": "AON",
+      "name": "Chris Amon",
+      "continuity": false,
+      "dob": "1943-07-20",
+      "nationality": "New Zealander",
+      "years": [
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976
+      ]
+    },
+    "scarfiotti": {
+      "code": "SRF",
+      "name": "Ludovico Scarfiotti",
+      "continuity": false,
+      "dob": "1933-10-18",
+      "nationality": "Italian",
+      "years": [
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968
+      ]
+    },
+    "mitter": {
+      "code": "MIT",
+      "name": "Gerhard Mitter",
+      "continuity": false,
+      "dob": "1935-08-30",
+      "nationality": "German",
+      "years": [
+        1963,
+        1964,
+        1965
+      ]
+    },
+    "hailwood": {
+      "code": "HAI",
+      "name": "Mike Hailwood",
+      "continuity": false,
+      "dob": "1940-04-02",
+      "nationality": "British",
+      "years": [
+        1963,
+        1964,
+        1965,
+        1971,
+        1972,
+        1973,
+        1974
+      ]
+    },
+    "anderson": {
+      "code": "AER",
+      "name": "Bob Anderson",
+      "continuity": false,
+      "dob": "1931-05-19",
+      "nationality": "British",
+      "years": [
+        1963,
+        1964,
+        1965,
+        1966,
+        1967
+      ]
+    },
+    "raby": {
+      "code": "RAB",
+      "name": "Ian Raby",
+      "continuity": false,
+      "dob": "1921-09-22",
+      "nationality": "British",
+      "years": [
+        1963,
+        1964,
+        1965
+      ]
+    },
+    "spence": {
+      "code": "SNC",
+      "name": "Mike Spence",
+      "continuity": false,
+      "dob": "1936-12-30",
+      "nationality": "British",
+      "years": [
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968
+      ]
+    },
+    "seiffert": {
+      "code": "SIF",
+      "name": "Günther Seiffert",
+      "continuity": false,
+      "dob": "1937-10-18",
+      "nationality": "German",
+      "years": [
+        1963
+      ]
+    },
+    "broeker": {
+      "code": "BOE",
+      "name": "Peter Broeker",
+      "continuity": false,
+      "dob": "1926-05-15",
+      "nationality": "Canadian",
+      "years": [
+        1963
+      ]
+    },
+    "rodriguez": {
+      "code": "RDR",
+      "name": "Pedro Rodríguez",
+      "continuity": false,
+      "dob": "1940-01-18",
+      "nationality": "Mexican",
+      "years": [
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971
+      ]
+    },
+    "vos": {
+      "code": "DVO",
+      "name": "Ernie de Vos",
+      "continuity": false,
+      "dob": "1941-07-01",
+      "nationality": "Dutch",
+      "years": [
+        1963
+      ]
+    },
+    "solana": {
+      "code": "SLA",
+      "name": "Moisés Solana",
+      "continuity": false,
+      "dob": "1935-12-26",
+      "nationality": "Mexican",
+      "years": [
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968
+      ]
+    },
+    "dochnal": {
+      "code": "DOC",
+      "name": "Frank Dochnal",
+      "continuity": false,
+      "dob": "1920-10-08",
+      "nationality": "American",
+      "years": [
+        1963
+      ]
+    },
+    "monarch": {
+      "code": "MNA",
+      "name": "Thomas Monarch",
+      "continuity": false,
+      "dob": "1945-09-03",
+      "nationality": "American",
+      "years": [
+        1963
+      ]
+    },
+    "blokdyk": {
+      "code": "BLO",
+      "name": "Trevor Blokdyk",
+      "continuity": false,
+      "dob": "1935-11-30",
+      "nationality": "South African",
+      "years": [
+        1963
+      ]
+    },
+    "niemann": {
+      "code": "NEM",
+      "name": "Brausch Niemann",
+      "continuity": false,
+      "dob": "1939-01-07",
+      "nationality": "South African",
+      "years": [
+        1963
+      ]
+    },
+    "klerk": {
+      "code": "DEK",
+      "name": "Peter de Klerk",
+      "continuity": false,
+      "dob": "1935-03-16",
+      "nationality": "South African",
+      "years": [
+        1963,
+        1965,
+        1969,
+        1970
+      ]
+    },
+    "prophet": {
+      "code": "POP",
+      "name": "David Prophet",
+      "continuity": false,
+      "dob": "1937-10-09",
+      "nationality": "British",
+      "years": [
+        1963,
+        1965
+      ]
+    },
+    "driver": {
+      "code": "DRI",
+      "name": "Paddy Driver",
+      "continuity": false,
+      "dob": "1934-05-13",
+      "nationality": "South African",
+      "years": [
+        1963,
+        1974
+      ]
+    },
+    "revson": {
+      "code": "RVS",
+      "name": "Peter Revson",
+      "continuity": false,
+      "dob": "1939-02-27",
+      "nationality": "American",
+      "years": [
+        1964,
+        1971,
+        1972,
+        1973,
+        1974
+      ]
+    },
+    "taylor": {
+      "code": "TLO",
+      "name": "John Taylor",
+      "continuity": false,
+      "dob": "1933-03-23",
+      "nationality": "British",
+      "years": [
+        1964,
+        1966
+      ]
+    },
+    "gardner": {
+      "code": "GAR",
+      "name": "Frank Gardner",
+      "continuity": false,
+      "dob": "1930-10-01",
+      "nationality": "Australian",
+      "years": [
+        1964,
+        1965
+      ]
+    },
+    "attwood": {
+      "code": "ATT",
+      "name": "Richard Attwood",
+      "continuity": false,
+      "dob": "1940-04-04",
+      "nationality": "British",
+      "years": [
+        1964,
+        1965,
+        1967,
+        1968,
+        1969
+      ]
+    },
+    "bucknum": {
+      "code": "BCK",
+      "name": "Ronnie Bucknum",
+      "continuity": false,
+      "dob": "1936-04-05",
+      "nationality": "American",
+      "years": [
+        1964,
+        1965,
+        1966
+      ]
+    },
+    "rindt": {
+      "code": "RIN",
+      "name": "Jochen Rindt",
+      "continuity": false,
+      "dob": "1942-04-18",
+      "nationality": "Austrian",
+      "years": [
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970
+      ]
+    },
+    "stewart": {
+      "code": "SRT",
+      "name": "Jackie Stewart",
+      "continuity": false,
+      "dob": "1939-06-11",
+      "nationality": "British",
+      "years": [
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1973
+      ]
+    },
+    "hawkins": {
+      "code": "HAW",
+      "name": "Paul Hawkins",
+      "continuity": false,
+      "dob": "1937-10-12",
+      "nationality": "Australian",
+      "years": [
+        1965
+      ]
+    },
+    "reed": {
+      "code": "RRE",
+      "name": "Ray Reed",
+      "continuity": false,
+      "dob": "1932-04-30",
+      "nationality": "South African",
+      "years": [
+        1965
+      ]
+    },
+    "clapham": {
+      "code": "CPH",
+      "name": "David Clapham",
+      "continuity": false,
+      "dob": "1931-05-18",
+      "nationality": "South African",
+      "years": [
+        1965
+      ]
+    },
+    "blignaut": {
+      "code": "BLI",
+      "name": "Alex Blignaut",
+      "continuity": false,
+      "dob": "1932-11-30",
+      "nationality": "South African",
+      "years": [
+        1965
+      ]
+    },
+    "hulme": {
+      "code": "HME",
+      "name": "Denny Hulme",
+      "continuity": false,
+      "dob": "1936-06-18",
+      "nationality": "New Zealander",
+      "years": [
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1973,
+        1974
+      ]
+    },
+    "rhodes": {
+      "code": "RHO",
+      "name": "John Rhodes",
+      "continuity": false,
+      "dob": "1927-08-18",
+      "nationality": "British",
+      "years": [
+        1965
+      ]
+    },
+    "geki": {
+      "code": "RSO",
+      "name": "Giacomo Russo",
+      "continuity": false,
+      "dob": "1937-10-23",
+      "nationality": "Italian",
+      "years": [
+        1965,
+        1966
+      ]
+    },
+    "bassi": {
+      "code": "BAS",
+      "name": "Giorgio Bassi",
+      "continuity": false,
+      "dob": "1934-01-20",
+      "nationality": "Italian",
+      "years": [
+        1965
+      ]
+    },
+    "bondurant": {
+      "code": "BON",
+      "name": "Bob Bondurant",
+      "continuity": false,
+      "dob": "1933-04-27",
+      "nationality": "American",
+      "years": [
+        1965,
+        1966
+      ]
+    },
+    "ligier": {
+      "code": "LIG",
+      "name": "Guy Ligier",
+      "continuity": false,
+      "dob": "1930-07-12",
+      "nationality": "French",
+      "years": [
+        1966,
+        1967
+      ]
+    },
+    "parkes": {
+      "code": "PAR",
+      "name": "Mike Parkes",
+      "continuity": false,
+      "dob": "1931-09-24",
+      "nationality": "British",
+      "years": [
+        1966,
+        1967
+      ]
+    },
+    "irwin": {
+      "code": "IRW",
+      "name": "Chris Irwin",
+      "continuity": false,
+      "dob": "1942-06-27",
+      "nationality": "British",
+      "years": [
+        1966,
+        1967
+      ]
+    },
+    "lawrence": {
+      "code": "LWR",
+      "name": "Chris Lawrence",
+      "continuity": false,
+      "dob": "1933-07-27",
+      "nationality": "British",
+      "years": [
+        1966
+      ]
+    },
+    "charlton": {
+      "code": "CRL",
+      "name": "Dave Charlton",
+      "continuity": false,
+      "dob": "1936-10-27",
+      "nationality": "South African",
+      "years": [
+        1967,
+        1968,
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975
+      ]
+    },
+    "botha": {
+      "code": "BTH",
+      "name": "Luki Botha",
+      "continuity": false,
+      "dob": "1930-01-16",
+      "nationality": "South African",
+      "years": [
+        1967
+      ]
+    },
+    "courage": {
+      "code": "CUR",
+      "name": "Piers Courage",
+      "continuity": false,
+      "dob": "1942-05-27",
+      "nationality": "British",
+      "years": [
+        1967,
+        1968,
+        1969,
+        1970
+      ]
+    },
+    "gavin": {
+      "code": "SER",
+      "name": "Johnny Servoz-Gavin",
+      "continuity": false,
+      "dob": "1942-01-18",
+      "nationality": "French",
+      "years": [
+        1967,
+        1968,
+        1969,
+        1970
+      ]
+    },
+    "hobbs": {
+      "code": "HOB",
+      "name": "David Hobbs",
+      "continuity": false,
+      "dob": "1939-06-09",
+      "nationality": "British",
+      "years": [
+        1967,
+        1968,
+        1971,
+        1974
+      ]
+    },
+    "rees": {
+      "code": "RES",
+      "name": "Alan Rees",
+      "continuity": false,
+      "dob": "1938-01-12",
+      "nationality": "British",
+      "years": [
+        1967
+      ]
+    },
+    "moser": {
+      "code": "MOS",
+      "name": "Silvio Moser",
+      "continuity": false,
+      "dob": "1941-04-24",
+      "nationality": "Swiss",
+      "years": [
+        1967,
+        1968,
+        1969,
+        1970,
+        1971
+      ]
+    },
+    "oliver": {
+      "code": "OIV",
+      "name": "Jackie Oliver",
+      "continuity": false,
+      "dob": "1942-08-14",
+      "nationality": "British",
+      "years": [
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1973,
+        1977
+      ]
+    },
+    "ickx": {
+      "code": "ICK",
+      "name": "Jacky Ickx",
+      "continuity": false,
+      "dob": "1945-01-01",
+      "nationality": "Belgian",
+      "years": [
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "hart": {
+      "code": "HRT",
+      "name": "Brian Hart",
+      "continuity": false,
+      "dob": "1936-09-07",
+      "nationality": "British",
+      "years": [
+        1967
+      ]
+    },
+    "hahne": {
+      "code": "HAH",
+      "name": "Hubert Hahne",
+      "continuity": false,
+      "dob": "1935-03-28",
+      "nationality": "German",
+      "years": [
+        1967,
+        1968
+      ]
+    },
+    "ahrens": {
+      "code": "AHR",
+      "name": "Kurt Ahrens",
+      "continuity": false,
+      "dob": "1940-04-19",
+      "nationality": "German",
+      "years": [
+        1967,
+        1968
+      ]
+    },
+    "jo_schlesser": {
+      "code": "SHL",
+      "name": "Jo Schlesser",
+      "continuity": false,
+      "dob": "1928-05-18",
+      "nationality": "French",
+      "years": [
+        1967,
+        1968
+      ]
+    },
+    "fisher": {
+      "code": "FSH",
+      "name": "Mike Fisher",
+      "continuity": false,
+      "dob": "1943-03-13",
+      "nationality": "American",
+      "years": [
+        1967
+      ]
+    },
+    "wietzes": {
+      "code": "WIE",
+      "name": "Eppie Wietzes",
+      "continuity": false,
+      "dob": "1938-05-28",
+      "nationality": "Canadian",
+      "years": [
+        1967,
+        1974
+      ]
+    },
+    "pease": {
+      "code": "PEA",
+      "name": "Al Pease",
+      "continuity": false,
+      "dob": "1921-10-15",
+      "nationality": "Canadian",
+      "years": [
+        1967,
+        1969
+      ]
+    },
+    "beltoise": {
+      "code": "BLT",
+      "name": "Jean-Pierre Beltoise",
+      "continuity": false,
+      "dob": "1937-04-26",
+      "nationality": "French",
+      "years": [
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1973,
+        1974
+      ]
+    },
+    "williams": {
+      "code": "WLI",
+      "name": "Jonathan Williams",
+      "continuity": false,
+      "dob": "1942-10-26",
+      "nationality": "British",
+      "years": [
+        1967
+      ]
+    },
+    "pretorius": {
+      "code": "PRE",
+      "name": "Jackie Pretorius",
+      "continuity": false,
+      "dob": "1934-11-22",
+      "nationality": "South African",
+      "years": [
+        1968,
+        1971,
+        1973
+      ]
+    },
+    "rooyen": {
+      "code": "VNR",
+      "name": "Basil van Rooyen",
+      "continuity": false,
+      "dob": "1939-04-19",
+      "nationality": "South African",
+      "years": [
+        1968,
+        1969
+      ]
+    },
+    "adamich": {
+      "code": "DEA",
+      "name": "Andrea de Adamich",
+      "continuity": false,
+      "dob": "1941-10-03",
+      "nationality": "Italian",
+      "years": [
+        1968,
+        1970,
+        1971,
+        1972,
+        1973
+      ]
+    },
+    "redman": {
+      "code": "RED",
+      "name": "Brian Redman",
+      "continuity": false,
+      "dob": "1937-03-09",
+      "nationality": "British",
+      "years": [
+        1968,
+        1971,
+        1972,
+        1973,
+        1974
+      ]
+    },
+    "elford": {
+      "code": "ELF",
+      "name": "Vic Elford",
+      "continuity": false,
+      "dob": "1935-06-10",
+      "nationality": "British",
+      "years": [
+        1968,
+        1969,
+        1971
+      ]
+    },
+    "widdows": {
+      "code": "WID",
+      "name": "Robin Widdows",
+      "continuity": false,
+      "dob": "1942-05-27",
+      "nationality": "British",
+      "years": [
+        1968
+      ]
+    },
+    "bell": {
+      "code": "BLL",
+      "name": "Derek Bell",
+      "continuity": false,
+      "dob": "1941-10-31",
+      "nationality": "British",
+      "years": [
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1974
+      ]
+    },
+    "pescarolo": {
+      "code": "PES",
+      "name": "Henri Pescarolo",
+      "continuity": false,
+      "dob": "1942-09-25",
+      "nationality": "French",
+      "years": [
+        1968,
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1976
+      ]
+    },
+    "brack": {
+      "code": "BAC",
+      "name": "Bill Brack",
+      "continuity": false,
+      "dob": "1935-12-26",
+      "nationality": "Canadian",
+      "years": [
+        1968,
+        1969,
+        1972
+      ]
+    },
+    "unser": {
+      "code": "USE",
+      "name": "Bobby Unser",
+      "continuity": false,
+      "dob": "1934-02-20",
+      "nationality": "American",
+      "years": [
+        1968
+      ]
+    },
+    "mario_andretti": {
+      "code": "MAA",
+      "name": "Mario Andretti",
+      "continuity": true,
+      "dob": "1940-02-28",
+      "nationality": "American",
+      "years": [
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "miles": {
+      "code": "MLE",
+      "name": "John Miles",
+      "continuity": false,
+      "dob": "1943-06-14",
+      "nationality": "British",
+      "years": [
+        1969,
+        1970
+      ]
+    },
+    "cordts": {
+      "code": "COR",
+      "name": "John Cordts",
+      "continuity": false,
+      "dob": "1935-07-23",
+      "nationality": "Canadian",
+      "years": [
+        1969
+      ]
+    },
+    "eaton": {
+      "code": "EAT",
+      "name": "George Eaton",
+      "continuity": false,
+      "dob": "1945-11-12",
+      "nationality": "Canadian",
+      "years": [
+        1969,
+        1970,
+        1971
+      ]
+    },
+    "stommelen": {
+      "code": "STO",
+      "name": "Rolf Stommelen",
+      "continuity": false,
+      "dob": "1943-07-11",
+      "nationality": "German",
+      "years": [
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1978
+      ]
+    },
+    "peterson": {
+      "code": "PSO",
+      "name": "Ronnie Peterson",
+      "continuity": false,
+      "dob": "1944-02-14",
+      "nationality": "Swedish",
+      "years": [
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978
+      ]
+    },
+    "giunti": {
+      "code": "GIU",
+      "name": "Ignazio Giunti",
+      "continuity": false,
+      "dob": "1941-08-30",
+      "nationality": "Italian",
+      "years": [
+        1970
+      ]
+    },
+    "regazzoni": {
+      "code": "REG",
+      "name": "Clay Regazzoni",
+      "continuity": true,
+      "dob": "1939-09-05",
+      "nationality": "Swiss",
+      "years": [
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "cevert": {
+      "code": "CEV",
+      "name": "François Cevert",
+      "continuity": false,
+      "dob": "1944-02-25",
+      "nationality": "French",
+      "years": [
+        1970,
+        1971,
+        1972,
+        1973
+      ]
+    },
+    "gethin": {
+      "code": "GET",
+      "name": "Peter Gethin",
+      "continuity": false,
+      "dob": "1940-02-21",
+      "nationality": "British",
+      "years": [
+        1970,
+        1971,
+        1972,
+        1973,
+        1974
+      ]
+    },
+    "emerson_fittipaldi": {
+      "code": "FIT",
+      "name": "Emerson Fittipaldi",
+      "continuity": true,
+      "dob": "1946-12-12",
+      "nationality": "Brazilian",
+      "years": [
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "schenken": {
+      "code": "SNK",
+      "name": "Tim Schenken",
+      "continuity": false,
+      "dob": "1943-09-26",
+      "nationality": "Australian",
+      "years": [
+        1970,
+        1971,
+        1972,
+        1973,
+        1974
+      ]
+    },
+    "wisell": {
+      "code": "WIS",
+      "name": "Reine Wisell",
+      "continuity": false,
+      "dob": "1941-09-30",
+      "nationality": "Swedish",
+      "years": [
+        1970,
+        1971,
+        1972,
+        1973,
+        1974
+      ]
+    },
+    "hutchison": {
+      "code": "HUT",
+      "name": "Gus Hutchison",
+      "continuity": false,
+      "dob": "1937-04-26",
+      "nationality": "American",
+      "years": [
+        1970
+      ]
+    },
+    "ganley": {
+      "code": "GAN",
+      "name": "Howden Ganley",
+      "continuity": false,
+      "dob": "1941-12-24",
+      "nationality": "New Zealander",
+      "years": [
+        1971,
+        1972,
+        1973,
+        1974
+      ]
+    },
+    "roig": {
+      "code": "SOL",
+      "name": "Alex Soler-Roig",
+      "continuity": false,
+      "dob": "1932-10-29",
+      "nationality": "Spanish",
+      "years": [
+        1971,
+        1972
+      ]
+    },
+    "lennep": {
+      "code": "VNL",
+      "name": "Gijs van Lennep",
+      "continuity": false,
+      "dob": "1942-03-16",
+      "nationality": "Dutch",
+      "years": [
+        1971,
+        1973,
+        1974,
+        1975
+      ]
+    },
+    "barber": {
+      "code": "BRB",
+      "name": "Skip Barber",
+      "continuity": false,
+      "dob": "1936-11-16",
+      "nationality": "American",
+      "years": [
+        1971,
+        1972
+      ]
+    },
+    "walker": {
+      "code": "WLK",
+      "name": "David Walker",
+      "continuity": false,
+      "dob": "1941-06-10",
+      "nationality": "Australian",
+      "years": [
+        1971,
+        1972
+      ]
+    },
+    "mazet": {
+      "code": "MZE",
+      "name": "François Mazet",
+      "continuity": false,
+      "dob": "1943-02-24",
+      "nationality": "French",
+      "years": [
+        1971
+      ]
+    },
+    "jean": {
+      "code": "JAN",
+      "name": "Max Jean",
+      "continuity": false,
+      "dob": "1943-07-27",
+      "nationality": "French",
+      "years": [
+        1971
+      ]
+    },
+    "galli": {
+      "code": "GAL",
+      "name": "Nanni Galli",
+      "continuity": false,
+      "dob": "1940-10-02",
+      "nationality": "Italian",
+      "years": [
+        1971,
+        1972,
+        1973
+      ]
+    },
+    "beuttler": {
+      "code": "BEU",
+      "name": "Mike Beuttler",
+      "continuity": false,
+      "dob": "1940-04-13",
+      "nationality": "British",
+      "years": [
+        1971,
+        1972,
+        1973
+      ]
+    },
+    "marko": {
+      "code": "MRK",
+      "name": "Helmut Marko",
+      "continuity": false,
+      "dob": "1943-04-27",
+      "nationality": "Austrian",
+      "years": [
+        1971,
+        1972
+      ]
+    },
+    "lauda": {
+      "code": "LAU",
+      "name": "Niki Lauda",
+      "continuity": true,
+      "dob": "1949-02-22",
+      "nationality": "Austrian",
+      "years": [
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "jarier": {
+      "code": "JAR",
+      "name": "Jean-Pierre Jarier",
+      "continuity": true,
+      "dob": "1946-07-10",
+      "nationality": "French",
+      "years": [
+        1971,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "donohue": {
+      "code": "DNO",
+      "name": "Mark Donohue",
+      "continuity": false,
+      "dob": "1937-03-18",
+      "nationality": "American",
+      "years": [
+        1971,
+        1974,
+        1975
+      ]
+    },
+    "Cannoc": {
+      "code": "CAN",
+      "name": "John Cannon",
+      "continuity": false,
+      "dob": "1933-06-21",
+      "nationality": "Canadian",
+      "years": [
+        1971
+      ]
+    },
+    "craft": {
+      "code": "CRA",
+      "name": "Chris Craft",
+      "continuity": false,
+      "dob": "1939-11-17",
+      "nationality": "British",
+      "years": [
+        1971
+      ]
+    },
+    "posey": {
+      "code": "POS",
+      "name": "Sam Posey",
+      "continuity": false,
+      "dob": "1944-05-26",
+      "nationality": "American",
+      "years": [
+        1971,
+        1972
+      ]
+    },
+    "reutemann": {
+      "code": "REU",
+      "name": "Carlos Reutemann",
+      "continuity": true,
+      "dob": "1942-04-12",
+      "nationality": "Argentine",
+      "years": [
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "pace": {
+      "code": "PAC",
+      "name": "Carlos Pace",
+      "continuity": false,
+      "dob": "1944-10-06",
+      "nationality": "Brazilian",
+      "years": [
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977
+      ]
+    },
+    "wilson_fittipaldi": {
+      "code": "FTT",
+      "name": "Wilson Fittipaldi",
+      "continuity": false,
+      "dob": "1943-12-25",
+      "nationality": "Brazilian",
+      "years": [
+        1972,
+        1973,
+        1975
+      ]
+    },
+    "depailler": {
+      "code": "DEP",
+      "name": "Patrick Depailler",
+      "continuity": true,
+      "dob": "1944-08-09",
+      "nationality": "French",
+      "years": [
+        1972,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "merzario": {
+      "code": "MRZ",
+      "name": "Arturo Merzario",
+      "continuity": false,
+      "dob": "1943-03-11",
+      "nationality": "Italian",
+      "years": [
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "migault": {
+      "code": "MIG",
+      "name": "François Migault",
+      "continuity": false,
+      "dob": "1944-12-04",
+      "nationality": "French",
+      "years": [
+        1972,
+        1974,
+        1975
+      ]
+    },
+    "scheckter": {
+      "code": "SCK",
+      "name": "Jody Scheckter",
+      "continuity": true,
+      "dob": "1950-01-29",
+      "nationality": "South African",
+      "years": [
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "bueno": {
+      "code": "BEN",
+      "name": "Luiz Bueno",
+      "continuity": false,
+      "dob": "1937-01-16",
+      "nationality": "Brazilian",
+      "years": [
+        1973
+      ]
+    },
+    "follmer": {
+      "code": "FOL",
+      "name": "George Follmer",
+      "continuity": false,
+      "dob": "1934-01-27",
+      "nationality": "American",
+      "years": [
+        1973
+      ]
+    },
+    "keizan": {
+      "code": "KEI",
+      "name": "Eddie Keizan",
+      "continuity": false,
+      "dob": "1944-09-12",
+      "nationality": "South African",
+      "years": [
+        1973,
+        1974,
+        1975
+      ]
+    },
+    "hunt": {
+      "code": "HUN",
+      "name": "James Hunt",
+      "continuity": false,
+      "dob": "1947-08-29",
+      "nationality": "British",
+      "years": [
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "purley": {
+      "code": "PUR",
+      "name": "David Purley",
+      "continuity": false,
+      "dob": "1945-01-26",
+      "nationality": "British",
+      "years": [
+        1973,
+        1977
+      ]
+    },
+    "opel": {
+      "code": "VNO",
+      "name": "Rikky von Opel",
+      "continuity": false,
+      "dob": "1947-10-14",
+      "nationality": "Liechtensteiner",
+      "years": [
+        1973,
+        1974
+      ]
+    },
+    "watson": {
+      "code": "WAT",
+      "name": "John Watson",
+      "continuity": true,
+      "dob": "1946-05-04",
+      "nationality": "British",
+      "years": [
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "mass": {
+      "code": "JMO",
+      "name": "Jochen Mass",
+      "continuity": true,
+      "dob": "1946-09-30",
+      "nationality": "German",
+      "years": [
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "williamson": {
+      "code": "WIA",
+      "name": "Roger Williamson",
+      "continuity": false,
+      "dob": "1948-02-02",
+      "nationality": "British",
+      "years": [
+        1973
+      ]
+    },
+    "mcrae": {
+      "code": "MCR",
+      "name": "Graham McRae",
+      "continuity": false,
+      "dob": "1940-03-05",
+      "nationality": "New Zealander",
+      "years": [
+        1973
+      ]
+    },
+    "edwards": {
+      "code": "EDW",
+      "name": "Guy Edwards",
+      "continuity": false,
+      "dob": "1942-12-30",
+      "nationality": "British",
+      "years": [
+        1974,
+        1976
+      ]
+    },
+    "robarts": {
+      "code": "ROB",
+      "name": "Richard Robarts",
+      "continuity": false,
+      "dob": "1944-09-22",
+      "nationality": "British",
+      "years": [
+        1974
+      ]
+    },
+    "stuck": {
+      "code": "STU",
+      "name": "Hans-Joachim Stuck",
+      "continuity": false,
+      "dob": "1951-01-01",
+      "nationality": "German",
+      "years": [
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "brambilla": {
+      "code": "BRA",
+      "name": "Vittorio Brambilla",
+      "continuity": true,
+      "dob": "1937-11-11",
+      "nationality": "Italian",
+      "years": [
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "ian_scheckter": {
+      "code": "SHE",
+      "name": "Ian Scheckter",
+      "continuity": false,
+      "dob": "1947-08-22",
+      "nationality": "South African",
+      "years": [
+        1974,
+        1975,
+        1976,
+        1977
+      ]
+    },
+    "belso": {
+      "code": "TBE",
+      "name": "Tom Belsø",
+      "continuity": false,
+      "dob": "1942-08-27",
+      "nationality": "Danish",
+      "years": [
+        1974
+      ]
+    },
+    "schuppan": {
+      "code": "SHU",
+      "name": "Vern Schuppan",
+      "continuity": false,
+      "dob": "1943-03-19",
+      "nationality": "Australian",
+      "years": [
+        1974,
+        1975,
+        1977
+      ]
+    },
+    "pilette": {
+      "code": "PLE",
+      "name": "Teddy Pilette",
+      "continuity": false,
+      "dob": "1942-07-26",
+      "nationality": "Belgian",
+      "years": [
+        1974
+      ]
+    },
+    "pryce": {
+      "code": "PRY",
+      "name": "Tom Pryce",
+      "continuity": false,
+      "dob": "1949-06-11",
+      "nationality": "British",
+      "years": [
+        1974,
+        1975,
+        1976,
+        1977
+      ]
+    },
+    "larrousse": {
+      "code": "LRO",
+      "name": "Gérard Larrousse",
+      "continuity": false,
+      "dob": "1940-05-23",
+      "nationality": "French",
+      "years": [
+        1974
+      ]
+    },
+    "kinnunen": {
+      "code": "KIN",
+      "name": "Leo Kinnunen",
+      "continuity": false,
+      "dob": "1943-08-05",
+      "nationality": "Finnish",
+      "years": [
+        1974
+      ]
+    },
+    "roos": {
+      "code": "ROO",
+      "name": "Bertil Roos",
+      "continuity": false,
+      "dob": "1943-10-12",
+      "nationality": "Swedish",
+      "years": [
+        1974
+      ]
+    },
+    "ashley": {
+      "code": "AHL",
+      "name": "Ian Ashley",
+      "continuity": false,
+      "dob": "1947-10-26",
+      "nationality": "British",
+      "years": [
+        1974,
+        1975,
+        1976,
+        1977
+      ]
+    },
+    "laffite": {
+      "code": "LAF",
+      "name": "Jacques Laffite",
+      "continuity": true,
+      "dob": "1943-11-21",
+      "nationality": "French",
+      "years": [
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "quester": {
+      "code": "QUE",
+      "name": "Dieter Quester",
+      "continuity": false,
+      "dob": "1939-05-30",
+      "nationality": "Austrian",
+      "years": [
+        1974
+      ]
+    },
+    "koinigg": {
+      "code": "KOI",
+      "name": "Helmuth Koinigg",
+      "continuity": false,
+      "dob": "1948-11-03",
+      "nationality": "Austrian",
+      "years": [
+        1974
+      ]
+    },
+    "wilds": {
+      "code": "WLD",
+      "name": "Mike Wilds",
+      "continuity": false,
+      "dob": "1946-01-07",
+      "nationality": "British",
+      "years": [
+        1974,
+        1975
+      ]
+    },
+    "dolhem": {
+      "code": "DOL",
+      "name": "José Dolhem",
+      "continuity": false,
+      "dob": "1944-04-26",
+      "nationality": "French",
+      "years": [
+        1974
+      ]
+    },
+    "tunmer": {
+      "code": "TUN",
+      "name": "Guy Tunmer",
+      "continuity": false,
+      "dob": "1948-12-01",
+      "nationality": "South African",
+      "years": [
+        1975
+      ]
+    },
+    "evans": {
+      "code": "EVA",
+      "name": "Bob Evans",
+      "continuity": false,
+      "dob": "1947-06-11",
+      "nationality": "British",
+      "years": [
+        1975,
+        1976
+      ]
+    },
+    "lombardi": {
+      "code": "LOM",
+      "name": "Lella Lombardi",
+      "continuity": false,
+      "dob": "1941-03-26",
+      "nationality": "Italian",
+      "years": [
+        1975,
+        1976
+      ]
+    },
+    "brise": {
+      "code": "TBR",
+      "name": "Tony Brise",
+      "continuity": false,
+      "dob": "1952-03-28",
+      "nationality": "British",
+      "years": [
+        1975
+      ]
+    },
+    "wunderink": {
+      "code": "WUN",
+      "name": "Roelof Wunderink",
+      "continuity": false,
+      "dob": "1948-12-12",
+      "nationality": "Dutch",
+      "years": [
+        1975
+      ]
+    },
+    "jones": {
+      "code": "JON",
+      "name": "Alan Jones",
+      "continuity": true,
+      "dob": "1946-11-02",
+      "nationality": "Australian",
+      "years": [
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "palm": {
+      "code": "PLM",
+      "name": "Torsten Palm",
+      "continuity": false,
+      "dob": "1947-07-23",
+      "nationality": "Swedish",
+      "years": [
+        1975
+      ]
+    },
+    "magee": {
+      "code": "MGE",
+      "name": "Damien Magee",
+      "continuity": false,
+      "dob": "1945-11-17",
+      "nationality": "British",
+      "years": [
+        1975
+      ]
+    },
+    "fushida": {
+      "code": "FUS",
+      "name": "Hiroshi Fushida",
+      "continuity": false,
+      "dob": "1946-03-10",
+      "nationality": "Japanese",
+      "years": [
+        1975
+      ]
+    },
+    "jabouille": {
+      "code": "JPJ",
+      "name": "Jean-Pierre Jabouille",
+      "continuity": true,
+      "dob": "1942-10-01",
+      "nationality": "French",
+      "years": [
+        1975,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "henton": {
+      "code": "HNT",
+      "name": "Brian Henton",
+      "continuity": true,
+      "dob": "1946-09-19",
+      "nationality": "British",
+      "years": [
+        1975,
+        1977
+      ]
+    },
+    "nicholson": {
+      "code": "NCH",
+      "name": "John Nicholson",
+      "continuity": false,
+      "dob": "1941-10-06",
+      "nationality": "New Zealander",
+      "years": [
+        1975
+      ]
+    },
+    "morgan": {
+      "code": "MRG",
+      "name": "Dave Morgan",
+      "continuity": false,
+      "dob": "1944-08-07",
+      "nationality": "British",
+      "years": [
+        1975
+      ]
+    },
+    "crawford": {
+      "code": "CAW",
+      "name": "Jim Crawford",
+      "continuity": false,
+      "dob": "1948-02-13",
+      "nationality": "British",
+      "years": [
+        1975
+      ]
+    },
+    "ertl": {
+      "code": "HAE",
+      "name": "Harald Ertl",
+      "continuity": true,
+      "dob": "1948-08-31",
+      "nationality": "Austrian",
+      "years": [
+        1975,
+        1976,
+        1977,
+        1978
+      ]
+    },
+    "lunger": {
+      "code": "LGE",
+      "name": "Brett Lunger",
+      "continuity": false,
+      "dob": "1945-11-14",
+      "nationality": "American",
+      "years": [
+        1975,
+        1976,
+        1977,
+        1978
+      ]
+    },
+    "vonlanthen": {
+      "code": "VLA",
+      "name": "Jo Vonlanthen",
+      "continuity": false,
+      "dob": "1942-05-31",
+      "nationality": "Swiss",
+      "years": [
+        1975
+      ]
+    },
+    "zorzi": {
+      "code": "ZOR",
+      "name": "Renzo Zorzi",
+      "continuity": false,
+      "dob": "1946-12-12",
+      "nationality": "Italian",
+      "years": [
+        1975,
+        1976,
+        1977
+      ]
+    },
+    "leclere": {
+      "code": "LCL",
+      "name": "Michel Leclère",
+      "continuity": false,
+      "dob": "1946-03-18",
+      "nationality": "French",
+      "years": [
+        1975,
+        1976
+      ]
+    },
+    "hoffmann": {
+      "code": "HOF",
+      "name": "Ingo Hoffmann",
+      "continuity": false,
+      "dob": "1953-02-28",
+      "nationality": "Brazilian",
+      "years": [
+        1976,
+        1977
+      ]
+    },
+    "nilsson": {
+      "code": "NIL",
+      "name": "Gunnar Nilsson",
+      "continuity": false,
+      "dob": "1948-11-20",
+      "nationality": "Swedish",
+      "years": [
+        1976,
+        1977
+      ]
+    },
+    "perkins": {
+      "code": "PRK",
+      "name": "Larry Perkins",
+      "continuity": false,
+      "dob": "1950-03-18",
+      "nationality": "Australian",
+      "years": [
+        1976,
+        1977
+      ]
+    },
+    "kessel": {
+      "code": "KES",
+      "name": "Loris Kessel",
+      "continuity": false,
+      "dob": "1950-04-01",
+      "nationality": "Swiss",
+      "years": [
+        1976
+      ]
+    },
+    "neve": {
+      "code": "NEV",
+      "name": "Patrick Nève",
+      "continuity": false,
+      "dob": "1949-10-13",
+      "nationality": "Belgian",
+      "years": [
+        1976,
+        1977
+      ]
+    },
+    "pesenti_rossi": {
+      "code": "PSE",
+      "name": "Alessandro Pesenti-Rossi",
+      "continuity": false,
+      "dob": "1942-08-31",
+      "nationality": "Italian",
+      "years": [
+        1976
+      ]
+    },
+    "binder": {
+      "code": "BIN",
+      "name": "Hans Binder",
+      "continuity": false,
+      "dob": "1948-06-12",
+      "nationality": "Austrian",
+      "years": [
+        1976,
+        1977
+      ]
+    },
+    "hayje": {
+      "code": "LUN",
+      "name": "Boy Lunger",
+      "continuity": false,
+      "dob": "1949-05-03",
+      "nationality": "Dutch",
+      "years": [
+        1976,
+        1977
+      ]
+    },
+    "andersson": {
+      "code": "ARS",
+      "name": "Conny Andersson",
+      "continuity": false,
+      "dob": "1939-12-28",
+      "nationality": "Swedish",
+      "years": [
+        1976
+      ]
+    },
+    "stuppacher": {
+      "code": "SUP",
+      "name": "Otto Stuppacher",
+      "continuity": false,
+      "dob": "1947-03-03",
+      "nationality": "Austrian",
+      "years": [
+        1976
+      ]
+    },
+    "ribeiro": {
+      "code": "RIB",
+      "name": "Alex Ribeiro",
+      "continuity": false,
+      "dob": "1948-11-07",
+      "nationality": "Brazilian",
+      "years": [
+        1976,
+        1977
+      ]
+    },
+    "brown": {
+      "code": "BOW",
+      "name": "Warwick Brown",
+      "continuity": false,
+      "dob": "1949-12-24",
+      "nationality": "Australian",
+      "years": [
+        1976
+      ]
+    },
+    "takahara": {
+      "code": "TKA",
+      "name": "Noritake Takahara",
+      "continuity": false,
+      "dob": "1951-06-06",
+      "nationality": "Japanese",
+      "years": [
+        1976,
+        1977
+      ]
+    },
+    "hasemi": {
+      "code": "HAS",
+      "name": "Masahiro Hasemi",
+      "continuity": false,
+      "dob": "1945-11-13",
+      "nationality": "Japanese",
+      "years": [
+        1976
+      ]
+    },
+    "hoshino": {
+      "code": "HOS",
+      "name": "Kazuyoshi Hoshino",
+      "continuity": false,
+      "dob": "1947-07-01",
+      "nationality": "Japanese",
+      "years": [
+        1976,
+        1977
+      ]
+    },
+    "villota": {
+      "code": "EMV",
+      "name": "Emilio de Villota",
+      "continuity": true,
+      "dob": "1946-07-26",
+      "nationality": "Spanish",
+      "years": [
+        1977
+      ]
+    },
+    "keegan": {
+      "code": "RKE",
+      "name": "Rupert Keegan",
+      "continuity": true,
+      "dob": "1955-02-26",
+      "nationality": "British",
+      "years": [
+        1977,
+        1978
+      ]
+    },
+    "patrese": {
+      "code": "PAT",
+      "name": "Riccardo Patrese",
+      "continuity": true,
+      "dob": "1954-04-17",
+      "nationality": "Italian",
+      "years": [
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "gilles_villeneuve": {
+      "code": "GVI",
+      "name": "Gilles Villeneuve",
+      "continuity": true,
+      "dob": "1950-01-18",
+      "nationality": "Canadian",
+      "years": [
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "tambay": {
+      "code": "TAM",
+      "name": "Patrick Tambay",
+      "continuity": true,
+      "dob": "1949-06-25",
+      "nationality": "French",
+      "years": [
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "rebaque": {
+      "code": "HRB",
+      "name": "Hector Rebaque",
+      "continuity": true,
+      "dob": "1956-02-05",
+      "nationality": "Mexican",
+      "years": [
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "giacomelli": {
+      "code": "GIA",
+      "name": "Bruno Giacomelli",
+      "continuity": true,
+      "dob": "1952-09-10",
+      "nationality": "Italian",
+      "years": [
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "ongais": {
+      "code": "ONG",
+      "name": "Danny Ongais",
+      "continuity": false,
+      "dob": "1942-05-21",
+      "nationality": "American",
+      "years": [
+        1977,
+        1978
+      ]
+    },
+    "takahashi": {
+      "code": "TAH",
+      "name": "Kunimitsu Takahashi",
+      "continuity": false,
+      "dob": "1940-01-29",
+      "nationality": "Japanese",
+      "years": [
+        1977
+      ]
+    },
+    "pironi": {
+      "code": "DPR",
+      "name": "Didier Pironi",
+      "continuity": true,
+      "dob": "1952-03-26",
+      "nationality": "French",
+      "years": [
+        1978,
+        1979
+      ]
+    },
+    "leoni": {
+      "code": "LEO",
+      "name": "Lamberto Leoni",
+      "continuity": false,
+      "dob": "1953-05-24",
+      "nationality": "Italian",
+      "years": [
+        1978
+      ]
+    },
+    "keke_rosberg": {
+      "code": "KEK",
+      "name": "Keke Rosberg",
+      "continuity": true,
+      "dob": "1948-12-06",
+      "nationality": "Finnish",
+      "years": [
+        1978,
+        1979
+      ]
+    },
+    "cheever": {
+      "code": "CHE",
+      "name": "Eddie Cheever",
+      "continuity": true,
+      "dob": "1958-01-10",
+      "nationality": "American",
+      "years": [
+        1978
+      ]
+    },
+    "arnoux": {
+      "code": "ARN",
+      "name": "René Arnoux",
+      "continuity": true,
+      "dob": "1948-07-04",
+      "nationality": "French",
+      "years": [
+        1978,
+        1979
+      ]
+    },
+    "daly": {
+      "code": "DAL",
+      "name": "Derek Daly",
+      "continuity": true,
+      "dob": "1953-03-11",
+      "nationality": "Irish",
+      "years": [
+        1978,
+        1979
+      ]
+    },
+    "piquet": {
+      "code": "PIQ",
+      "name": "Nelson Piquet",
+      "continuity": true,
+      "dob": "1952-08-17",
+      "nationality": "Brazilian",
+      "years": [
+        1978,
+        1979
+      ]
+    },
+    "rahal": {
+      "code": "RAH",
+      "name": "Bobby Rahal",
+      "continuity": false,
+      "dob": "1953-01-10",
+      "nationality": "American",
+      "years": [
+        1978
+      ]
+    },
+    "bleekemolen": {
+      "code": "BLE",
+      "name": "Michael Bleekemolen",
+      "continuity": false,
+      "dob": "1949-10-02",
+      "nationality": "Dutch",
+      "years": [
+        1978
+      ]
+    },
+    "angelis": {
+      "code": "EDA",
+      "name": "Elio de Angelis",
+      "continuity": true,
+      "dob": "1958-03-26",
+      "nationality": "Italian",
+      "years": [
+        1979
+      ]
+    },
+    "lammers": {
+      "code": "JLA",
+      "name": "Jan Lammers",
+      "continuity": true,
+      "dob": "1956-06-02",
+      "nationality": "Dutch",
+      "years": [
+        1979
+      ]
+    },
+    "gaillard": {
+      "code": "GAI",
+      "name": "Patrick Gaillard",
+      "continuity": false,
+      "dob": "1952-02-12",
+      "nationality": "French",
+      "years": [
+        1979
+      ]
+    },
+    "lees": {
+      "code": "GLE",
+      "name": "Geoff Lees",
+      "continuity": true,
+      "dob": "1951-05-01",
+      "nationality": "British",
+      "years": [
+        1979
+      ]
+    },
+    "zunino": {
+      "code": "RZU",
+      "name": "Ricardo Zunino",
+      "continuity": true,
+      "dob": "1949-04-13",
+      "nationality": "Argentine",
+      "years": [
+        1979
+      ]
+    },
+    "surer": {
+      "code": "MSR",
+      "name": "Marc Surer",
+      "continuity": true,
+      "dob": "1951-09-18",
+      "nationality": "Swiss",
+      "years": [
+        1979
+      ]
+    }
+  },
+  "constructors": {
+    "alfa": {
+      "code": "ARO",
+      "name": "Alfa Romeo",
+      "continuity": true,
+      "nationality": "Swiss",
+      "years": [
+        1950,
+        1951,
+        1963,
+        1965,
+        1979
+      ]
+    },
+    "lago": {
+      "code": "LAG",
+      "name": "Talbot-Lago",
+      "continuity": false,
+      "nationality": "French",
+      "years": [
+        1950,
+        1951
+      ]
+    },
+    "era": {
+      "code": "ERA",
+      "name": "ERA",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1950,
+        1951,
+        1952
+      ]
+    },
+    "maserati": {
+      "code": "MSE",
+      "name": "Maserati",
+      "continuity": false,
+      "nationality": "Italian",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "alta": {
+      "code": "ALT",
+      "name": "Alta",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1950,
+        1951,
+        1952
+      ]
+    },
+    "ferrari": {
+      "code": "FER",
+      "name": "Ferrari",
+      "continuity": true,
+      "nationality": "Italian",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "simca": {
+      "code": "SIM",
+      "name": "Simca",
+      "continuity": false,
+      "nationality": "French",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953
+      ]
+    },
+    "cooper": {
+      "code": "COO",
+      "name": "Cooper",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1950,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1962
+      ]
+    },
+    "kurtis_kraft": {
+      "code": "KRA",
+      "name": "Kurtis Kraft",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "deidt": {
+      "code": "DEI",
+      "name": "Deidt",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1952
+      ]
+    },
+    "moore": {
+      "code": "MOO",
+      "name": "Moore",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1959
+      ]
+    },
+    "lesovsky": {
+      "code": "LES",
+      "name": "Lesovsky",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "nichels": {
+      "code": "NIC",
+      "name": "Nichels",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1950,
+        1954
+      ]
+    },
+    "marchese": {
+      "code": "MCH",
+      "name": "Marchese",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1950,
+        1951
+      ]
+    },
+    "stevens": {
+      "code": "SEV",
+      "name": "Stevens",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1950,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956
+      ]
+    },
+    "langley": {
+      "code": "LNG",
+      "name": "Langley",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1950
+      ]
+    },
+    "ewing": {
+      "code": "EWI",
+      "name": "Ewing",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1950,
+        1960
+      ]
+    },
+    "rae": {
+      "code": "RAE",
+      "name": "Rae",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1950
+      ]
+    },
+    "olson": {
+      "code": "OLS",
+      "name": "Olson",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1950
+      ]
+    },
+    "wetteroth": {
+      "code": "WET",
+      "name": "Wetteroth",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1950
+      ]
+    },
+    "snowberger": {
+      "code": "SNO",
+      "name": "Snowberger",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1950
+      ]
+    },
+    "adams": {
+      "code": "ADA",
+      "name": "Adams",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1950
+      ]
+    },
+    "watson": {
+      "code": "WAT",
+      "name": "Watson",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "milano": {
+      "code": "MIL",
+      "name": "Milano",
+      "continuity": false,
+      "nationality": "Italian",
+      "years": [
+        1950
+      ]
+    },
+    "hwm": {
+      "code": "HWM",
+      "name": "HWM",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1951,
+        1952,
+        1953,
+        1954
+      ]
+    },
+    "veritas": {
+      "code": "VER",
+      "name": "Veritas",
+      "continuity": false,
+      "nationality": "German",
+      "years": [
+        1951,
+        1952,
+        1953
+      ]
+    },
+    "sherman": {
+      "code": "SHE",
+      "name": "Sherman",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1951,
+        1952
+      ]
+    },
+    "schroeder": {
+      "code": "SCH",
+      "name": "Schroeder",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1951,
+        1953,
+        1954,
+        1955
+      ]
+    },
+    "kuzma": {
+      "code": "KUZ",
+      "name": "Kuzma",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "pawl": {
+      "code": "PAW",
+      "name": "Pawl",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1951,
+        1954,
+        1955
+      ]
+    },
+    "hall": {
+      "code": "HAL",
+      "name": "Hall",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1951
+      ]
+    },
+    "bromme": {
+      "code": "BRO",
+      "name": "Bromme",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1951,
+        1952,
+        1953,
+        1954
+      ]
+    },
+    "trevis": {
+      "code": "TRE",
+      "name": "Trevis",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1951,
+        1952,
+        1955,
+        1960
+      ]
+    },
+    "brm": {
+      "code": "BRR",
+      "name": "BRM",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1951,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977
+      ]
+    },
+    "osca": {
+      "code": "OCA",
+      "name": "OSCA",
+      "continuity": false,
+      "nationality": "Italian",
+      "years": [
+        1951,
+        1952,
+        1953
+      ]
+    },
+    "gordini": {
+      "code": "GOR",
+      "name": "Gordini",
+      "continuity": false,
+      "nationality": "French",
+      "years": [
+        1952,
+        1953,
+        1954,
+        1955,
+        1956
+      ]
+    },
+    "frazer_nash": {
+      "code": "NAS",
+      "name": "Frazer Nash",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1952
+      ]
+    },
+    "afm": {
+      "code": "AFM",
+      "name": "AFM",
+      "continuity": false,
+      "nationality": "German",
+      "years": [
+        1952,
+        1953
+      ]
+    },
+    "butterworth": {
+      "code": "BUT",
+      "name": "Aston Butterworth",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1952
+      ]
+    },
+    "connaught": {
+      "code": "CON",
+      "name": "Connaught",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959
+      ]
+    },
+    "bmw": {
+      "code": "BMW",
+      "name": "BMW",
+      "continuity": false,
+      "nationality": "German",
+      "years": [
+        1952,
+        1953
+      ]
+    },
+    "turner": {
+      "code": "TUR",
+      "name": "Turner",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1953
+      ]
+    },
+    "del_roy": {
+      "code": "ROY",
+      "name": "Del Roy",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1953
+      ]
+    },
+    "emw": {
+      "code": "EMW",
+      "name": "EMW",
+      "continuity": false,
+      "nationality": "East German",
+      "years": [
+        1953
+      ]
+    },
+    "phillips": {
+      "code": "PHI",
+      "name": "Phillips",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "pankratz": {
+      "code": "PAN",
+      "name": "Pankratz",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1954,
+        1955
+      ]
+    },
+    "mercedes": {
+      "code": "MER",
+      "name": "Mercedes",
+      "continuity": true,
+      "nationality": "German",
+      "years": [
+        1954,
+        1955
+      ]
+    },
+    "vanwall": {
+      "code": "VAN",
+      "name": "Vanwall",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "klenk": {
+      "code": "KLE",
+      "name": "Klenk",
+      "continuity": false,
+      "nationality": "German",
+      "years": [
+        1954
+      ]
+    },
+    "lancia": {
+      "code": "LAN",
+      "name": "Lancia",
+      "continuity": false,
+      "nationality": "Italian",
+      "years": [
+        1954,
+        1955
+      ]
+    },
+    "epperly": {
+      "code": "EPP",
+      "name": "Epperly",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1955,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "arzani-volpini": {
+      "code": "VOL",
+      "name": "Arzani-Volpini",
+      "continuity": false,
+      "nationality": "Italian",
+      "years": [
+        1955
+      ]
+    },
+    "bugatti": {
+      "code": "BUG",
+      "name": "Bugatti",
+      "continuity": false,
+      "nationality": "French",
+      "years": [
+        1956
+      ]
+    },
+    "emeryson": {
+      "code": "EME",
+      "name": "Emeryson",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1956,
+        1961,
+        1962
+      ]
+    },
+    "dunn": {
+      "code": "DUN",
+      "name": "Dunn",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1957,
+        1958,
+        1959
+      ]
+    },
+    "porsche": {
+      "code": "PRS",
+      "name": "Porsche",
+      "continuity": false,
+      "nationality": "German",
+      "years": [
+        1957,
+        1958,
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964
+      ]
+    },
+    "team_lotus": {
+      "code": "LOT",
+      "name": "Team Lotus",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1958,
+        1959,
+        1960,
+        1962,
+        1963,
+        1970,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "cooper-climax": {
+      "code": "CCL",
+      "name": "Cooper-Climax",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1967,
+        1968
+      ]
+    },
+    "cooper-maserati": {
+      "code": "MAS",
+      "name": "Cooper-Maserati",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1959,
+        1960,
+        1961,
+        1963,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969
+      ]
+    },
+    "elder": {
+      "code": "ELD",
+      "name": "Elder",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1959
+      ]
+    },
+    "vhristensen": {
+      "code": "CHR",
+      "name": "Christensen",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1959,
+        1960
+      ]
+    },
+    "sutton": {
+      "code": "SUT",
+      "name": "Sutton",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1959
+      ]
+    },
+    "aston_martin": {
+      "code": "AMR",
+      "name": "Aston Martin",
+      "continuity": true,
+      "nationality": "British",
+      "years": [
+        1959,
+        1960
+      ]
+    },
+    "cooper-borgward": {
+      "code": "CBO",
+      "name": "Cooper-Borgward",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1959
+      ]
+    },
+    "jbw": {
+      "code": "JBW",
+      "name": "JBW",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1959,
+        1960,
+        1961
+      ]
+    },
+    "cooper-osca": {
+      "code": "OSC",
+      "name": "Cooper-OSCA",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1959
+      ]
+    },
+    "tec-mec": {
+      "code": "MEC",
+      "name": "Tec-Mec",
+      "continuity": false,
+      "nationality": "Italian",
+      "years": [
+        1959
+      ]
+    },
+    "behra-porsche": {
+      "code": "POR",
+      "name": "Behra-Porsche",
+      "continuity": false,
+      "nationality": "Italian",
+      "years": [
+        1960
+      ]
+    },
+    "meskowski": {
+      "code": "MES",
+      "name": "Meskowski",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1960
+      ]
+    },
+    "scarab": {
+      "code": "SCA",
+      "name": "Scarab",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1960
+      ]
+    },
+    "cooper-castellotti": {
+      "code": "CAS",
+      "name": "Cooper-Castellotti",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1960
+      ]
+    },
+    "lotus-climax": {
+      "code": "LOC",
+      "name": "Lotus-Climax",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967
+      ]
+    },
+    "de_tomaso-osca": {
+      "code": "DET",
+      "name": "De Tomaso-Osca",
+      "continuity": false,
+      "nationality": "Italian",
+      "years": [
+        1961
+      ]
+    },
+    "gilby": {
+      "code": "GIL",
+      "name": "Gilby",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1961,
+        1962,
+        1963
+      ]
+    },
+    "ferguson": {
+      "code": "FRG",
+      "name": "Ferguson",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1961
+      ]
+    },
+    "mbm": {
+      "code": "MBM",
+      "name": "MBM",
+      "continuity": false,
+      "nationality": "Swiss",
+      "years": [
+        1961
+      ]
+    },
+    "lotus-maserati": {
+      "code": "LMA",
+      "name": "Lotus-Maserati",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1961,
+        1963
+      ]
+    },
+    "de_tomaso-alfa_romeo": {
+      "code": "DTO",
+      "name": "De Tomaso-Alfa Romeo",
+      "continuity": false,
+      "nationality": "Italian",
+      "years": [
+        1961,
+        1962
+      ]
+    },
+    "lola": {
+      "code": "LOL",
+      "name": "Lola",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1962,
+        1963,
+        1967,
+        1968,
+        1974,
+        1975
+      ]
+    },
+    "lotus-brm": {
+      "code": "LBR",
+      "name": "Lotus-BRM",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967
+      ]
+    },
+    "enb": {
+      "code": "ENB",
+      "name": "ENB",
+      "continuity": false,
+      "nationality": "Belgian",
+      "years": [
+        1962
+      ]
+    },
+    "brabham": {
+      "code": "BRA",
+      "name": "Brabham",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1962,
+        1963,
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1977,
+        1978
+      ]
+    },
+    "lotus-borgward": {
+      "code": "LBO",
+      "name": "Lotus-Borgward",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1962
+      ]
+    },
+    "lds": {
+      "code": "LDS",
+      "name": "LDS",
+      "continuity": false,
+      "nationality": "South African",
+      "years": [
+        1962,
+        1963,
+        1968
+      ]
+    },
+    "cooper-alfa_romeo": {
+      "code": "CAL",
+      "name": "Cooper-Alfa Romeo",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1962
+      ]
+    },
+    "ats": {
+      "code": "ATS",
+      "name": "ATS",
+      "continuity": false,
+      "nationality": "Italian",
+      "years": [
+        1963,
+        1978,
+        1979
+      ]
+    },
+    "scirocco": {
+      "code": "SCI",
+      "name": "Scirocco",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1963,
+        1964
+      ]
+    },
+    "tomaso": {
+      "code": "TOM",
+      "name": "De Tomaso",
+      "continuity": false,
+      "nationality": "Italian",
+      "years": [
+        1963,
+        1970
+      ]
+    },
+    "brp": {
+      "code": "BRP",
+      "name": "BRP",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1963,
+        1964
+      ]
+    },
+    "stebro": {
+      "code": "STE",
+      "name": "Stebro",
+      "continuity": false,
+      "nationality": "Canadian",
+      "years": [
+        1963
+      ]
+    },
+    "lotus-ford": {
+      "code": "LFO",
+      "name": "Lotus-Ford",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1963,
+        1967,
+        1968,
+        1969,
+        1971
+      ]
+    },
+    "brabham-climax": {
+      "code": "CLI",
+      "name": "Brabham-Climax",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969
+      ]
+    },
+    "brabham-brm": {
+      "code": "BRM",
+      "name": "Brabham-BRM",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1964,
+        1965,
+        1966
+      ]
+    },
+    "brabham-ford": {
+      "code": "FOR",
+      "name": "Brabham-Ford",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1964,
+        1965,
+        1967,
+        1969,
+        1976,
+        1979
+      ]
+    },
+    "honda": {
+      "code": "HON",
+      "name": "Honda",
+      "continuity": false,
+      "nationality": "Japanese",
+      "years": [
+        1964,
+        1965,
+        1966,
+        1967,
+        1968
+      ]
+    },
+    "derrington": {
+      "code": "DER",
+      "name": "Derrington",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1964
+      ]
+    },
+    "lds-alfa_romeo": {
+      "code": "LAL",
+      "name": "LDS-Alfa Romeo",
+      "continuity": false,
+      "nationality": "South African",
+      "years": [
+        1965
+      ]
+    },
+    "re": {
+      "code": "RLP",
+      "name": "RE",
+      "continuity": false,
+      "nationality": "Rhodesian",
+      "years": [
+        1965
+      ]
+    },
+    "brabham-repco": {
+      "code": "REP",
+      "name": "Brabham-Repco",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1966,
+        1967,
+        1968,
+        1969
+      ]
+    },
+    "mclaren-ford": {
+      "code": "MCF",
+      "name": "McLaren-Ford",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1966,
+        1967,
+        1968,
+        1969,
+        1970
+      ]
+    },
+    "eagle-climax": {
+      "code": "ECL",
+      "name": "Eagle-Climax",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1966,
+        1967,
+        1969
+      ]
+    },
+    "mclaren-seren": {
+      "code": "SER",
+      "name": "McLaren-Serenissima",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1966
+      ]
+    },
+    "cooper-ferrari": {
+      "code": "CFE",
+      "name": "Cooper-Ferrari",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1966
+      ]
+    },
+    "shannon": {
+      "code": "SAN",
+      "name": "Shannon",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1966
+      ]
+    },
+    "eagle-weslake": {
+      "code": "WES",
+      "name": "Eagle-Weslake",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1966,
+        1967,
+        1968
+      ]
+    },
+    "lds-climax": {
+      "code": "LCL",
+      "name": "LDS-Climax",
+      "continuity": false,
+      "nationality": "South African",
+      "years": [
+        1967
+      ]
+    },
+    "mclaren-brm": {
+      "code": "MBR",
+      "name": "McLaren-BRM",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1967,
+        1968
+      ]
+    },
+    "matra": {
+      "code": "MAT",
+      "name": "Matra",
+      "continuity": false,
+      "nationality": "French",
+      "years": [
+        1967,
+        1968,
+        1970,
+        1971,
+        1972
+      ]
+    },
+    "cooper-ats": {
+      "code": "CAT",
+      "name": "Cooper-ATS",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1967
+      ]
+    },
+    "protos": {
+      "code": "PRO",
+      "name": "Protos",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1967
+      ]
+    },
+    "matra-ford": {
+      "code": "MAF",
+      "name": "Matra-Ford",
+      "continuity": false,
+      "nationality": "French",
+      "years": [
+        1968,
+        1969
+      ]
+    },
+    "cooper-brm": {
+      "code": "CBR",
+      "name": "Cooper-BRM",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1968
+      ]
+    },
+    "mclaren": {
+      "code": "MCL",
+      "name": "McLaren",
+      "continuity": true,
+      "nationality": "British",
+      "years": [
+        1968,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "brm-ford": {
+      "code": "BFO",
+      "name": "BRM-Ford",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1969
+      ]
+    },
+    "march": {
+      "code": "MRC",
+      "name": "March",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1970,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977
+      ]
+    },
+    "mclaren-alfa_romeo": {
+      "code": "MCA",
+      "name": "McLaren-Alfa Romeo",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1970
+      ]
+    },
+    "surtees": {
+      "code": "SUR",
+      "name": "Surtees",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978
+      ]
+    },
+    "bellasi": {
+      "code": "BEL",
+      "name": "Bellasi",
+      "continuity": false,
+      "nationality": "Swiss",
+      "years": [
+        1970,
+        1971
+      ]
+    },
+    "tyrrell": {
+      "code": "TYR",
+      "name": "Tyrrell",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "march-ford": {
+      "code": "MFO",
+      "name": "March-Ford",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1971
+      ]
+    },
+    "march-alfa_romeo": {
+      "code": "MAL",
+      "name": "March-Alfa Romeo",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1971
+      ]
+    },
+    "lotus-pw": {
+      "code": "WHI",
+      "name": "Lotus-Pratt &amp; Whitney",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1971
+      ]
+    },
+    "tecno": {
+      "code": "TEC",
+      "name": "Tecno",
+      "continuity": false,
+      "nationality": "Italian",
+      "years": [
+        1972,
+        1973
+      ]
+    },
+    "politoys": {
+      "code": "POL",
+      "name": "Politoys",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1972
+      ]
+    },
+    "connew": {
+      "code": "CNN",
+      "name": "Connew",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1972
+      ]
+    },
+    "iso_marlboro": {
+      "code": "MAR",
+      "name": "Iso Marlboro",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1973,
+        1974
+      ]
+    },
+    "shadow": {
+      "code": "SHA",
+      "name": "Shadow",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1973,
+        1974,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "ensign": {
+      "code": "ENS",
+      "name": "Ensign",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "hesketh": {
+      "code": "HES",
+      "name": "Hesketh",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1974,
+        1975,
+        1976,
+        1977,
+        1978
+      ]
+    },
+    "trojan": {
+      "code": "TRO",
+      "name": "Trojan",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1974
+      ]
+    },
+    "amon": {
+      "code": "AMO",
+      "name": "Amon",
+      "continuity": false,
+      "nationality": "New Zealander",
+      "years": [
+        1974
+      ]
+    },
+    "token": {
+      "code": "TOK",
+      "name": "Token",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1974
+      ]
+    },
+    "parnelli": {
+      "code": "PAR",
+      "name": "Parnelli",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1974,
+        1975,
+        1976
+      ]
+    },
+    "penske": {
+      "code": "PEN",
+      "name": "Penske",
+      "continuity": false,
+      "nationality": "American",
+      "years": [
+        1974,
+        1975,
+        1976,
+        1977
+      ]
+    },
+    "shadow-ford": {
+      "code": "SFO",
+      "name": "Shadow-Ford",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1975
+      ]
+    },
+    "williams": {
+      "code": "WIL",
+      "name": "Williams",
+      "continuity": true,
+      "nationality": "British",
+      "years": [
+        1975,
+        1976,
+        1978,
+        1979
+      ]
+    },
+    "fittipaldi": {
+      "code": "FIT",
+      "name": "Fittipaldi",
+      "continuity": false,
+      "nationality": "Brazilian",
+      "years": [
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "hill": {
+      "code": "HIL",
+      "name": "Embassy Hill",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1975
+      ]
+    },
+    "maki": {
+      "code": "MAK",
+      "name": "Maki",
+      "continuity": false,
+      "nationality": "Japanese",
+      "years": [
+        1975
+      ]
+    },
+    "lyncar": {
+      "code": "LYN",
+      "name": "Lyncar",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1975
+      ]
+    },
+    "shadow-matra": {
+      "code": "SMA",
+      "name": "Shadow-Matra",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1975
+      ]
+    },
+    "wolf": {
+      "code": "WOL",
+      "name": "Wolf",
+      "continuity": false,
+      "nationality": "Canadian",
+      "years": [
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "brabham-alfa_romeo": {
+      "code": "ROM",
+      "name": "Brabham-Alfa Romeo",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1976,
+        1979
+      ]
+    },
+    "ligier": {
+      "code": "LIG",
+      "name": "Ligier",
+      "continuity": false,
+      "nationality": "French",
+      "years": [
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "boro": {
+      "code": "BOR",
+      "name": "Boro",
+      "continuity": false,
+      "nationality": "Dutch",
+      "years": [
+        1976,
+        1977
+      ]
+    },
+    "kojima": {
+      "code": "KOJ",
+      "name": "Kojima",
+      "continuity": false,
+      "nationality": "Japanese",
+      "years": [
+        1976,
+        1977
+      ]
+    },
+    "lec": {
+      "code": "LEC",
+      "name": "LEC",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1977
+      ]
+    },
+    "renault": {
+      "code": "REN",
+      "name": "Renault",
+      "continuity": false,
+      "nationality": "French",
+      "years": [
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "merzario": {
+      "code": "MRZ",
+      "name": "Merzario",
+      "continuity": false,
+      "nationality": "Italian",
+      "years": [
+        1978,
+        1979
+      ]
+    },
+    "arrows": {
+      "code": "ARR",
+      "name": "Arrows",
+      "continuity": false,
+      "nationality": "British",
+      "years": [
+        1978,
+        1979
+      ]
+    },
+    "theodore": {
+      "code": "THE",
+      "name": "Theodore",
+      "continuity": false,
+      "nationality": "Hong Kong",
+      "years": [
+        1978
+      ]
+    },
+    "martini": {
+      "code": "MRT",
+      "name": "Martini",
+      "continuity": false,
+      "nationality": "French",
+      "years": [
+        1978
+      ]
+    },
+    "rebaque": {
+      "code": "REB",
+      "name": "Rebaque",
+      "continuity": false,
+      "nationality": "Mexican",
+      "years": [
+        1979
+      ]
+    }
+  },
+  "circuits": {
+    "silverstone": {
+      "code": "GBR",
+      "name": "Silverstone Circuit",
+      "continuity": true,
+      "locality": "Silverstone",
+      "country": "UK",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1956,
+        1958,
+        1960,
+        1963,
+        1965,
+        1967,
+        1969,
+        1971,
+        1973,
+        1975,
+        1977,
+        1979
+      ]
+    },
+    "monaco": {
+      "code": "MCO",
+      "name": "Circuit de Monaco",
+      "continuity": true,
+      "locality": "Monte Carlo",
+      "country": "Monaco",
+      "years": [
+        1950,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "indianapolis": {
+      "code": "IMO",
+      "name": "Indianapolis Motor Speedway",
+      "continuity": false,
+      "locality": "Indianapolis",
+      "country": "USA",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960
+      ]
+    },
+    "bremgarten": {
+      "code": "BRE",
+      "name": "Circuit Bremgarten",
+      "continuity": false,
+      "locality": "Bern",
+      "country": "Switzerland",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954
+      ]
+    },
+    "spa": {
+      "code": "BEL",
+      "name": "Circuit de Spa-Francorchamps",
+      "continuity": true,
+      "locality": "Spa",
+      "country": "Belgium",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1958,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1970
+      ]
+    },
+    "reims": {
+      "code": "GUE",
+      "name": "Reims-Gueux",
+      "continuity": false,
+      "locality": "Reims",
+      "country": "France",
+      "years": [
+        1950,
+        1951,
+        1953,
+        1954,
+        1956,
+        1958,
+        1959,
+        1960,
+        1961,
+        1963,
+        1966
+      ]
+    },
+    "monza": {
+      "code": "ANA",
+      "name": "Autodromo Nazionale di Monza",
+      "continuity": false,
+      "locality": "Monza",
+      "country": "Italy",
+      "years": [
+        1950,
+        1951,
+        1952,
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "nurburgring": {
+      "code": "NUR",
+      "name": "Nürburgring",
+      "continuity": false,
+      "locality": "Nürburg",
+      "country": "Germany",
+      "years": [
+        1951,
+        1952,
+        1953,
+        1954,
+        1956,
+        1957,
+        1958,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976
+      ]
+    },
+    "pedralbes": {
+      "code": "PED",
+      "name": "Circuit de Pedralbes",
+      "continuity": false,
+      "locality": "Barcelona",
+      "country": "Spain",
+      "years": [
+        1951,
+        1954
+      ]
+    },
+    "essarts": {
+      "code": "ESS",
+      "name": "Rouen-Les-Essarts",
+      "continuity": false,
+      "locality": "Rouen",
+      "country": "France",
+      "years": [
+        1952,
+        1957,
+        1962,
+        1964,
+        1968
+      ]
+    },
+    "zandvoort": {
+      "code": "ZAN",
+      "name": "Circuit Park Zandvoort",
+      "continuity": false,
+      "locality": "Zandvoort",
+      "country": "Netherlands",
+      "years": [
+        1952,
+        1953,
+        1955,
+        1958,
+        1959,
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "galvez": {
+      "code": "GAL",
+      "name": "Autódromo Juan y Oscar Gálvez",
+      "continuity": false,
+      "locality": "Buenos Aires",
+      "country": "Argentina",
+      "years": [
+        1953,
+        1954,
+        1955,
+        1956,
+        1957,
+        1958,
+        1960,
+        1972,
+        1973,
+        1974,
+        1975,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "aintree": {
+      "code": "AIN",
+      "name": "Aintree",
+      "continuity": false,
+      "locality": "Liverpool",
+      "country": "UK",
+      "years": [
+        1955,
+        1957,
+        1959,
+        1961,
+        1962
+      ]
+    },
+    "pescara": {
+      "code": "PCI",
+      "name": "Pescara Circuit",
+      "continuity": false,
+      "locality": "Pescara",
+      "country": "Italy",
+      "years": [
+        1957
+      ]
+    },
+    "boavista": {
+      "code": "BOA",
+      "name": "Circuito da Boavista",
+      "continuity": false,
+      "locality": "Oporto",
+      "country": "Portugal",
+      "years": [
+        1958,
+        1960
+      ]
+    },
+    "ain-diab": {
+      "code": "DIA",
+      "name": "Ain Diab",
+      "continuity": false,
+      "locality": "Casablanca",
+      "country": "Morocco",
+      "years": [
+        1958
+      ]
+    },
+    "avus": {
+      "code": "AVU",
+      "name": "AVUS",
+      "continuity": false,
+      "locality": "Berlin",
+      "country": "Germany",
+      "years": [
+        1959
+      ]
+    },
+    "monsanto": {
+      "code": "MPA",
+      "name": "Monsanto Park Circuit",
+      "continuity": false,
+      "locality": "Lisbon",
+      "country": "Portugal",
+      "years": [
+        1959
+      ]
+    },
+    "sebring": {
+      "code": "SIN",
+      "name": "Sebring International Raceway",
+      "continuity": false,
+      "locality": "Florida",
+      "country": "USA",
+      "years": [
+        1959
+      ]
+    },
+    "riverside": {
+      "code": "RIN",
+      "name": "Riverside International Raceway",
+      "continuity": false,
+      "locality": "California",
+      "country": "USA",
+      "years": [
+        1960
+      ]
+    },
+    "watkins_glen": {
+      "code": "GLE",
+      "name": "Watkins Glen",
+      "continuity": false,
+      "locality": "New York State",
+      "country": "USA",
+      "years": [
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "george": {
+      "code": "PGE",
+      "name": "Prince George Circuit",
+      "continuity": false,
+      "locality": "Eastern Cape Province",
+      "country": "South Africa",
+      "years": [
+        1962,
+        1963,
+        1965
+      ]
+    },
+    "rodriguez": {
+      "code": "MEX",
+      "name": "Autódromo Hermanos Rodríguez",
+      "continuity": true,
+      "locality": "Mexico City",
+      "country": "Mexico",
+      "years": [
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970
+      ]
+    },
+    "brands_hatch": {
+      "code": "HAT",
+      "name": "Brands Hatch",
+      "continuity": false,
+      "locality": "Kent",
+      "country": "UK",
+      "years": [
+        1964,
+        1966,
+        1968,
+        1970,
+        1972,
+        1974,
+        1976,
+        1978
+      ]
+    },
+    "zeltweg": {
+      "code": "ZEL",
+      "name": "Zeltweg",
+      "continuity": false,
+      "locality": "Styria",
+      "country": "Austria",
+      "years": [
+        1964
+      ]
+    },
+    "charade": {
+      "code": "CIR",
+      "name": "Charade Circuit",
+      "continuity": false,
+      "locality": "Clermont-Ferrand",
+      "country": "France",
+      "years": [
+        1965,
+        1969,
+        1970,
+        1972
+      ]
+    },
+    "kyalami": {
+      "code": "KYA",
+      "name": "Kyalami",
+      "continuity": false,
+      "locality": "Midrand",
+      "country": "South Africa",
+      "years": [
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "lemans": {
+      "code": "MAN",
+      "name": "Le Mans",
+      "continuity": false,
+      "locality": "Le Mans",
+      "country": "France",
+      "years": [
+        1967
+      ]
+    },
+    "mosport": {
+      "code": "MIN",
+      "name": "Mosport International Raceway",
+      "continuity": false,
+      "locality": "Ontario",
+      "country": "Canada",
+      "years": [
+        1967,
+        1969,
+        1971,
+        1972,
+        1973,
+        1974,
+        1976,
+        1977
+      ]
+    },
+    "jarama": {
+      "code": "JAR",
+      "name": "Jarama",
+      "continuity": false,
+      "locality": "Madrid",
+      "country": "Spain",
+      "years": [
+        1968,
+        1970,
+        1972,
+        1974,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "tremblant": {
+      "code": "TRE",
+      "name": "Circuit Mont-Tremblant",
+      "continuity": false,
+      "locality": "Quebec",
+      "country": "Canada",
+      "years": [
+        1968,
+        1970
+      ]
+    },
+    "montjuic": {
+      "code": "MON",
+      "name": "Montjuïc",
+      "continuity": false,
+      "locality": "Barcelona",
+      "country": "Spain",
+      "years": [
+        1969,
+        1971,
+        1973,
+        1975
+      ]
+    },
+    "hockenheimring": {
+      "code": "GER",
+      "name": "Hockenheimring",
+      "continuity": true,
+      "locality": "Hockenheim",
+      "country": "Germany",
+      "years": [
+        1970,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "red_bull_ring": {
+      "code": "OST",
+      "name": "Red Bull Ring",
+      "continuity": true,
+      "locality": "Spielberg",
+      "country": "Austria",
+      "years": [
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "ricard": {
+      "code": "PRC",
+      "name": "Circuit Paul Ricard",
+      "continuity": true,
+      "locality": "Le Castellet",
+      "country": "France",
+      "years": [
+        1971,
+        1973,
+        1975,
+        1976,
+        1978
+      ]
+    },
+    "nivelles": {
+      "code": "BAU",
+      "name": "Nivelles-Baulers",
+      "continuity": false,
+      "locality": "Brussels",
+      "country": "Belgium",
+      "years": [
+        1972,
+        1974
+      ]
+    },
+    "interlagos": {
+      "code": "AJO",
+      "name": "Autódromo José Carlos Pace",
+      "continuity": false,
+      "locality": "São Paulo",
+      "country": "Brazil",
+      "years": [
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1979
+      ]
+    },
+    "zolder": {
+      "code": "ZLD",
+      "name": "Zolder",
+      "continuity": false,
+      "locality": "Heusden-Zolder",
+      "country": "Belgium",
+      "years": [
+        1973,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "anderstorp": {
+      "code": "RAC",
+      "name": "Scandinavian Raceway",
+      "continuity": false,
+      "locality": "Anderstorp",
+      "country": "Sweden",
+      "years": [
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978
+      ]
+    },
+    "dijon": {
+      "code": "PRE",
+      "name": "Dijon-Prenois",
+      "continuity": false,
+      "locality": "Dijon",
+      "country": "France",
+      "years": [
+        1974,
+        1977,
+        1979
+      ]
+    },
+    "long_beach": {
+      "code": "BEA",
+      "name": "Long Beach",
+      "continuity": false,
+      "locality": "California",
+      "country": "USA",
+      "years": [
+        1976,
+        1977,
+        1978,
+        1979
+      ]
+    },
+    "fuji": {
+      "code": "SPE",
+      "name": "Fuji Speedway",
+      "continuity": false,
+      "locality": "Oyama",
+      "country": "Japan",
+      "years": [
+        1976,
+        1977
+      ]
+    },
+    "jacarepagua": {
+      "code": "JAC",
+      "name": "Autódromo Internacional Nelson Piquet",
+      "continuity": true,
+      "locality": "Rio de Janeiro",
+      "country": "Brazil",
+      "years": [
+        1978
+      ]
+    },
+    "villeneuve": {
+      "code": "CAN",
+      "name": "Circuit Gilles Villeneuve",
+      "continuity": true,
+      "locality": "Montreal",
+      "country": "Canada",
+      "years": [
+        1978,
+        1979
+      ]
+    }
+  }
+}
