@@ -877,6 +877,83 @@ el respaldo manual — normalmente no hace falta tocarlo. El Action:
   1984 corregido pero el resto del histórico 1980-2024 no se auditó
   carrera por carrera contra medios puntos.
 
+- **2026-07-16** — Backfill histórico 1950-1979 (Etapa 2 de 5: sistemas de
+  puntos reales, validados). Parte del proyecto más grande "extender la app
+  de 1980-2026 a 1950-2026" (decisión del dueño; ejecutado etapa por etapa,
+  cada una revisada antes de tocar `f1.db`). Etapa 0 (fix de descartes
+  1980-1990) y Etapa 1 (mapeo de IDs Jolpica→internos, `scripts
+  /jolpica_map_pre1980.json`) ya están documentadas arriba/en commits
+  separados. Esta entrada es la Etapa 2: `docs/data/points_systems.json`
+  extendido de 1980-2026 a 1950-2026 (`scripts
+  /extend_points_systems_pre1980.py`, corrida única).
+  **Escala de puntos por carrera** (verificada cruzando Wikipedia "List of
+  Formula One World Championship points scoring systems" +
+  formula1points.com — la primera es propensa a error en este rango, ver
+  hallazgo abajo):
+  - 1950-1959: top 5 puntúan 8-6-4-3-2 + 1 punto de vuelta rápida (a
+    CUALQUIER piloto, no solo top 5). Nuevo `systems.pre_1960_top5`.
+  - 1960: 8-6-4-3-2-1, top 6, sin vuelta rápida. Nuevo `systems.top6_8pts`.
+  - 1961-1979: 9-6-4-3-2-1, top 6 — **la misma escala que ya usaban
+    1980-1990** (`classic_9`, confirmado independiente por
+    formula1points.com que agrupa 1961-1990 bajo un único "9 points
+    system"). Se reusa el catálogo existente en vez de crear uno nuevo;
+    se actualizó su label a "(1961–1990)".
+  **Descarte de resultados** — la parte que requirió más rigor:
+  - 1950-1966: modo `best_n` flat (mejores N de todas las carreras), N
+    variable por año (4 en 1950-1953, 5 en 1954-1957 y 1959/1961/1962/1966,
+    6 en 1958/1960/1963-1965).
+  - 1967-1979: modo `split` (temporada partida en 2 mitades, mejores K de
+    cada una) — el MISMO mecanismo que ya modelaba 1980 como caso especial,
+    resulta que en realidad se usó 13 años seguidos antes de 1980, no fue
+    una anomalía de un solo año. Verificado matemáticamente: la suma de
+    carreras de ambas mitades coincide EXACTA con el calendario real de
+    Jolpica para los 13 años (ej. 1977: 9+8=17 carreras, calendario real
+    tiene 17).
+  **Hallazgo importante — la primera pasada de investigación tenía errores
+  reales**, encontrados recién al validar contra los totales oficiales de
+  cada campeón (no alcanzaba con "verified_against", hubo que recalcular y
+  comparar cifra por cifra): la página agregada de Wikipedia sobre sistemas
+  de puntos tenía **1954-1958 mal** (decía descarte "mejores 4" para
+  1954-1957 y "mejores 5" para 1958; el real es "mejores 5" para 1954-1957
+  y "mejores 6" para 1958) — confirmado recalculando el título de Fangio
+  1956 (30 pts oficiales) contra los resultados reales de Jolpica-F1. La
+  misma página además **mezclaba dos conceptos distintos** en su columna de
+  1967-1979: lo que parecía "la escala de puntos cambió cada año" (ej. "9
+  total: 5 de las primeras 6, 4 de las últimas 5") en realidad describe el
+  descarte de temporada partida, no la escala por carrera (que se mantuvo
+  constante en 9-6-4-3-2-1). Metodología de corrección: para cada uno de
+  los 30 años se buscó programáticamente qué valor de "mejores N" (o
+  reparto de mitades) reproduce EXACTO el total oficial del campeón real
+  (fuente: "List of Formula One World Drivers' Champions"), en vez de
+  confiar en la fuente secundaria sin verificar. **Validado: los 30 años
+  1950-1979 reproducen el total oficial exacto del campeón real**,
+  incluyendo dos casos de medio punto (1953 Ascari 34.5, 1975 Lauda 64.5).
+  **Autos compartidos entre 2 pilotos** (frecuente 1950-1957, prohibido
+  desde 1958): se descubrió la regla exacta al depurar el mismatch de
+  Fangio 1956 — Jolpica-F1 representa un relevo de auto como una fila de
+  resultado SEPARADA por (carrera, piloto) para cada auto que manejó ese
+  piloto esa carrera; la regla real de la época es "si ambos autos
+  puntuaron, solo cuenta el de mejor posición" (NO se suman) — confirmado
+  exacto contra el título de Fangio 1956. Esto también informa cómo va a
+  tener que armar `RaceResult` el script de la Etapa 3 (una sola fila por
+  carrera+piloto, con el MEJOR resultado de sus relevos esa carrera — la
+  constraint `UniqueConstraint(race_id, driver_id)` ya obliga a esto de
+  todas formas).
+  **Indianápolis 500 (1950-1960)** — contó oficialmente para el Mundial
+  pero con pilotos/autos 100% de IndyCar sin conexión con la F1 europea.
+  Decisión del dueño: excluirlo del calendario a cargar. Verificado que no
+  cambia ningún resultado real: de los 11 años, un único piloto (Rodger
+  Ward, ganador de Indy 1959) también corrió una carrera europea ese año
+  (sacó 0 puntos ahí) — cero impacto en cualquier tabla real, y matemáticamente
+  el descarte "mejores N" es idéntico con o sin Indy en el cálculo porque
+  ningún piloto relevante sumó nada ahí.
+  **Pendiente (Etapas 3-5)**: escribir el script de backfill (nuevo, corrida
+  única, similar en espíritu a los `migration/` originales pero
+  automatizado vía Jolpica — reusa el mapeo de IDs de la Etapa 1 y estas
+  reglas de puntos); ejecutarlo contra `f1.db`; extender `ERAS` (decadas
+  1950s/1960s/1970s), `POINTS_CUTOFF_ERAS`, título de la página, y rango de
+  años del Simulador; re-exportar `docs/data/`.
+
 ---
 
 **Al terminar cualquier tarea significativa en este repo, actualizar la
