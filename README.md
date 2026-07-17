@@ -1,6 +1,8 @@
 # PIT WALL — F1 Stats
 
-Personal F1 statistics app covering seasons from 1980 to 2026.
+Personal F1 statistics app covering seasons from 1950 to 2026.
+
+**Live app:** https://joakinkong.github.io/Pitwall-F1/
 
 ## Features
 
@@ -20,7 +22,7 @@ Personal F1 statistics app covering seasons from 1980 to 2026.
 ## Viewing the app
 
 The app loads data from static JSON files in `docs/data/` — no server needed.
-Open `docs/index.html` directly, or visit the GitHub Pages URL.
+Open `docs/index.html` directly, or visit https://joakinkong.github.io/Pitwall-F1/.
 
 ## Adding results after a GP
 

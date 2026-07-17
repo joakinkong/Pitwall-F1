@@ -44,6 +44,48 @@ function dCode(id){return DRIVER_DISPLAY_CODES[id]||id;}
 const NON_FINISH_CODES=['R','DSQ','DNS','W','D','EX','E','F','N'];
 function nonFinishPriority(code){const i=NON_FINISH_CODES.indexOf(code);return i===-1?99:i;}
 
+// Espejo de CLASSIC_CONSTRUCTOR_MAX_YEAR en backend/crud.py: hasta este año
+// el Campeonato de Constructores solo puntuaba el mejor auto de cada equipo
+// por carrera (+ descarte); desde 1980 cuentan todos los autos, sin descarte.
+const CLASSIC_CONSTRUCTOR_MAX_YEAR=1979;
+
+// Descripción legible de la regla de descarte de una temporada (ver
+// docs/data/points_systems.json), para el aviso de la página Standings.
+function describeDropRule(ds,totalRaces){
+  if(!ds)return'';
+  if(ds.mode==='best_n')return`se cuentan los mejores ${ds.keep} resultados de ${totalRaces} — no la suma de todas las carreras`;
+  if(ds.mode==='split'){
+    const h=ds.halves;
+    return`temporada partida en dos mitades: mejores ${h[0].keep} de las primeras ${h[0].races} carreras + mejores ${h[1].keep} de las últimas ${h[1].races}`;
+  }
+  return'';
+}
+
+// Aviso de descarte/regla clásica en la página Standings. Carga
+// points_systems.json bajo demanda (mismo dataset que ya usa el Simulador,
+// cacheado en pointsSystemsData) y solo pinta algo si la temporada/pestaña
+// actual tiene una regla que hace que el total NO sea la suma simple.
+async function updateDropScoreNotice(tab){
+  const el=document.getElementById('dropScoreNotice');
+  if(!el)return;
+  try{ await loadPointsSystemsData(); }catch(err){ el.innerHTML=''; return; }
+  // el año pudo haber cambiado mientras esperábamos el fetch
+  if(tab!==currentTab)return;
+  const year=currentYear;
+  const meta=pointsSystemsData.years[String(year)];
+  const s=SEASONS[year];
+  const totalRaces=s&&s.races?s.races.length:0;
+  let msg='';
+  if(meta&&meta.dropped_scores){
+    if(tab==='drivers'){
+      msg='Puntaje con descarte: '+describeDropRule(meta.dropped_scores,totalRaces)+'.';
+    }else if(year<=CLASSIC_CONSTRUCTOR_MAX_YEAR){
+      msg='Hasta '+CLASSIC_CONSTRUCTOR_MAX_YEAR+' solo puntuaba el mejor auto de cada equipo por carrera (no se sumaban los dos), y '+describeDropRule(meta.dropped_scores,totalRaces)+'.';
+    }
+  }
+  el.innerHTML=msg?`<div class="bg-surface-container-low border border-primary/20 px-4 py-3 mb-4 flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base mt-0.5">info</span><p class="text-[11px] text-zinc-400 leading-relaxed">${msg}</p></div>`:'';
+}
+
 function showPage(p,pushHistory){
 if(pushHistory!==false&&currentPage&&currentPage!==p)navStack.push(currentPage);
 currentPage=p;
@@ -132,7 +174,7 @@ function orderByPointsWithTiebreak(year,entries){
 
 function standingsOrder(tab){const s=SEASONS[currentYear];return orderByPointsWithTiebreak(currentYear,tab==='drivers'?s.drivers:s.constructors);}
 
-function buildStandings(tab){const s=SEASONS[currentYear],ch=tab==='drivers'?s.champion_driver:s.champion_constructor;const c=document.getElementById('standingsCards');document.getElementById('standingsTitle').textContent='Clasificación — '+(tab==='drivers'?'Pilotos':'Constructores');
+function buildStandings(tab){const s=SEASONS[currentYear],ch=tab==='drivers'?s.champion_driver:s.champion_constructor;const c=document.getElementById('standingsCards');document.getElementById('standingsTitle').textContent='Clasificación — '+(tab==='drivers'?'Pilotos':'Constructores');updateDropScoreNotice(tab);
 const source=standingsOrder(tab);
 c.innerHTML=source.map((d,i)=>{const p=String(i+1).padStart(2,'0'),pc=i<3?['text-[#FFD700]','text-[#C0C0C0]','text-[#CD7F32]'][i]:'text-zinc-600',bg=i===0?'bg-surface-container-high':'bg-surface-container-low',ptC=i===0?'text-primary':'text-zinc-500',tm=tab==='drivers'?'<p class="text-[10px] font-medium text-zinc-500 uppercase tracking-widest">'+d.team+'</p>':'',bd=d.id===ch?'<span class="champion-badge ml-2">Campeón</span>':'',br=i===0?'<div class="absolute left-0 top-0 w-1 h-full" style="background:'+d.color+'"></div>':'';const onclick=tab==='drivers'?'openDriverDetail(\''+d.id+'\')':'openTeamDetail(\''+d.id+'\')';return '<div class="relative rank-card cursor-pointer" onclick="'+onclick+'">'+br+'<div class="'+bg+' flex items-center p-4"><div class="w-10 flex flex-col items-center justify-center border-r border-white/5 mr-4"><span class="text-2xl font-headline font-black italic leading-none tabular-nums '+pc+'">'+p+'</span></div><div class="flex-1 flex items-center gap-3 min-w-0"><div class="w-1 h-9 flex-shrink-0" style="background:'+d.color+'"></div><div class="min-w-0"><div class="flex items-center"><h4 class="text-sm font-headline font-extrabold uppercase leading-tight tracking-tight truncate">'+d.name+'</h4>'+bd+'</div>'+tm+'</div></div><div class="text-right flex-shrink-0 ml-2"><span class="text-lg font-headline font-bold tabular-nums">'+d.total+'</span><span class="block text-[8px] font-bold '+ptC+' tracking-widest">PTS</span></div><span class="material-symbols-outlined text-zinc-600 text-base ml-2">chevron_right</span></div></div>';}).join('');}
 function switchTab(tab){
