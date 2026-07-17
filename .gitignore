@@ -6,6 +6,7 @@ f1.db.bak*
 scripts/.pre1980_raw_cache.json
 scripts/.pre1980_standings_cache.json
 scripts/.pre1980_cons_standings.json
+scripts/.circuit_gp_names.json
 
 # Downloaded libraries (not authored code)
 f1-circuits-svg-main/

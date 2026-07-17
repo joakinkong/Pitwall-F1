@@ -74,7 +74,7 @@ if(navStack.length>0){
 }
 }
 
-async function changeYear(y){if(window.loadYearData)await window.loadYearData(y);currentYear=y;document.getElementById('seasonTitle').textContent='SEASON '+y;const s=SEASONS[y];document.getElementById('raceCount').textContent=(s.completed?s.completed+'/'+s.races.length:s.races.length)+' Carreras';buildCompare();buildChart(currentTab);buildStandings(currentTab);if(currentPage==='home')buildHome();if(currentPage==='calendar')buildCalendar();updateSeasonStatus();updatePerformanceButtonVisibility();}
+async function changeYear(y){if(window.loadYearData)await window.loadYearData(y);currentYear=y;document.getElementById('seasonTitle').textContent='SEASON '+y;const s=SEASONS[y];document.getElementById('raceCount').textContent=(s.completed?s.completed+'/'+s.races.length:s.races.length)+' Carreras';buildCompare();buildChart(currentTab);buildStandings(currentTab);if(currentPage==='home')buildHome();if(currentPage==='calendar')buildCalendar();if(currentPage==='sim')buildSimulator();updateSeasonStatus();updatePerformanceButtonVisibility();}
 
 function buildChart(tab){const ctx=document.getElementById('mainChart').getContext('2d');if(chart)chart.destroy();const s=SEASONS[currentYear];let source=tab==='drivers'?s.drivers:s.constructors;
 const idA=document.getElementById('selectA')?.value,idB=document.getElementById('selectB')?.value;
@@ -337,6 +337,24 @@ async function loadRecordsData(){
   return recordsData;
 }
 
+// Preview de récords en Home (siempre era "all" — todos los tiempos, no
+// depende de currentYear). Reusa recordsData/recordsLeaderboard tal cual
+// los usa la página Récords completa; "Ver todos →" navega a esa página.
+async function buildHomeRecords(){
+  const el=document.getElementById('homeRecords');
+  if(!el)return;
+  let data;
+  try{ data=await loadRecordsData(); }
+  catch(err){ el.innerHTML=''; return; }
+  const rec=data.records['all'];
+  if(!rec)return;
+  const topDrivers=(rec.most_wins_drivers||[]).slice(0,5);
+  const topTeams=(rec.most_wins_teams||[]).slice(0,5);
+  el.innerHTML=
+    recordsLeaderboard('Más victorias — Pilotos',topDrivers,'wins','openDriverDetail')+
+    recordsLeaderboard('Más victorias — Equipos',topTeams,'wins','openTeamDetail');
+}
+
 async function buildRecords(){
   const el=document.getElementById('recordsContent');
   if(!recordsData)el.innerHTML='<p class="text-xs text-zinc-500 italic text-center py-8">Cargando récords…</p>';
@@ -401,7 +419,6 @@ function renderRecords(){
 // ver CLAUDE.md § Changelog para el diseño completo del dataset).
 
 let pointsSystemsData=null;
-let simYear=null;
 let simSystemId='modern_25';
 
 async function loadPointsSystemsData(){
@@ -485,9 +502,8 @@ function computeSimTotals(year,systemId){
 }
 
 async function openSimulator(){
-  if(!simYear)simYear=currentYear;
   try{ await loadPointsSystemsData(); }catch(err){ /* buildSimulator maneja el error al renderizar */ }
-  if(window.loadYearData)await window.loadYearData(simYear);
+  if(window.loadYearData)await window.loadYearData(currentYear);
   showPage('sim');
 }
 
@@ -498,17 +514,10 @@ async function buildSimulator(){
     try{ await loadPointsSystemsData(); }
     catch(err){ el.innerHTML='<p class="text-xs text-red-400 italic text-center py-8">No se pudieron cargar los sistemas de puntos.<br>Corré <code class="text-secondary">python export_static.py</code>.</p>'; return; }
   }
-  if(!simYear)simYear=currentYear;
-  if(!SEASONS[simYear]||!SEASONS[simYear].drivers||SEASONS[simYear].drivers.length===0){
+  if(!SEASONS[currentYear]||!SEASONS[currentYear].drivers||SEASONS[currentYear].drivers.length===0){
     el.innerHTML='<p class="text-xs text-zinc-500 italic text-center py-8">Cargando temporada…</p>';
-    if(window.loadYearData)await window.loadYearData(simYear);
+    if(window.loadYearData)await window.loadYearData(currentYear);
   }
-  renderSimulator();
-}
-
-async function changeSimYear(year){
-  simYear=year;
-  if(window.loadYearData)await window.loadYearData(year);
   renderSimulator();
 }
 
@@ -518,7 +527,7 @@ function changeSimSystem(systemId){
 }
 
 function renderSimulator(){
-  const year=simYear;
+  const year=currentYear;
   const s=SEASONS[year];
   const el=document.getElementById('simulatorContent');
   if(!s||!s.drivers||s.drivers.length===0){
@@ -526,8 +535,6 @@ function renderSimulator(){
     return;
   }
 
-  const years=Object.keys(SEASONS).sort((a,b)=>+b-+a);
-  const yearOptions=years.map(y=>`<option value="${y}" ${y===String(year)?'selected':''}>${y}</option>`).join('');
   const systemOptions=Object.keys(pointsSystemsData.systems).map(id=>`<option value="${id}" ${id===simSystemId?'selected':''}>${pointsSystemsData.systems[id].label}</option>`).join('');
 
   const realOrder=orderByPointsWithTiebreak(year,s.drivers);
@@ -575,9 +582,8 @@ function renderSimulator(){
   const limitations=(pointsSystemsData.meta&&pointsSystemsData.meta.limitations||[]).map(l=>`<li class="mb-1.5">${l}</li>`).join('');
 
   el.innerHTML=`
-    <div class="mb-4"><span class="text-secondary text-[10px] font-bold uppercase tracking-[0.2em] font-headline mb-1 block">Simulador</span><h2 class="text-3xl font-headline font-bold leading-none tracking-tighter">¿Y SI...?</h2></div>
-    <div class="grid grid-cols-2 gap-2 mb-4">
-      <select id="simYearSelect" onchange="changeSimYear(this.value)" class="year-select bg-surface-container-high border border-outline-variant/40 text-primary font-headline font-bold text-xs px-3 py-2 cursor-pointer focus:outline-none focus:border-primary w-full">${yearOptions}</select>
+    <div class="mb-4"><span class="text-secondary text-[10px] font-bold uppercase tracking-[0.2em] font-headline mb-1 block">Simulador · Temporada ${year}</span><h2 class="text-3xl font-headline font-bold leading-none tracking-tighter">¿Y SI...?</h2></div>
+    <div class="mb-4">
       <select id="simSystemSelect" onchange="changeSimSystem(this.value)" class="year-select bg-surface-container-high border border-outline-variant/40 text-secondary font-headline font-bold text-xs px-3 py-2 cursor-pointer focus:outline-none focus:border-primary w-full">${systemOptions}</select>
     </div>
     ${champBanner}
@@ -1415,6 +1421,7 @@ function buildHome(){
   }).join('');setTimeout(updateStripFade,0);}
   const metric=document.getElementById('homeMetricSelect')?.value||'wins';
   renderHomeCharts(metric);
+  buildHomeRecords();
 }
 
 function renderHomeCharts(metric){

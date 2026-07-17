@@ -1050,8 +1050,52 @@ el respaldo manual — normalmente no hace falta tocarlo. El Action:
   aceptada de unificar por marca). (4) `f1.db` local quedó con el backfill;
   para reconciliar 2025+ ver la nota de `import_to_db.py` en entradas previas.
 
----
-
-**Al terminar cualquier tarea significativa en este repo, actualizar la
-sección "Changelog de decisiones" de este archivo** con una entrada fechada
-que explique qué cambió y por qué (no solo qué).
+- **2026-07-17** — Retoques post-backfill 1950-1979 pedidos por el dueño tras
+  mirar la app: colores de equipo en la era clásica, sección Récords en Home,
+  nombres reales de GP para los circuitos nuevos, y Simulador atado al año
+  global.
+  **Colores de equipo** (`scripts/backfill_team_colors_pre1980.py`, corrida
+  única, dos pasos): (1) para equipos que siguen vigentes hoy (Ferrari,
+  McLaren, Williams, Mercedes, Alfa Romeo, Aston Martin, ATS), se propaga
+  hacia atrás el color más antiguo ya cargado en `season_team_colors` — 62
+  filas nuevas. (2) Para los 15 años 1950-1979 donde el CAMPEÓN de
+  constructores no tiene ningún color en la DB (Vanwall, Cooper, BRM,
+  Brabham, Team Lotus, Matra, Tyrrell — equipos que no llegaron a 1980), se
+  agregaron colores investigados contra Wikipedia (no inventados a ojo) SOLO
+  para sus años de título — 15 filas. Caso particular: Team Lotus cambió de
+  librea 3 veces en sus años de campeón (verde clásico 1963/1965 → rojo-
+  dorado "Gold Leaf" 1968/1970 → negro-dorado "John Player Special"
+  1972/1973/1978); se usa dorado como color representativo del período JPS
+  porque negro puro sería invisible como acento sobre el tema oscuro de la
+  app. Equipos sin NINGÚN dato de color en toda la DB (ninguna fuente,
+  ninguna época) quedan en gris — no es una regresión, ya pasaba en sus años
+  1980+ también.
+  **Nombres de circuito**: los 34 circuitos nuevos del backfill tenían
+  `Circuit.name` = nombre del trazado (Jolpica no da nombre de GP), ej.
+  "Silverstone Circuit" en vez de "British Grand Prix". Se corrigió cruzando
+  contra `CSV proyecto F1/f1_races.csv` (fuente de la migración original,
+  gitignoreada) — matcheado por posición de ronda dentro del año (excluyendo
+  Indianápolis 500 de ambos lados), 317/317 filas coincidieron sin
+  ambigüedad. `circuit_name` (el trazado) no se tocó. De paso: ese mismo CSV
+  (`f1_drivers.csv`) tiene la fecha de nacimiento de los 5 campeones con
+  `dob` faltante documentados en la sección 2 (MSC, HIL, VIL, BUT, ROS) —
+  **no se cargó en esta tarea** (fuera de alcance de lo pedido), queda
+  anotado como fuente lista para una tarea de datos futura.
+  **Récords en Home** (`buildHomeRecords()` en `app.js`, sección nueva en
+  `docs/index.html` bajo el grid de Último GP): preview de "Más victorias —
+  Pilotos/Equipos" (top 5, era "all" fija, no depende del año seleccionado)
+  con botón "Ver todos →" a la página Récords completa. Reusa
+  `recordsLeaderboard()` tal cual la usa esa página, sin duplicar el render.
+  **Simulador atado al año global**: se eliminó el selector de año interno
+  del Simulador (`simYearSelect`/`changeSimYear`) y la variable `simYear` —
+  ahora usa `currentYear` directamente en todo el módulo, así que muestra
+  siempre la temporada que indica el selector superior. `changeYear()` ahora
+  también reconstruye el Simulador si es la página activa (antes solo
+  reconstruía Home/Calendario al cambiar de año).
+  **Validado**: Ferrari 1958 sale roja (`#DC0000`, mismo hex que 1980+);
+  Lotus 1963 verde (`#1B7A3D`) vs. Lotus 1972 dorado JPS (`#C9A227`) — dos
+  colores distintos para el mismo team_id en años distintos, refleja el
+  cambio de librea real; `NUR` (Nürburgring) ahora exporta `name:"German
+  Grand Prix"` con `circuit:"Nürburgring"` aparte; diff de `docs/data/`
+  acotado exacto a los 30 archivos de temporada 1950-1979, cero cambios en
+  1980+.
