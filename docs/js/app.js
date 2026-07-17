@@ -116,7 +116,28 @@ if(navStack.length>0){
 }
 }
 
-async function changeYear(y){if(window.loadYearData)await window.loadYearData(y);currentYear=y;document.getElementById('seasonTitle').textContent='SEASON '+y;const s=SEASONS[y];document.getElementById('raceCount').textContent=(s.completed?s.completed+'/'+s.races.length:s.races.length)+' Carreras';buildCompare();buildChart(currentTab);buildStandings(currentTab);if(currentPage==='home')buildHome();if(currentPage==='calendar')buildCalendar();if(currentPage==='sim')buildSimulator();updateSeasonStatus();updatePerformanceButtonVisibility();}
+async function changeYear(y){if(window.loadYearData)await window.loadYearData(y);currentYear=y;document.getElementById('seasonTitle').textContent='SEASON '+y;const s=SEASONS[y];document.getElementById('raceCount').textContent=(s.completed?s.completed+'/'+s.races.length:s.races.length)+' Carreras';buildCompare();buildChart(currentTab);buildStandings(currentTab);if(currentPage==='home')buildHome();if(currentPage==='calendar')buildCalendar();if(currentPage==='sim')buildSimulator();updateSeasonStatus();updatePerformanceButtonVisibility();updateYearArrows();}
+
+// Flechas de años (header): mueven currentYear al año anterior/siguiente
+// dentro de los años con datos (Object.keys(SEASONS)), en orden cronológico.
+function stepYear(delta){
+  const years=Object.keys(SEASONS).sort((a,b)=>+a-+b);
+  const idx=years.indexOf(String(currentYear));
+  if(idx===-1)return;
+  const newIdx=idx+delta;
+  if(newIdx<0||newIdx>=years.length)return;
+  const newYear=years[newIdx];
+  const sel=document.getElementById('yearSelect');
+  if(sel)sel.value=newYear;
+  changeYear(newYear);
+}
+function updateYearArrows(){
+  const years=Object.keys(SEASONS).sort((a,b)=>+a-+b);
+  const idx=years.indexOf(String(currentYear));
+  const prev=document.getElementById('yearPrevBtn'),next=document.getElementById('yearNextBtn');
+  if(prev)prev.disabled=idx<=0;
+  if(next)next.disabled=idx===-1||idx>=years.length-1;
+}
 
 function buildChart(tab){const ctx=document.getElementById('mainChart').getContext('2d');if(chart)chart.destroy();const s=SEASONS[currentYear];let source=tab==='drivers'?s.drivers:s.constructors;
 const idA=document.getElementById('selectA')?.value,idB=document.getElementById('selectB')?.value;
@@ -1504,5 +1525,5 @@ window.initApp = function(){
     if(y===currentYear)opt.selected=true;
     sel.appendChild(opt);
   });
-  buildCompare();buildChart('drivers');buildStandings('drivers');updateSeasonStatus();showPage('home');
+  buildCompare();buildChart('drivers');buildStandings('drivers');updateSeasonStatus();updateYearArrows();showPage('home');
 };
