@@ -246,7 +246,8 @@ return `<div class="gp-card bg-surface-container-low border border-white/5 p-4 f
 
 // Corte de puntos por era. Ajustar acá si cambia el reglamento.
 const POINTS_CUTOFF_ERAS=[
-  {from:1980,to:2002,cutoff:6},
+  {from:1950,to:1959,cutoff:5},
+  {from:1960,to:2002,cutoff:6},
   {from:2003,to:2009,cutoff:8},
   {from:2010,to:9999,cutoff:10},
 ];
@@ -384,7 +385,7 @@ function renderRecords(){
   const marginCard=recordsStatCard('Mayor diferencia de puntos (título)',margin?'+'+margin.margin+' pts':'—',marginSub);
 
   document.getElementById('recordsContent').innerHTML=`
-    <div class="mb-4"><span class="text-secondary text-[10px] font-bold uppercase tracking-[0.2em] font-headline mb-1 block">Historia · 1980-2026</span><h2 class="text-3xl font-headline font-bold leading-none tracking-tighter">RÉCORDS</h2></div>
+    <div class="mb-4"><span class="text-secondary text-[10px] font-bold uppercase tracking-[0.2em] font-headline mb-1 block">Historia · 1950-2026</span><h2 class="text-3xl font-headline font-bold leading-none tracking-tighter">RÉCORDS</h2></div>
     <select id="eraSelect" onchange="changeRecordsEra(this.value)" class="year-select bg-surface-container-high border border-outline-variant/40 text-primary font-headline font-bold text-xs px-3 py-2 cursor-pointer focus:outline-none focus:border-primary w-full mb-6">${eraOptions}</select>
     ${streakCard}
     ${marginCard}

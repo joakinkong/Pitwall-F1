@@ -312,25 +312,30 @@ def _build_driver_standings(db: Session, year: int, race_ids: list[int], color_m
     return result
 
 
+# Hasta 1979, el Campeonato de Constructores usó dos reglas que después
+# desaparecieron: (a) por carrera solo puntuaba el MEJOR auto de cada equipo
+# (no se sumaban los dos autos), y (b) descarte de resultados (mejores N,
+# igual que pilotos ese año). Desde 1980 cuentan todos los autos y sin
+# descarte. Aplicar estas reglas a la era clásica hace que el líder de la
+# tabla coincida con el campeón oficial (verificado: sin ellas, 7 de 22 años
+# 1958-1979 mostraban al equipo equivocado en el tope). El Campeonato de
+# Constructores existe desde 1958, pero aplicamos "mejor auto" también a
+# 1950-1957 (sin campeón oficial) para que la tabla no infle equipos con
+# varios autos. Ver CLAUDE.md § backfill 1950-1979.
+CLASSIC_CONSTRUCTOR_MAX_YEAR = 1979
+
+
 def _build_constructor_standings(db: Session, year: int, race_ids: list[int], color_map: dict) -> list:
     if not race_ids:
         return []
 
-    totals_stmt = text("""
-        SELECT rr.team_id, SUM(rr.points) as total
-        FROM race_results rr
-        WHERE rr.race_id IN :race_ids
-        GROUP BY rr.team_id
-        ORDER BY total DESC
-    """).bindparams(bindparam("race_ids", expanding=True))
-    totals = db.execute(totals_stmt, {"race_ids": race_ids}).fetchall()
+    classic = year <= CLASSIC_CONSTRUCTOR_MAX_YEAR
+    # Era clásica: MAX por (equipo, carrera) = solo el mejor auto puntúa.
+    # Era moderna (1980+): SUM = todos los autos suman.
+    per_race_agg = "MAX" if classic else "SUM"
 
-    if not totals:
-        return []
-
-    # Aggregate per team per round first, then cumulative
-    round_pts_stmt = text("""
-        SELECT rr.team_id, rc.round, SUM(rr.points) as pts
+    round_pts_stmt = text(f"""
+        SELECT rr.team_id, rc.round, {per_race_agg}(rr.points) as pts
         FROM race_results rr
         JOIN race_calendar rc ON rr.race_id = rc.id
         WHERE rr.race_id IN :race_ids
@@ -338,6 +343,9 @@ def _build_constructor_standings(db: Session, year: int, race_ids: list[int], co
         ORDER BY rr.team_id, rc.round
     """).bindparams(bindparam("race_ids", expanding=True))
     round_pts = db.execute(round_pts_stmt, {"race_ids": race_ids}).fetchall()
+
+    if not round_pts:
+        return []
 
     from collections import defaultdict
     team_rounds: dict[str, list[tuple]] = defaultdict(list)
@@ -353,18 +361,31 @@ def _build_constructor_standings(db: Session, year: int, race_ids: list[int], co
             cum.append(running)
         cum_map[team_id] = cum
 
+    # Descarte de resultados: solo era clásica (con la misma regla de ese año
+    # que aplica a pilotos). `cum` queda como progresión bruta (best-car),
+    # `total` con descarte — mismo criterio que _build_driver_standings.
+    dropped_rule = _load_dropped_scores_rules().get(year) if classic else None
+    totals_map: dict[str, float] = {}
+    for team_id, rounds in team_rounds.items():
+        arr = [0.0] * len(race_ids)
+        for round_num, pts in rounds:
+            if 1 <= round_num <= len(race_ids):
+                arr[round_num - 1] += pts
+        totals_map[team_id] = _apply_dropped_scores(arr, dropped_rule) if dropped_rule else sum(arr)
+
     team_names = _get_team_display_names(db)
 
     result = []
-    for team_id, total in totals:
-        cum = cum_map.get(team_id, [total])
-        color = color_map.get(team_id, "#888888")
+    # Orden por total desc, con team_id como desempate determinístico (evita
+    # que equipos empatados —típicamente los de 0 puntos— salgan en un orden
+    # arbitrario que cambia entre corridas).
+    for team_id in sorted(totals_map, key=lambda t: (-totals_map[t], t)):
         result.append({
             "id": team_id,
             "name": team_names.get(team_id, team_id),
-            "total": total,
-            "cum": cum,
-            "color": color,
+            "total": totals_map[team_id],
+            "cum": cum_map.get(team_id, [totals_map[team_id]]),
+            "color": color_map.get(team_id, "#888888"),
         })
 
     return result

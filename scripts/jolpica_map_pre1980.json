@@ -14,11 +14,11 @@
     "driver 'Georges Berger' (georges_berger) posible match parcial por apellido con {'BER'} -- revisar a mano, NO auto-asignado",
     "driver 'Ian Scheckter' (ian_scheckter) posible match parcial por apellido con {'SCK'} -- revisar a mano, NO auto-asignado",
     "driver 'Jack Brabham' (jack_brabham) posible match parcial por apellido con {'DBM'} -- revisar a mano, NO auto-asignado",
-    "driver 'Max Jean' (jean) posible match parcial por apellido con {'ALE', 'JBL', 'JAR', 'JVR', 'JLS', 'JPJ'} -- revisar a mano, NO auto-asignado",
+    "driver 'Max Jean' (jean) posible match parcial por apellido con {'ALE', 'JLS', 'JAR', 'JBL', 'JPJ', 'JVR'} -- revisar a mano, NO auto-asignado",
     "driver 'Jo Schlesser' (jo_schlesser) posible match parcial por apellido con {'JLS'} -- revisar a mano, NO auto-asignado",
     "driver 'Hermann Lang' (lang) posible match parcial por apellido con {'MGA'} -- revisar a mano, NO auto-asignado",
     "driver 'Jackie Lewis' (lewis) posible match parcial por apellido con {'HAM'} -- revisar a mano, NO auto-asignado",
-    "driver 'Eugène Martin' (martin) posible match parcial por apellido con {'DON', 'BRU', 'PMT'} -- revisar a mano, NO auto-asignado",
+    "driver 'Eugène Martin' (martin) posible match parcial por apellido con {'PMT', 'DON', 'BRU'} -- revisar a mano, NO auto-asignado",
     "driver 'Jackie Oliver' (oliver) posible match parcial por apellido con {'BEA'} -- revisar a mano, NO auto-asignado",
     "driver 'Torsten Palm' (palm) posible match parcial por apellido con {'PAL'} -- revisar a mano, NO auto-asignado",
     "driver 'Franco Rol' (rol) posible match parcial por apellido con {'STR'} -- revisar a mano, NO auto-asignado",
@@ -460,7 +460,7 @@
       ]
     },
     "pian": {
-      "code": "ALP",
+      "code": "PIN",
       "name": "Alfredo Pián",
       "continuity": false,
       "dob": "1912-10-21",
@@ -1717,7 +1717,7 @@
       ]
     },
     "frere": {
-      "code": "FER",
+      "code": "PAF",
       "name": "Paul Frère",
       "continuity": false,
       "dob": "1917-01-30",
@@ -3439,7 +3439,7 @@
       ]
     },
     "dempsey_wilson": {
-      "code": "WIL",
+      "code": "WLS",
       "name": "Dempsey Wilson",
       "continuity": false,
       "dob": "1927-03-11",
@@ -3570,7 +3570,7 @@
       ]
     },
     "mclaren": {
-      "code": "MCL",
+      "code": "MLA",
       "name": "Bruce McLaren",
       "continuity": false,
       "dob": "1937-08-30",
@@ -3874,7 +3874,7 @@
       ]
     },
     "cade": {
-      "code": "CAD",
+      "code": "CDE",
       "name": "Phil Cade",
       "continuity": false,
       "dob": "1916-06-12",
@@ -4133,7 +4133,7 @@
       ]
     },
     "vic_wilson": {
-      "code": "WLS",
+      "code": "WSO",
       "name": "Vic Wilson",
       "continuity": false,
       "dob": "1931-04-14",
@@ -6766,7 +6766,7 @@
       ]
     },
     "hasemi": {
-      "code": "HAS",
+      "code": "HSE",
       "name": "Masahiro Hasemi",
       "continuity": false,
       "dob": "1945-11-13",
@@ -7048,6 +7048,7 @@
     "alfa": {
       "code": "ARO",
       "name": "Alfa Romeo",
+      "chassis_brand": "ALFA ROMEO",
       "continuity": true,
       "nationality": "Swiss",
       "years": [
@@ -7059,8 +7060,9 @@
       ]
     },
     "lago": {
-      "code": "LAG",
+      "code": "TALBOT",
       "name": "Talbot-Lago",
+      "chassis_brand": "TALBOT",
       "continuity": false,
       "nationality": "French",
       "years": [
@@ -7071,6 +7073,7 @@
     "era": {
       "code": "ERA",
       "name": "ERA",
+      "chassis_brand": "ERA",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -7080,8 +7083,9 @@
       ]
     },
     "maserati": {
-      "code": "MSE",
+      "code": "MASERATI",
       "name": "Maserati",
+      "chassis_brand": "MASERATI",
       "continuity": false,
       "nationality": "Italian",
       "years": [
@@ -7099,8 +7103,9 @@
       ]
     },
     "alta": {
-      "code": "ALT",
+      "code": "ALTA",
       "name": "Alta",
+      "chassis_brand": "ALTA",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -7112,6 +7117,7 @@
     "ferrari": {
       "code": "FER",
       "name": "Ferrari",
+      "chassis_brand": "FERRARI",
       "continuity": true,
       "nationality": "Italian",
       "years": [
@@ -7148,8 +7154,9 @@
       ]
     },
     "simca": {
-      "code": "SIM",
+      "code": "SIMCA",
       "name": "Simca",
+      "chassis_brand": "SIMCA",
       "continuity": false,
       "nationality": "French",
       "years": [
@@ -7160,8 +7167,9 @@
       ]
     },
     "cooper": {
-      "code": "COO",
+      "code": "COOPER",
       "name": "Cooper",
+      "chassis_brand": "COOPER",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -7177,8 +7185,9 @@
       ]
     },
     "kurtis_kraft": {
-      "code": "KRA",
+      "code": "KURTIS KRAFT",
       "name": "Kurtis Kraft",
+      "chassis_brand": "KURTIS KRAFT",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7196,8 +7205,9 @@
       ]
     },
     "deidt": {
-      "code": "DEI",
+      "code": "DEIDT",
       "name": "Deidt",
+      "chassis_brand": "DEIDT",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7207,8 +7217,9 @@
       ]
     },
     "moore": {
-      "code": "MOO",
+      "code": "MOORE",
       "name": "Moore",
+      "chassis_brand": "MOORE",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7218,8 +7229,9 @@
       ]
     },
     "lesovsky": {
-      "code": "LES",
+      "code": "LESOVSKY",
       "name": "Lesovsky",
+      "chassis_brand": "LESOVSKY",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7235,8 +7247,9 @@
       ]
     },
     "nichels": {
-      "code": "NIC",
+      "code": "NICHELS",
       "name": "Nichels",
+      "chassis_brand": "NICHELS",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7245,8 +7258,9 @@
       ]
     },
     "marchese": {
-      "code": "MCH",
+      "code": "MARCHESE",
       "name": "Marchese",
+      "chassis_brand": "MARCHESE",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7255,8 +7269,9 @@
       ]
     },
     "stevens": {
-      "code": "SEV",
+      "code": "STEVENS",
       "name": "Stevens",
+      "chassis_brand": "STEVENS",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7269,8 +7284,9 @@
       ]
     },
     "langley": {
-      "code": "LNG",
+      "code": "LANGLEY",
       "name": "Langley",
+      "chassis_brand": "LANGLEY",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7278,8 +7294,9 @@
       ]
     },
     "ewing": {
-      "code": "EWI",
+      "code": "EWING",
       "name": "Ewing",
+      "chassis_brand": "EWING",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7290,6 +7307,7 @@
     "rae": {
       "code": "RAE",
       "name": "Rae",
+      "chassis_brand": "RAE",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7297,8 +7315,9 @@
       ]
     },
     "olson": {
-      "code": "OLS",
+      "code": "OLSON",
       "name": "Olson",
+      "chassis_brand": "OLSON",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7306,8 +7325,9 @@
       ]
     },
     "wetteroth": {
-      "code": "WET",
+      "code": "WETTEROTH",
       "name": "Wetteroth",
+      "chassis_brand": "WETTEROTH",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7315,8 +7335,9 @@
       ]
     },
     "snowberger": {
-      "code": "SNO",
+      "code": "SNOWBERGER",
       "name": "Snowberger",
+      "chassis_brand": "SNOWBERGER",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7324,8 +7345,9 @@
       ]
     },
     "adams": {
-      "code": "ADA",
+      "code": "ADAMS",
       "name": "Adams",
+      "chassis_brand": "ADAMS",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7333,8 +7355,9 @@
       ]
     },
     "watson": {
-      "code": "WAT",
+      "code": "WATSON",
       "name": "Watson",
+      "chassis_brand": "WATSON",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7350,8 +7373,9 @@
       ]
     },
     "milano": {
-      "code": "MIL",
+      "code": "MILANO",
       "name": "Milano",
+      "chassis_brand": "MILANO",
       "continuity": false,
       "nationality": "Italian",
       "years": [
@@ -7361,6 +7385,7 @@
     "hwm": {
       "code": "HWM",
       "name": "HWM",
+      "chassis_brand": "HWM",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -7371,8 +7396,9 @@
       ]
     },
     "veritas": {
-      "code": "VER",
+      "code": "VERITAS",
       "name": "Veritas",
+      "chassis_brand": "VERITAS",
       "continuity": false,
       "nationality": "German",
       "years": [
@@ -7382,8 +7408,9 @@
       ]
     },
     "sherman": {
-      "code": "SHE",
+      "code": "SHERMAN",
       "name": "Sherman",
+      "chassis_brand": "SHERMAN",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7392,8 +7419,9 @@
       ]
     },
     "schroeder": {
-      "code": "SCH",
+      "code": "SCHROEDER",
       "name": "Schroeder",
+      "chassis_brand": "SCHROEDER",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7404,8 +7432,9 @@
       ]
     },
     "kuzma": {
-      "code": "KUZ",
+      "code": "KUZMA",
       "name": "Kuzma",
+      "chassis_brand": "KUZMA",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7422,8 +7451,9 @@
       ]
     },
     "pawl": {
-      "code": "PAW",
+      "code": "PAWL",
       "name": "Pawl",
+      "chassis_brand": "PAWL",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7433,8 +7463,9 @@
       ]
     },
     "hall": {
-      "code": "HAL",
+      "code": "HALL",
       "name": "Hall",
+      "chassis_brand": "HALL",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7442,8 +7473,9 @@
       ]
     },
     "bromme": {
-      "code": "BRO",
+      "code": "BROMME",
       "name": "Bromme",
+      "chassis_brand": "BROMME",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7454,8 +7486,9 @@
       ]
     },
     "trevis": {
-      "code": "TRE",
+      "code": "TREVIS",
       "name": "Trevis",
+      "chassis_brand": "TREVIS",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7466,8 +7499,9 @@
       ]
     },
     "brm": {
-      "code": "BRR",
+      "code": "BRM",
       "name": "BRM",
+      "chassis_brand": "BRM",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -7497,8 +7531,9 @@
       ]
     },
     "osca": {
-      "code": "OCA",
+      "code": "OSCA",
       "name": "OSCA",
+      "chassis_brand": "OSCA",
       "continuity": false,
       "nationality": "Italian",
       "years": [
@@ -7508,8 +7543,9 @@
       ]
     },
     "gordini": {
-      "code": "GOR",
+      "code": "GORDINI",
       "name": "Gordini",
+      "chassis_brand": "GORDINI",
       "continuity": false,
       "nationality": "French",
       "years": [
@@ -7521,8 +7557,9 @@
       ]
     },
     "frazer_nash": {
-      "code": "NAS",
+      "code": "FRAZER NASH",
       "name": "Frazer Nash",
+      "chassis_brand": "FRAZER NASH",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -7532,6 +7569,7 @@
     "afm": {
       "code": "AFM",
       "name": "AFM",
+      "chassis_brand": "AFM",
       "continuity": false,
       "nationality": "German",
       "years": [
@@ -7540,8 +7578,9 @@
       ]
     },
     "butterworth": {
-      "code": "BUT",
+      "code": "ASTON BUTTERWORTH",
       "name": "Aston Butterworth",
+      "chassis_brand": "ASTON BUTTERWORTH",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -7549,8 +7588,9 @@
       ]
     },
     "connaught": {
-      "code": "CON",
+      "code": "CONNAUGHT",
       "name": "Connaught",
+      "chassis_brand": "CONNAUGHT",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -7567,6 +7607,7 @@
     "bmw": {
       "code": "BMW",
       "name": "BMW",
+      "chassis_brand": "BMW",
       "continuity": false,
       "nationality": "German",
       "years": [
@@ -7575,8 +7616,9 @@
       ]
     },
     "turner": {
-      "code": "TUR",
+      "code": "TURNER",
       "name": "Turner",
+      "chassis_brand": "TURNER",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7584,8 +7626,9 @@
       ]
     },
     "del_roy": {
-      "code": "ROY",
+      "code": "DEL ROY",
       "name": "Del Roy",
+      "chassis_brand": "DEL ROY",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7595,6 +7638,7 @@
     "emw": {
       "code": "EMW",
       "name": "EMW",
+      "chassis_brand": "EMW",
       "continuity": false,
       "nationality": "East German",
       "years": [
@@ -7602,8 +7646,9 @@
       ]
     },
     "phillips": {
-      "code": "PHI",
+      "code": "PHILLIPS",
       "name": "Phillips",
+      "chassis_brand": "PHILLIPS",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7617,8 +7662,9 @@
       ]
     },
     "pankratz": {
-      "code": "PAN",
+      "code": "PANKRATZ",
       "name": "Pankratz",
+      "chassis_brand": "PANKRATZ",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7629,6 +7675,7 @@
     "mercedes": {
       "code": "MER",
       "name": "Mercedes",
+      "chassis_brand": "MERCEDES",
       "continuity": true,
       "nationality": "German",
       "years": [
@@ -7637,8 +7684,9 @@
       ]
     },
     "vanwall": {
-      "code": "VAN",
+      "code": "VANWALL",
       "name": "Vanwall",
+      "chassis_brand": "VANWALL",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -7652,8 +7700,9 @@
       ]
     },
     "klenk": {
-      "code": "KLE",
+      "code": "KLENK",
       "name": "Klenk",
+      "chassis_brand": "KLENK",
       "continuity": false,
       "nationality": "German",
       "years": [
@@ -7661,8 +7710,9 @@
       ]
     },
     "lancia": {
-      "code": "LAN",
+      "code": "LANCIA",
       "name": "Lancia",
+      "chassis_brand": "LANCIA",
       "continuity": false,
       "nationality": "Italian",
       "years": [
@@ -7671,8 +7721,9 @@
       ]
     },
     "epperly": {
-      "code": "EPP",
+      "code": "EPPERLY",
       "name": "Epperly",
+      "chassis_brand": "EPPERLY",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7684,8 +7735,9 @@
       ]
     },
     "arzani-volpini": {
-      "code": "VOL",
+      "code": "ARZANI-VOLPINI",
       "name": "Arzani-Volpini",
+      "chassis_brand": "ARZANI-VOLPINI",
       "continuity": false,
       "nationality": "Italian",
       "years": [
@@ -7693,8 +7745,9 @@
       ]
     },
     "bugatti": {
-      "code": "BUG",
+      "code": "BUGATTI",
       "name": "Bugatti",
+      "chassis_brand": "BUGATTI",
       "continuity": false,
       "nationality": "French",
       "years": [
@@ -7702,8 +7755,9 @@
       ]
     },
     "emeryson": {
-      "code": "EME",
+      "code": "EMERYSON",
       "name": "Emeryson",
+      "chassis_brand": "EMERYSON",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -7713,8 +7767,9 @@
       ]
     },
     "dunn": {
-      "code": "DUN",
+      "code": "DUNN",
       "name": "Dunn",
+      "chassis_brand": "DUNN",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7724,8 +7779,9 @@
       ]
     },
     "porsche": {
-      "code": "PRS",
+      "code": "PORSCHE",
       "name": "Porsche",
+      "chassis_brand": "PORSCHE",
       "continuity": false,
       "nationality": "German",
       "years": [
@@ -7740,9 +7796,10 @@
       ]
     },
     "team_lotus": {
-      "code": "LOT",
+      "code": "TEAM LOTUS",
       "name": "Team Lotus",
-      "continuity": false,
+      "chassis_brand": "TEAM LOTUS",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1958,
@@ -7762,8 +7819,9 @@
       ]
     },
     "cooper-climax": {
-      "code": "CCL",
+      "code": "COOPER",
       "name": "Cooper-Climax",
+      "chassis_brand": "COOPER",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -7779,8 +7837,9 @@
       ]
     },
     "cooper-maserati": {
-      "code": "MAS",
+      "code": "COOPER",
       "name": "Cooper-Maserati",
+      "chassis_brand": "COOPER",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -7796,8 +7855,9 @@
       ]
     },
     "elder": {
-      "code": "ELD",
+      "code": "ELDER",
       "name": "Elder",
+      "chassis_brand": "ELDER",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7805,8 +7865,9 @@
       ]
     },
     "vhristensen": {
-      "code": "CHR",
+      "code": "CHRISTENSEN",
       "name": "Christensen",
+      "chassis_brand": "CHRISTENSEN",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7815,8 +7876,9 @@
       ]
     },
     "sutton": {
-      "code": "SUT",
+      "code": "SUTTON",
       "name": "Sutton",
+      "chassis_brand": "SUTTON",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7826,6 +7888,7 @@
     "aston_martin": {
       "code": "AMR",
       "name": "Aston Martin",
+      "chassis_brand": "ASTON MARTIN",
       "continuity": true,
       "nationality": "British",
       "years": [
@@ -7834,8 +7897,9 @@
       ]
     },
     "cooper-borgward": {
-      "code": "CBO",
+      "code": "COOPER",
       "name": "Cooper-Borgward",
+      "chassis_brand": "COOPER",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -7845,6 +7909,7 @@
     "jbw": {
       "code": "JBW",
       "name": "JBW",
+      "chassis_brand": "JBW",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -7854,8 +7919,9 @@
       ]
     },
     "cooper-osca": {
-      "code": "OSC",
+      "code": "COOPER",
       "name": "Cooper-OSCA",
+      "chassis_brand": "COOPER",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -7863,8 +7929,9 @@
       ]
     },
     "tec-mec": {
-      "code": "MEC",
+      "code": "TEC-MEC",
       "name": "Tec-Mec",
+      "chassis_brand": "TEC-MEC",
       "continuity": false,
       "nationality": "Italian",
       "years": [
@@ -7872,8 +7939,9 @@
       ]
     },
     "behra-porsche": {
-      "code": "POR",
+      "code": "BEHRA-PORSCHE",
       "name": "Behra-Porsche",
+      "chassis_brand": "BEHRA-PORSCHE",
       "continuity": false,
       "nationality": "Italian",
       "years": [
@@ -7881,8 +7949,9 @@
       ]
     },
     "meskowski": {
-      "code": "MES",
+      "code": "MESKOWSKI",
       "name": "Meskowski",
+      "chassis_brand": "MESKOWSKI",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7890,8 +7959,9 @@
       ]
     },
     "scarab": {
-      "code": "SCA",
+      "code": "SCARAB",
       "name": "Scarab",
+      "chassis_brand": "SCARAB",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -7899,8 +7969,9 @@
       ]
     },
     "cooper-castellotti": {
-      "code": "CAS",
+      "code": "COOPER",
       "name": "Cooper-Castellotti",
+      "chassis_brand": "COOPER",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -7908,9 +7979,10 @@
       ]
     },
     "lotus-climax": {
-      "code": "LOC",
+      "code": "TEAM LOTUS",
       "name": "Lotus-Climax",
-      "continuity": false,
+      "chassis_brand": "LOTUS",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1961,
@@ -7923,8 +7995,9 @@
       ]
     },
     "de_tomaso-osca": {
-      "code": "DET",
+      "code": "DE TOMASO",
       "name": "De Tomaso-Osca",
+      "chassis_brand": "DE TOMASO",
       "continuity": false,
       "nationality": "Italian",
       "years": [
@@ -7932,8 +8005,9 @@
       ]
     },
     "gilby": {
-      "code": "GIL",
+      "code": "GILBY",
       "name": "Gilby",
+      "chassis_brand": "GILBY",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -7943,8 +8017,9 @@
       ]
     },
     "ferguson": {
-      "code": "FRG",
+      "code": "FERGUSON",
       "name": "Ferguson",
+      "chassis_brand": "FERGUSON",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -7954,6 +8029,7 @@
     "mbm": {
       "code": "MBM",
       "name": "MBM",
+      "chassis_brand": "MBM",
       "continuity": false,
       "nationality": "Swiss",
       "years": [
@@ -7961,9 +8037,10 @@
       ]
     },
     "lotus-maserati": {
-      "code": "LMA",
+      "code": "TEAM LOTUS",
       "name": "Lotus-Maserati",
-      "continuity": false,
+      "chassis_brand": "LOTUS",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1961,
@@ -7971,8 +8048,9 @@
       ]
     },
     "de_tomaso-alfa_romeo": {
-      "code": "DTO",
+      "code": "DE TOMASO",
       "name": "De Tomaso-Alfa Romeo",
+      "chassis_brand": "DE TOMASO",
       "continuity": false,
       "nationality": "Italian",
       "years": [
@@ -7981,9 +8059,10 @@
       ]
     },
     "lola": {
-      "code": "LOL",
+      "code": "LOLA",
       "name": "Lola",
-      "continuity": false,
+      "chassis_brand": "LOLA",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1962,
@@ -7995,9 +8074,10 @@
       ]
     },
     "lotus-brm": {
-      "code": "LBR",
+      "code": "TEAM LOTUS",
       "name": "Lotus-BRM",
-      "continuity": false,
+      "chassis_brand": "LOTUS",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1962,
@@ -8011,6 +8091,7 @@
     "enb": {
       "code": "ENB",
       "name": "ENB",
+      "chassis_brand": "ENB",
       "continuity": false,
       "nationality": "Belgian",
       "years": [
@@ -8018,9 +8099,10 @@
       ]
     },
     "brabham": {
-      "code": "BRA",
+      "code": "BRABHAM",
       "name": "Brabham",
-      "continuity": false,
+      "chassis_brand": "BRABHAM",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1962,
@@ -8036,9 +8118,10 @@
       ]
     },
     "lotus-borgward": {
-      "code": "LBO",
+      "code": "TEAM LOTUS",
       "name": "Lotus-Borgward",
-      "continuity": false,
+      "chassis_brand": "LOTUS",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1962
@@ -8047,6 +8130,7 @@
     "lds": {
       "code": "LDS",
       "name": "LDS",
+      "chassis_brand": "LDS",
       "continuity": false,
       "nationality": "South African",
       "years": [
@@ -8056,8 +8140,9 @@
       ]
     },
     "cooper-alfa_romeo": {
-      "code": "CAL",
+      "code": "COOPER",
       "name": "Cooper-Alfa Romeo",
+      "chassis_brand": "COOPER",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8067,7 +8152,8 @@
     "ats": {
       "code": "ATS",
       "name": "ATS",
-      "continuity": false,
+      "chassis_brand": "ATS",
+      "continuity": true,
       "nationality": "Italian",
       "years": [
         1963,
@@ -8076,8 +8162,9 @@
       ]
     },
     "scirocco": {
-      "code": "SCI",
+      "code": "SCIROCCO",
       "name": "Scirocco",
+      "chassis_brand": "SCIROCCO",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8086,8 +8173,9 @@
       ]
     },
     "tomaso": {
-      "code": "TOM",
+      "code": "DE TOMASO",
       "name": "De Tomaso",
+      "chassis_brand": "DE TOMASO",
       "continuity": false,
       "nationality": "Italian",
       "years": [
@@ -8098,6 +8186,7 @@
     "brp": {
       "code": "BRP",
       "name": "BRP",
+      "chassis_brand": "BRP",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8106,8 +8195,9 @@
       ]
     },
     "stebro": {
-      "code": "STE",
+      "code": "STEBRO",
       "name": "Stebro",
+      "chassis_brand": "STEBRO",
       "continuity": false,
       "nationality": "Canadian",
       "years": [
@@ -8115,9 +8205,10 @@
       ]
     },
     "lotus-ford": {
-      "code": "LFO",
+      "code": "TEAM LOTUS",
       "name": "Lotus-Ford",
-      "continuity": false,
+      "chassis_brand": "LOTUS",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1963,
@@ -8128,9 +8219,10 @@
       ]
     },
     "brabham-climax": {
-      "code": "CLI",
+      "code": "BRABHAM",
       "name": "Brabham-Climax",
-      "continuity": false,
+      "chassis_brand": "BRABHAM",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1964,
@@ -8142,9 +8234,10 @@
       ]
     },
     "brabham-brm": {
-      "code": "BRM",
+      "code": "BRABHAM",
       "name": "Brabham-BRM",
-      "continuity": false,
+      "chassis_brand": "BRABHAM",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1964,
@@ -8153,9 +8246,10 @@
       ]
     },
     "brabham-ford": {
-      "code": "FOR",
+      "code": "BRABHAM",
       "name": "Brabham-Ford",
-      "continuity": false,
+      "chassis_brand": "BRABHAM",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1964,
@@ -8167,9 +8261,10 @@
       ]
     },
     "honda": {
-      "code": "HON",
+      "code": "HONDA",
       "name": "Honda",
-      "continuity": false,
+      "chassis_brand": "HONDA",
+      "continuity": true,
       "nationality": "Japanese",
       "years": [
         1964,
@@ -8180,8 +8275,9 @@
       ]
     },
     "derrington": {
-      "code": "DER",
+      "code": "DERRINGTON",
       "name": "Derrington",
+      "chassis_brand": "DERRINGTON",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8189,8 +8285,9 @@
       ]
     },
     "lds-alfa_romeo": {
-      "code": "LAL",
+      "code": "LDS",
       "name": "LDS-Alfa Romeo",
+      "chassis_brand": "LDS",
       "continuity": false,
       "nationality": "South African",
       "years": [
@@ -8198,8 +8295,9 @@
       ]
     },
     "re": {
-      "code": "RLP",
+      "code": "RE",
       "name": "RE",
+      "chassis_brand": "RE",
       "continuity": false,
       "nationality": "Rhodesian",
       "years": [
@@ -8207,9 +8305,10 @@
       ]
     },
     "brabham-repco": {
-      "code": "REP",
+      "code": "BRABHAM",
       "name": "Brabham-Repco",
-      "continuity": false,
+      "chassis_brand": "BRABHAM",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1966,
@@ -8219,9 +8318,10 @@
       ]
     },
     "mclaren-ford": {
-      "code": "MCF",
+      "code": "MCL",
       "name": "McLaren-Ford",
-      "continuity": false,
+      "chassis_brand": "MCLAREN",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1966,
@@ -8232,8 +8332,9 @@
       ]
     },
     "eagle-climax": {
-      "code": "ECL",
+      "code": "EAGLE",
       "name": "Eagle-Climax",
+      "chassis_brand": "EAGLE",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -8243,17 +8344,19 @@
       ]
     },
     "mclaren-seren": {
-      "code": "SER",
+      "code": "MCL",
       "name": "McLaren-Serenissima",
-      "continuity": false,
+      "chassis_brand": "MCLAREN",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1966
       ]
     },
     "cooper-ferrari": {
-      "code": "CFE",
+      "code": "COOPER",
       "name": "Cooper-Ferrari",
+      "chassis_brand": "COOPER",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8261,8 +8364,9 @@
       ]
     },
     "shannon": {
-      "code": "SAN",
+      "code": "SHANNON",
       "name": "Shannon",
+      "chassis_brand": "SHANNON",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8270,8 +8374,9 @@
       ]
     },
     "eagle-weslake": {
-      "code": "WES",
+      "code": "EAGLE",
       "name": "Eagle-Weslake",
+      "chassis_brand": "EAGLE",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -8281,8 +8386,9 @@
       ]
     },
     "lds-climax": {
-      "code": "LCL",
+      "code": "LDS",
       "name": "LDS-Climax",
+      "chassis_brand": "LDS",
       "continuity": false,
       "nationality": "South African",
       "years": [
@@ -8290,9 +8396,10 @@
       ]
     },
     "mclaren-brm": {
-      "code": "MBR",
+      "code": "MCL",
       "name": "McLaren-BRM",
-      "continuity": false,
+      "chassis_brand": "MCLAREN",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1967,
@@ -8300,8 +8407,9 @@
       ]
     },
     "matra": {
-      "code": "MAT",
+      "code": "MATRA",
       "name": "Matra",
+      "chassis_brand": "MATRA",
       "continuity": false,
       "nationality": "French",
       "years": [
@@ -8313,8 +8421,9 @@
       ]
     },
     "cooper-ats": {
-      "code": "CAT",
+      "code": "COOPER",
       "name": "Cooper-ATS",
+      "chassis_brand": "COOPER",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8322,8 +8431,9 @@
       ]
     },
     "protos": {
-      "code": "PRO",
+      "code": "PROTOS",
       "name": "Protos",
+      "chassis_brand": "PROTOS",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8331,8 +8441,9 @@
       ]
     },
     "matra-ford": {
-      "code": "MAF",
+      "code": "MATRA",
       "name": "Matra-Ford",
+      "chassis_brand": "MATRA",
       "continuity": false,
       "nationality": "French",
       "years": [
@@ -8341,8 +8452,9 @@
       ]
     },
     "cooper-brm": {
-      "code": "CBR",
+      "code": "COOPER",
       "name": "Cooper-BRM",
+      "chassis_brand": "COOPER",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8352,6 +8464,7 @@
     "mclaren": {
       "code": "MCL",
       "name": "McLaren",
+      "chassis_brand": "MCLAREN",
       "continuity": true,
       "nationality": "British",
       "years": [
@@ -8368,8 +8481,9 @@
       ]
     },
     "brm-ford": {
-      "code": "BFO",
+      "code": "BRM",
       "name": "BRM-Ford",
+      "chassis_brand": "BRM",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8377,9 +8491,10 @@
       ]
     },
     "march": {
-      "code": "MRC",
+      "code": "MARCH",
       "name": "March",
-      "continuity": false,
+      "chassis_brand": "MARCH",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1970,
@@ -8392,17 +8507,19 @@
       ]
     },
     "mclaren-alfa_romeo": {
-      "code": "MCA",
+      "code": "MCL",
       "name": "McLaren-Alfa Romeo",
-      "continuity": false,
+      "chassis_brand": "MCLAREN",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1970
       ]
     },
     "surtees": {
-      "code": "SUR",
+      "code": "SURTEES",
       "name": "Surtees",
+      "chassis_brand": "SURTEES",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8418,8 +8535,9 @@
       ]
     },
     "bellasi": {
-      "code": "BEL",
+      "code": "BELLASI",
       "name": "Bellasi",
+      "chassis_brand": "BELLASI",
       "continuity": false,
       "nationality": "Swiss",
       "years": [
@@ -8428,9 +8546,10 @@
       ]
     },
     "tyrrell": {
-      "code": "TYR",
+      "code": "TYRRELL",
       "name": "Tyrrell",
-      "continuity": false,
+      "chassis_brand": "TYRRELL",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1970,
@@ -8446,35 +8565,39 @@
       ]
     },
     "march-ford": {
-      "code": "MFO",
+      "code": "MARCH",
       "name": "March-Ford",
-      "continuity": false,
+      "chassis_brand": "MARCH",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1971
       ]
     },
     "march-alfa_romeo": {
-      "code": "MAL",
+      "code": "MARCH",
       "name": "March-Alfa Romeo",
-      "continuity": false,
+      "chassis_brand": "MARCH",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1971
       ]
     },
     "lotus-pw": {
-      "code": "WHI",
+      "code": "TEAM LOTUS",
       "name": "Lotus-Pratt &amp; Whitney",
-      "continuity": false,
+      "chassis_brand": "LOTUS",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1971
       ]
     },
     "tecno": {
-      "code": "TEC",
+      "code": "TECNO",
       "name": "Tecno",
+      "chassis_brand": "TECNO",
       "continuity": false,
       "nationality": "Italian",
       "years": [
@@ -8483,8 +8606,9 @@
       ]
     },
     "politoys": {
-      "code": "POL",
+      "code": "POLITOYS",
       "name": "Politoys",
+      "chassis_brand": "POLITOYS",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8492,8 +8616,9 @@
       ]
     },
     "connew": {
-      "code": "CNN",
+      "code": "CONNEW",
       "name": "Connew",
+      "chassis_brand": "CONNEW",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8501,8 +8626,9 @@
       ]
     },
     "iso_marlboro": {
-      "code": "MAR",
+      "code": "ISO MARLBORO",
       "name": "Iso Marlboro",
+      "chassis_brand": "ISO MARLBORO",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8511,9 +8637,10 @@
       ]
     },
     "shadow": {
-      "code": "SHA",
+      "code": "SHADOW",
       "name": "Shadow",
-      "continuity": false,
+      "chassis_brand": "SHADOW",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1973,
@@ -8525,9 +8652,10 @@
       ]
     },
     "ensign": {
-      "code": "ENS",
+      "code": "ENSIGN",
       "name": "Ensign",
-      "continuity": false,
+      "chassis_brand": "ENSIGN",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1973,
@@ -8540,8 +8668,9 @@
       ]
     },
     "hesketh": {
-      "code": "HES",
+      "code": "HESKETH",
       "name": "Hesketh",
+      "chassis_brand": "HESKETH",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8553,8 +8682,9 @@
       ]
     },
     "trojan": {
-      "code": "TRO",
+      "code": "TROJAN",
       "name": "Trojan",
+      "chassis_brand": "TROJAN",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8562,8 +8692,9 @@
       ]
     },
     "amon": {
-      "code": "AMO",
+      "code": "AMON",
       "name": "Amon",
+      "chassis_brand": "AMON",
       "continuity": false,
       "nationality": "New Zealander",
       "years": [
@@ -8571,8 +8702,9 @@
       ]
     },
     "token": {
-      "code": "TOK",
+      "code": "TOKEN",
       "name": "Token",
+      "chassis_brand": "TOKEN",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8580,8 +8712,9 @@
       ]
     },
     "parnelli": {
-      "code": "PAR",
+      "code": "PARNELLI",
       "name": "Parnelli",
+      "chassis_brand": "PARNELLI",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -8591,8 +8724,9 @@
       ]
     },
     "penske": {
-      "code": "PEN",
+      "code": "PENSKE",
       "name": "Penske",
+      "chassis_brand": "PENSKE",
       "continuity": false,
       "nationality": "American",
       "years": [
@@ -8603,9 +8737,10 @@
       ]
     },
     "shadow-ford": {
-      "code": "SFO",
+      "code": "SHADOW",
       "name": "Shadow-Ford",
-      "continuity": false,
+      "chassis_brand": "SHADOW",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1975
@@ -8614,6 +8749,7 @@
     "williams": {
       "code": "WIL",
       "name": "Williams",
+      "chassis_brand": "WILLIAMS",
       "continuity": true,
       "nationality": "British",
       "years": [
@@ -8624,9 +8760,10 @@
       ]
     },
     "fittipaldi": {
-      "code": "FIT",
+      "code": "FITTIPALDI",
       "name": "Fittipaldi",
-      "continuity": false,
+      "chassis_brand": "FITTIPALDI",
+      "continuity": true,
       "nationality": "Brazilian",
       "years": [
         1975,
@@ -8637,8 +8774,9 @@
       ]
     },
     "hill": {
-      "code": "HIL",
+      "code": "EMBASSY HILL",
       "name": "Embassy Hill",
+      "chassis_brand": "EMBASSY HILL",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8646,8 +8784,9 @@
       ]
     },
     "maki": {
-      "code": "MAK",
+      "code": "MAKI",
       "name": "Maki",
+      "chassis_brand": "MAKI",
       "continuity": false,
       "nationality": "Japanese",
       "years": [
@@ -8655,8 +8794,9 @@
       ]
     },
     "lyncar": {
-      "code": "LYN",
+      "code": "LYNCAR",
       "name": "Lyncar",
+      "chassis_brand": "LYNCAR",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8664,17 +8804,19 @@
       ]
     },
     "shadow-matra": {
-      "code": "SMA",
+      "code": "SHADOW",
       "name": "Shadow-Matra",
-      "continuity": false,
+      "chassis_brand": "SHADOW",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1975
       ]
     },
     "wolf": {
-      "code": "WOL",
+      "code": "WOLF",
       "name": "Wolf",
+      "chassis_brand": "WOLF",
       "continuity": false,
       "nationality": "Canadian",
       "years": [
@@ -8685,9 +8827,10 @@
       ]
     },
     "brabham-alfa_romeo": {
-      "code": "ROM",
+      "code": "BRABHAM",
       "name": "Brabham-Alfa Romeo",
-      "continuity": false,
+      "chassis_brand": "BRABHAM",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1976,
@@ -8695,9 +8838,10 @@
       ]
     },
     "ligier": {
-      "code": "LIG",
+      "code": "LIGIER",
       "name": "Ligier",
-      "continuity": false,
+      "chassis_brand": "LIGIER",
+      "continuity": true,
       "nationality": "French",
       "years": [
         1976,
@@ -8707,8 +8851,9 @@
       ]
     },
     "boro": {
-      "code": "BOR",
+      "code": "BORO",
       "name": "Boro",
+      "chassis_brand": "BORO",
       "continuity": false,
       "nationality": "Dutch",
       "years": [
@@ -8717,8 +8862,9 @@
       ]
     },
     "kojima": {
-      "code": "KOJ",
+      "code": "KOJIMA",
       "name": "Kojima",
+      "chassis_brand": "KOJIMA",
       "continuity": false,
       "nationality": "Japanese",
       "years": [
@@ -8729,6 +8875,7 @@
     "lec": {
       "code": "LEC",
       "name": "LEC",
+      "chassis_brand": "LEC",
       "continuity": false,
       "nationality": "British",
       "years": [
@@ -8736,9 +8883,10 @@
       ]
     },
     "renault": {
-      "code": "REN",
+      "code": "RENAULT",
       "name": "Renault",
-      "continuity": false,
+      "chassis_brand": "RENAULT",
+      "continuity": true,
       "nationality": "French",
       "years": [
         1977,
@@ -8747,8 +8895,9 @@
       ]
     },
     "merzario": {
-      "code": "MRZ",
+      "code": "MERZARIO",
       "name": "Merzario",
+      "chassis_brand": "MERZARIO",
       "continuity": false,
       "nationality": "Italian",
       "years": [
@@ -8757,9 +8906,10 @@
       ]
     },
     "arrows": {
-      "code": "ARR",
+      "code": "ARROWS",
       "name": "Arrows",
-      "continuity": false,
+      "chassis_brand": "ARROWS",
+      "continuity": true,
       "nationality": "British",
       "years": [
         1978,
@@ -8767,17 +8917,19 @@
       ]
     },
     "theodore": {
-      "code": "THE",
+      "code": "THEODORE",
       "name": "Theodore",
-      "continuity": false,
+      "chassis_brand": "THEODORE",
+      "continuity": true,
       "nationality": "Hong Kong",
       "years": [
         1978
       ]
     },
     "martini": {
-      "code": "MRT",
+      "code": "MARTINI",
       "name": "Martini",
+      "chassis_brand": "MARTINI",
       "continuity": false,
       "nationality": "French",
       "years": [
@@ -8785,8 +8937,9 @@
       ]
     },
     "rebaque": {
-      "code": "REB",
+      "code": "REBAQUE",
       "name": "Rebaque",
+      "chassis_brand": "REBAQUE",
       "continuity": false,
       "nationality": "Mexican",
       "years": [

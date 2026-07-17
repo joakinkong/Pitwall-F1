@@ -56,6 +56,9 @@ def load_existing_init():
 # primer/último año real de la DB. Ajustar acá si cambia el reglamento.
 ERAS = [
     {"id": "all", "label": None, "from": None, "to": None},
+    {"id": "1950s", "label": "1950s", "from": 1950, "to": 1959},
+    {"id": "1960s", "label": "1960s", "from": 1960, "to": 1969},
+    {"id": "1970s", "label": "1970s", "from": 1970, "to": 1979},
     {"id": "1980s", "label": "1980s", "from": 1980, "to": 1989},
     {"id": "1990s", "label": "1990s", "from": 1990, "to": 1999},
     {"id": "2000s", "label": "2000s", "from": 2000, "to": 2009},

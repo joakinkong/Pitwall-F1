@@ -1,6 +1,6 @@
 # PIT WALL — CLAUDE.md
 
-App personal de estadísticas de F1, temporadas 1980–2026. Este archivo es un
+App personal de estadísticas de F1, temporadas 1950–2026. Este archivo es un
 registro vivo del proyecto: arquitectura, esquema de datos, cómo correr todo,
 convenciones, y un changelog de decisiones. Mantenelo actualizado (ver
 instrucción al final).
@@ -104,9 +104,13 @@ toda la app (standings, comparador, récords), no algo introducido en una
 tarea puntual — si se corrige, hacerlo en una tarea de datos dedicada, no de
 paso.
 
-Counts actuales (referencia, van a crecer): 47 temporadas, 843 carreras,
-19265 resultados de carrera, 562 resultados de sprint, 591 colores de
-equipo/temporada, 293 pilotos, 14 equipos, 57 circuitos.
+Counts actuales (referencia, van a crecer): 77 temporadas (1950-2026), 1160
+carreras, 26266 resultados de carrera, 562 resultados de sprint, 734 pilotos,
+91 circuitos, 139 team_ids distintos en resultados (la tabla `teams` tiene
+solo los 14 vigentes con metadata completa; los equipos históricos/desaparecidos
+existen únicamente como `team_id` en `race_results`, ver nota sobre nombres de
+equipo abajo). Los counts de 1950-1979 vienen del backfill (ver changelog
+2026-07-17).
 
 ### Shape de los JSON exportados (`docs/data/`)
 
@@ -293,6 +297,14 @@ el respaldo manual — normalmente no hace falta tocarlo. El Action:
   que se encuentre un error puntual de datos. El trabajo activo es cargar
   cada GP de la temporada en curso (2026 en adelante) a través del admin
   panel.
+- **Histórico 1950–1979**: cargado por backfill automatizado vía Jolpica-F1
+  (changelog 2026-07-17), también **congelado**. Nombres de equipo: los
+  equipos desaparecidos usan su nombre completo en MAYÚSCULA como `team_id`
+  (`BRABHAM`, `TEAM LOTUS`, `MASERATI`...), sin fila en `teams` — el display
+  cae al propio id. Los constructores están unificados por marca de chasis
+  (un `team_id` por marca, no por combinación chasis-motor). El Campeonato de
+  Constructores de esta era usa reglas propias en `crud.py` (solo mejor auto
+  por equipo + descarte), ver changelog.
 - IDs internos de driver/team/circuit son siempre 3 letras mayúsculas.
 - **Mapeo Jolpica-F1 → IDs internos** (`scripts/jolpica_map.json`, alcance
   SOLO 2025/2026): antes de que la automatización cargue un resultado nuevo,
@@ -953,6 +965,90 @@ el respaldo manual — normalmente no hace falta tocarlo. El Action:
   reglas de puntos); ejecutarlo contra `f1.db`; extender `ERAS` (decadas
   1950s/1960s/1970s), `POINTS_CUTOFF_ERAS`, título de la página, y rango de
   años del Simulador; re-exportar `docs/data/`.
+
+- **2026-07-17** — Backfill histórico 1950-1979 (Etapas 3-5, cierre del
+  proyecto "extender la app a 1950-2026"). La app ahora cubre **1950-2026**
+  (antes 1980-2026). Etapas 0-2 (fix de descartes, mapeo de IDs, sistemas de
+  puntos) están en entradas/commits previos. Esta cierra la carga real a
+  `f1.db` y la UI.
+  **Script de carga** (`scripts/backfill_pre1980.py`, corrida única, NO parte
+  de export_static ni del Action): lee el snapshot de Jolpica
+  (`.pre1980_raw_cache.json`), mapea IDs con `jolpica_map_pre1980.json`, y
+  escribe Drivers/Circuits nuevos + Season + RaceCalendar + RaceResult +
+  campeones, todo en UNA transacción (rollback total ante cualquier ID sin
+  mapear). Tiene `DRY_RUN=1`. Cargó 317 carreras, 7001 resultados, 441
+  pilotos y 34 circuitos nuevos, 30 temporadas. Backup previo en
+  `f1.db.bak-pre-backfill1950` (gitignoreado).
+  **Decisiones de datos:**
+  - **Indianápolis 500 (1950-1960) EXCLUIDO**: contó para el Mundial pero con
+    pilotos/autos de IndyCar sin conexión con la F1 europea. Verificado que no
+    altera ningún campeón (un solo piloto sumó en Indy y en una carrera
+    europea el mismo año, con 0 pts en la europea).
+  - **Constructores unificados por marca de chasis** (decisión del dueño):
+    Jolpica/FIA registra cada combinación chasis-motor por separado
+    (brabham-repco, brabham-ford...); se colapsan a la marca (BRABHAM) vía el
+    `code` de `jolpica_map_pre1980.json`. Reconciliado con los team_id que ya
+    usa el histórico 1980+ (que nombra a los equipos desaparecidos con su
+    nombre completo en mayúscula, sin fila en `teams` — ej. Lotus clásico →
+    `TEAM LOTUS`, no un código nuevo). El costo aceptado: el "campeón de
+    constructores" mostrado es la marca, no la combinación exacta que
+    registró la FIA. `build_pre1980_map.py` se regeneró para esto (antes daba
+    códigos de 3 letras a todos los constructores, lo que habría partido en
+    dos identidades a los ~14 equipos que cruzan la frontera de 1980). De
+    paso se corrigió que el generador de códigos de piloto evite chocar con
+    team_ids (Bruce McLaren el piloto ya no recibe 'MCL').
+  - **Autos compartidos** (mismo piloto en 2 autos, 1 carrera; 65 casos): la
+    constraint `UniqueConstraint(race_id, driver_id)` obliga a una fila; se
+    conserva el MEJOR resultado (regla FIA de la época, ver Etapa 2). 62-65
+    casos.
+  - **Metadata**: pilotos/circuitos nuevos toman nombre/nacionalidad/dob de
+    Jolpica (nacionalidad traducida a español + bandera ISO vía tabla en el
+    script). NO se pisan los de continuidad (su carga manual puede ser mejor).
+    Circuitos históricos usan el nombre del trazado como `name` (Jolpica no
+    da nombre de GP). Sin colores de equipo (no hay dato de esa era → gris,
+    como ya pasa con varios equipos de 1980).
+  - **Campos extendidos** (grid/quali/fastest_lap): NO se cargan (política
+    igual al histórico 1980-2024). El punto de vuelta rápida de los 50s YA
+    viene sumado en `points` de Jolpica, así que los standings salen bien sin
+    el flag.
+  **Reglas de Campeonato de Constructores clásico** (`crud.py`,
+  `_build_constructor_standings`): hasta 1979 el título de constructores usó
+  dos reglas que después desaparecieron: (a) por carrera solo puntuaba el
+  MEJOR auto de cada equipo (no se sumaban los dos), y (b) descarte de
+  resultados (mismo del año que aplica a pilotos). Sin ellas, 7 de 22 años
+  1958-1979 mostraban al equipo equivocado en el tope de la tabla (ej. 1958
+  Ferrari bruto por encima del campeón real Vanwall). Implementado con
+  `MAX(points)` por (equipo, carrera) + `_apply_dropped_scores`, SOLO para
+  `year <= CLASSIC_CONSTRUCTOR_MAX_YEAR` (1979); 1980+ sigue con `SUM` sin
+  descarte, sin cambios. Verificado: con estas reglas el campeón queda en el
+  tope en los 22 años, y el total reproduce el oficial exacto o casi (±1-4)
+  para 1958-1978. Se agregó desempate determinístico por team_id (evita
+  reordenamiento arbitrario de equipos empatados entre corridas — de ahí un
+  diff cosmético de una vez en la cola de equipos con 0 puntos de varios años
+  1980+, sin ningún cambio de total ni de campeón).
+  **UI/export** (`export_static.py`, `docs/js/app.js`, `docs/index.html`):
+  `ERAS` +décadas 1950s/1960s/1970s; `POINTS_CUTOFF_ERAS` +top-5 (1950-1959)
+  y top-6 (1960+) para la grilla de resultados; `<title>` y textos "1980-2026"
+  → "1950-2026". Los selectores de año (global, comparador, simulador) y el
+  simulador se pueblan de `Object.keys(SEASONS)` / `points_systems.json`, así
+  que tomaron 1950-1979 solos.
+  **Validación**: los 30 campeones de pilotos 1950-1979 reproducen el total
+  oficial EXACTO vía `crud.get_season_data` (incluye medios puntos: 1953
+  Ascari 34.5, 1975 Lauda 64.5); los 22 campeones de constructores 1958-1979
+  quedan en el tope; 1980+ sin regresión de totales (solo reordenamiento
+  cosmético de empates); `records.json` con leaderboards clásicos correctos
+  (Fangio 24 victorias en los 50s; Ferrari 250 all-time con la era unificada);
+  todos los shapes que consume el frontend (drivers/constructors/positions/
+  calendar/champions/records/points_systems) validados para años de muestra.
+  **Pendiente**: (1) validación VISUAL en navegador no hecha en esta máquina
+  (no hay Chromium/Playwright instalados) — la validación fue de datos +
+  smoke test de shapes, no de render real; queda para el dueño abrir la app y
+  mirar años clásicos. (2) Nombres de GP de circuitos históricos son el nombre
+  del trazado ("Silverstone Circuit" en vez de "British Grand Prix") — dato
+  cosmético mejorable. (3) El total de constructores por marca en años de
+  motores múltiples difiere del registro oficial-por-combinación (consecuencia
+  aceptada de unificar por marca). (4) `f1.db` local quedó con el backfill;
+  para reconciliar 2025+ ver la nota de `import_to_db.py` en entradas previas.
 
 ---
 

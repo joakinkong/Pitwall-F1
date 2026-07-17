@@ -47,13 +47,7 @@ MANUAL_OVERRIDES = {
         "depailler": "DEP",   # DEP tiene 8 filas reales en race_results, PDV tiene 0 (duplicado huérfano)
         "keegan": "RKE",      # RKE tiene 12 filas reales, RKG tiene 0 (duplicado huérfano)
     },
-    "constructors": {
-        # Jolpica guarda el nombre corto "RE"; el equipo real es el privado
-        # rodesiano "Realpha" (1 sola entrada, GP Sudáfrica 1965, piloto Ray
-        # Reed) -- ver https://en.wikipedia.org/wiki/Realpha. Nombre de 2
-        # letras no da candidatos alfa de 3 letras, se asigna a mano.
-        "re": "RLP",
-    },
+    "constructors": {},
     "circuits": {
         "silverstone": "GBR",       # SEV = "70th Anniversary GP" (evento especial 2020), no el nombre histórico
         "red_bull_ring": "OST",     # OST ya se usa 1980-1987 (Österreichring) -- continuidad directa con 1970-1979
@@ -62,6 +56,34 @@ MANUAL_OVERRIDES = {
                                      # (Eifel GP 2020) son el mismo evento histórico -- código nuevo.
     },
 }
+
+# CONSTRUCTORES: se unifican por MARCA DE CHASIS (decisión del dueño 2026-07-16,
+# ver CLAUDE.md § backfill 1950-1979). Jolpica/FIA registra cada combinación
+# chasis-motor como constructor separado (brabham-repco, brabham-ford, ...);
+# los colapsamos a la marca del chasis para que los récords de equipo tengan
+# sentido y haya continuidad con la era 1980+ que la app ya tiene.
+#
+# La marca de chasis se toma como la parte antes del primer "-", EXCEPTO los
+# nombres propios que llevan guión de verdad (no son chasis-motor):
+HYPHENATED_REAL_NAMES = {"Behra-Porsche", "Arzani-Volpini", "Tec-Mec"}
+
+# Marca de chasis (mayúscula, ya sin sufijo de motor) -> team_id canónico que
+# ya usa la era 1980+ (para no partir un equipo en dos identidades). Las marcas
+# vigentes (Ferrari, McLaren, Mercedes, Williams, Alfa, Aston Martin) se
+# resuelven dinámicamente contra la tabla `teams` por nombre; acá van solo los
+# alias que NO se derivan solos:
+CHASSIS_ALIASES = {
+    "LOTUS": "TEAM LOTUS",   # Team Lotus clásico (Chapman) continúa como 'TEAM LOTUS' en 1980-1989
+}
+
+
+def chassis_brand(name):
+    """Marca de chasis en mayúscula, colapsando el sufijo de motor."""
+    if name in HYPHENATED_REAL_NAMES:
+        return name.upper()
+    if "-" in name:
+        return name.split("-")[0].strip().upper()
+    return name.upper()
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(REPO_ROOT, "f1.db")
 OUT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "jolpica_map_pre1980.json")
@@ -120,8 +142,13 @@ def load_db_ids():
     circuits = {row[0]: row[1] for row in cur.execute("SELECT id, name FROM circuits")}
     circuits_city = {row[0]: row[1] for row in cur.execute("SELECT id, city FROM circuits")}
     circuits_track = {row[0]: row[1] for row in cur.execute("SELECT id, circuit_name FROM circuits")}
+    # team_ids REALES usados en resultados (72), no solo la tabla `teams` (14):
+    # el histórico 1980+ nombra a los equipos desaparecidos con su nombre
+    # completo en mayúscula como team_id (BRABHAM, TEAM LOTUS, ...), sin fila
+    # en `teams`. Los necesitamos para reconciliar la continuidad de marca.
+    result_team_ids = {row[0] for row in cur.execute("SELECT DISTINCT team_id FROM race_results")}
     conn.close()
-    return drivers, teams, teams_full, circuits, circuits_city, circuits_track
+    return drivers, teams, teams_full, circuits, circuits_city, circuits_track, result_team_ids
 
 
 def norm(s):
@@ -251,7 +278,7 @@ def main():
     print(f"Distintos: {len(drivers_seen)} drivers, {len(constructors_seen)} constructors, "
           f"{len(circuits_seen)} circuits", file=sys.stderr)
 
-    db_drivers, db_teams, db_teams_full, db_circuits, db_circuits_city, db_circuits_track = load_db_ids()
+    db_drivers, db_teams, db_teams_full, db_circuits, db_circuits_city, db_circuits_track, db_result_team_ids = load_db_ids()
     used_ids_drivers = set(db_drivers.keys())
     used_ids_teams = set(db_teams.keys())
     used_ids_circuits = set(db_circuits.keys())
@@ -296,7 +323,13 @@ def main():
             if partial:
                 flagged.append(f"driver '{full_name}' ({did}) posible match parcial por apellido con {set(partial)} -- revisar a mano, NO auto-asignado")
             cands = candidate_codes_driver(info["given"], info["family"])
-            code, fallback = assign_code(cands, used_ids_drivers | set(out_drivers.values()))
+            # Evitar también los códigos de 3 letras de equipos vigentes (FER,
+            # MCL, WIL, MER...): aunque Driver.id y Team.id son tablas
+            # separadas, dar a un piloto el código de un equipo distinto (ej.
+            # el piloto Bruce McLaren con 'MCL', el team McLaren) es confuso y
+            # frágil. Los team_ids de nombre completo (BRABHAM) no son de 3
+            # letras, así que no entran en conflicto con un código de piloto.
+            code, fallback = assign_code(cands, used_ids_drivers | used_ids_teams | set(out_drivers.values()))
             if fallback:
                 flagged.append(f"driver '{full_name}' ({did}) sin candidato de 3 letras libre, código fallback: {code}")
         out_drivers[did] = code
@@ -304,27 +337,40 @@ def main():
         info["continuity"] = continuity
         info["full_name"] = full_name
 
+    # Constructores: unificados por MARCA DE CHASIS (ver constantes arriba).
+    # Prioridad para el team_id canónico de una marca:
+    #   1. MANUAL_OVERRIDES / CHASSIS_ALIASES explícito.
+    #   2. Marca vigente que matchea la tabla `teams` por nombre -> código 3 letras.
+    #   3. Marca cuyo nombre-mayúscula ya es un team_id del histórico 1980+ -> ese id.
+    #   4. Nueva -> nombre de marca en mayúscula (misma convención que 1980+
+    #      usa para equipos desaparecidos: 'BRABHAM', 'MASERATI', ...).
     out_constructors = {}
     for ctid, info in sorted(constructors_seen.items()):
-        key = norm(info["name"])
         if ctid in MANUAL_OVERRIDES["constructors"]:
             code = MANUAL_OVERRIDES["constructors"][ctid]
             out_constructors[ctid] = code
             info["assigned_code"] = code
-            info["continuity"] = code in used_ids_teams
+            info["chassis_brand"] = code
+            info["continuity"] = code in used_ids_teams or code in db_result_team_ids
             continue
-        match_ids = db_team_by_name.get(key)
-        continuity = False
-        if match_ids:
-            if len(match_ids) > 1:
-                flagged.append(f"constructor '{info['name']}' ({ctid}) matchea multiples ids existentes: {match_ids}")
-            code = match_ids[0]
+        brand = chassis_brand(info["name"])
+        info["chassis_brand"] = brand
+        if brand in CHASSIS_ALIASES:
+            code = CHASSIS_ALIASES[brand]
             continuity = True
         else:
-            cands = candidate_codes_generic(info["name"])
-            code, fallback = assign_code(cands, used_ids_teams | set(out_constructors.values()))
-            if fallback:
-                flagged.append(f"constructor '{info['name']}' ({ctid}) sin candidato de 3 letras libre, código fallback: {code}")
+            match_ids = db_team_by_name.get(norm(brand))
+            if match_ids:
+                if len(match_ids) > 1:
+                    flagged.append(f"marca '{brand}' (de '{info['name']}', {ctid}) matchea multiples ids vigentes: {match_ids}")
+                code = match_ids[0]
+                continuity = True
+            elif brand in db_result_team_ids:
+                code = brand           # reaparece en 1980+ con nombre completo
+                continuity = True
+            else:
+                code = brand           # solo existió 1950-1979
+                continuity = False
         out_constructors[ctid] = code
         info["assigned_code"] = code
         info["continuity"] = continuity
@@ -374,7 +420,8 @@ def main():
         "drivers": {did: {"code": v["assigned_code"], "name": v["full_name"], "continuity": v["continuity"],
                            "dob": v["dob"], "nationality": v["nat"], "years": sorted(set(v["years"]))}
                     for did, v in drivers_seen.items()},
-        "constructors": {ctid: {"code": v["assigned_code"], "name": v["name"], "continuity": v["continuity"],
+        "constructors": {ctid: {"code": v["assigned_code"], "name": v["name"],
+                                 "chassis_brand": v.get("chassis_brand"), "continuity": v["continuity"],
                                  "nationality": v["nat"], "years": sorted(set(v["years"]))}
                           for ctid, v in constructors_seen.items()},
         "circuits": {cid: {"code": v["assigned_code"], "name": v["circuitName"], "continuity": v["continuity"],
@@ -388,7 +435,8 @@ def main():
     print(f"\nEscrito {OUT_PATH}", file=sys.stderr)
     print(f"Drivers: {len(out_drivers)} ({sum(1 for v in drivers_seen.values() if v['continuity'])} continuidad, "
           f"{sum(1 for v in drivers_seen.values() if not v['continuity'])} nuevos)", file=sys.stderr)
-    print(f"Constructors: {len(out_constructors)} ({sum(1 for v in constructors_seen.values() if v['continuity'])} continuidad, "
+    print(f"Constructors: {len(out_constructors)} constructorIds -> {len(set(out_constructors.values()))} equipos "
+          f"unificados por chasis ({sum(1 for v in constructors_seen.values() if v['continuity'])} continuidad, "
           f"{sum(1 for v in constructors_seen.values() if not v['continuity'])} nuevos)", file=sys.stderr)
     print(f"Circuits: {len(out_circuits)} ({sum(1 for v in circuits_seen.values() if v['continuity'])} continuidad, "
           f"{sum(1 for v in circuits_seen.values() if not v['continuity'])} nuevos)", file=sys.stderr)
