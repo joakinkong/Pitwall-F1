@@ -432,6 +432,25 @@ function referenceDroppedScores(systemId){
   return years[matching[matching.length-1]].dropped_scores;
 }
 
+// Aplica una regla de descarte (best_n o split, ver points_systems.json) a
+// un array de puntos por ronda en orden de calendario. Espejo exacto de
+// _apply_dropped_scores en backend/crud.py (que usa el mismo dataset para
+// corregir el total "real" que muestra la app, no solo el simulador).
+function applyDroppedScores(perRound,dropped){
+  if(!dropped)return perRound.reduce((a,b)=>a+b,0);
+  if(dropped.mode==='best_n')return [...perRound].sort((a,b)=>b-a).slice(0,dropped.keep).reduce((a,b)=>a+b,0);
+  if(dropped.mode==='split'){
+    let total=0,idx=0;
+    for(const half of dropped.halves){
+      const seg=perRound.slice(idx,idx+half.races);
+      total+=[...seg].sort((a,b)=>b-a).slice(0,half.keep).reduce((a,b)=>a+b,0);
+      idx+=half.races;
+    }
+    return total;
+  }
+  return perRound.reduce((a,b)=>a+b,0);
+}
+
 // Recalcula el total de cada piloto de `year` aplicando `systemId` a las
 // posiciones reales de carrera (POSITIONS[year]) más el sprint REAL de esa
 // temporada (SPRINTS[year], con el sistema de sprint que rigió ese año —
@@ -459,9 +478,7 @@ function computeSimTotals(year,systemId){
       }
       perRound.push(pts);
     }
-    const total=(dropped&&dropped.mode==='best_n')
-      ? [...perRound].sort((a,b)=>b-a).slice(0,dropped.keep).reduce((a,b)=>a+b,0)
-      : perRound.reduce((a,b)=>a+b,0);
+    const total=applyDroppedScores(perRound,dropped);
     return {id:d.id,name:d.name,team:d.team,color:d.color,total};
   });
 }

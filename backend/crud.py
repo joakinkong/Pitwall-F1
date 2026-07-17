@@ -2,12 +2,60 @@
 Todas las consultas a la DB. Los métodos "for_frontend_*" devuelven datos en el
 formato exacto que el frontend espera (compatible con los objetos JS anteriores).
 """
+import json
+import os
 from sqlalchemy.orm import Session
 from sqlalchemy import text, bindparam, or_
 from models import (
     Driver, Team, Circuit, Season, SeasonTeamColor,
     RaceCalendar, RaceResult, SprintResult
 )
+
+_POINTS_SYSTEMS_PATH = os.path.join(
+    os.path.dirname(__file__), "..", "docs", "data", "points_systems.json"
+)
+_dropped_scores_cache: dict[int, dict] | None = None
+
+
+def _load_dropped_scores_rules() -> dict[int, dict]:
+    """year -> dropped_scores rule (solo años con descarte en el campeonato de
+    PILOTOS; ver docs/data/points_systems.json y CLAUDE.md § Changelog). Los
+    constructores 1980-1990 no tuvieron descarte, así que esto NUNCA se usa
+    para _build_constructor_standings. Cacheado a nivel de módulo: el archivo
+    es estático de referencia histórica, no cambia en runtime del backend."""
+    global _dropped_scores_cache
+    if _dropped_scores_cache is not None:
+        return _dropped_scores_cache
+    try:
+        with open(_POINTS_SYSTEMS_PATH, encoding="utf-8") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        _dropped_scores_cache = {}
+        return _dropped_scores_cache
+    _dropped_scores_cache = {
+        int(year_str): meta["dropped_scores"]
+        for year_str, meta in data.get("years", {}).items()
+        if meta.get("dropped_scores")
+    }
+    return _dropped_scores_cache
+
+
+def _apply_dropped_scores(round_points: list[float], rule: dict) -> float:
+    """Recalcula el total oficial de una temporada con descarte aplicado,
+    sobre el array de puntos por ronda en orden de calendario. Dos modos
+    (ver points_systems.json): 'best_n' (mejores N de todas las carreras) y
+    'split' (temporada partida en mitades, mejores N de cada mitad — 1980)."""
+    if rule["mode"] == "best_n":
+        return sum(sorted(round_points, reverse=True)[: rule["keep"]])
+    if rule["mode"] == "split":
+        total = 0.0
+        idx = 0
+        for half in rule["halves"]:
+            seg = round_points[idx: idx + half["races"]]
+            total += sum(sorted(seg, reverse=True)[: half["keep"]])
+            idx += half["races"]
+        return total
+    raise ValueError(f"Modo de descarte desconocido: {rule['mode']!r}")
 
 
 # ── Drivers ──────────────────────────────────────────────────────────────────
@@ -217,6 +265,24 @@ def _build_driver_standings(db: Session, year: int, race_ids: list[int], color_m
             cum.append(running)
         cum_map[driver_id] = cum
 
+    # Descarte de resultados (solo campeonato de PILOTOS, años 1950-1990 con
+    # sistema "mejores N" -- ver docs/data/points_systems.json). El total
+    # oficial de esos años NO es la suma bruta: hay que quedarse con los N
+    # mejores resultados (o las mitades de temporada de 1980). `cum` queda
+    # como progresión bruta sin tocar -- es cómo ya se muestra el gráfico de
+    # trayectoria, y ya existe precedente de total != cum[-1] (ver el caso
+    # TSU 2025 documentado en CLAUDE.md) así que no es una inconsistencia
+    # nueva, es el mismo patrón aplicado a un caso más.
+    dropped_rule = _load_dropped_scores_rules().get(year)
+    official_totals: dict[str, float] = {}
+    if dropped_rule:
+        for driver_id, rounds in _driver_rounds.items():
+            round_points = [0.0] * len(race_ids)
+            for round_num, pts in rounds:
+                if 1 <= round_num <= len(race_ids):
+                    round_points[round_num - 1] += pts
+            official_totals[driver_id] = _apply_dropped_scores(round_points, dropped_rule)
+
     # Driver display names
     driver_names = _get_driver_display_names(db)
     team_names = _get_team_display_names(db)
@@ -230,14 +296,18 @@ def _build_driver_standings(db: Session, year: int, race_ids: list[int], color_m
         cum = cum_map.get(driver_id, [total])
         color = color_map.get(team_id, "#888888")
         team_display = team_names.get(team_id, team_id)
+        display_total = official_totals.get(driver_id, total) if dropped_rule else total
         result.append({
             "id": driver_id,
             "name": driver_names.get(driver_id, driver_id),
             "team": team_display,
-            "total": total,
+            "total": display_total,
             "cum": cum,
             "color": color,
         })
+
+    if dropped_rule:
+        result.sort(key=lambda d: d["total"], reverse=True)
 
     return result
 
@@ -858,30 +928,66 @@ def biggest_title_margin(db: Session, from_year: int, to_year: int) -> dict | No
     Mayor diferencia de puntos entre campeón y subcampeón, entre los títulos ya
     decididos (Season.champion_driver_id no nulo) en el rango de años. Usa el
     total de puntos de temporada por piloto (suma entre equipos, por si cambió
-    de equipo a mitad de año).
+    de equipo a mitad de año), con descarte aplicado en los años que
+    corresponda (ver _apply_dropped_scores) -- mismo criterio que
+    _build_driver_standings, para que este número no quede desincronizado del
+    que ya muestra la app.
     """
-    rows = db.execute(text("""
-        SELECT rc.year, rr.driver_id, SUM(rr.points) as total
+    champions = dict(db.execute(text("""
+        SELECT year, champion_driver_id FROM seasons
+        WHERE year BETWEEN :from_year AND :to_year
+          AND champion_driver_id IS NOT NULL AND champion_driver_id != ''
+    """), {"from_year": from_year, "to_year": to_year}).fetchall())
+
+    if not champions:
+        return None
+
+    round_rows = db.execute(text("""
+        SELECT rc.year, rr.driver_id, rc.round, SUM(rr.points) as pts
         FROM race_results rr
         JOIN race_calendar rc ON rr.race_id = rc.id
-        JOIN seasons s ON s.year = rc.year
         WHERE rc.year BETWEEN :from_year AND :to_year
-          AND s.champion_driver_id IS NOT NULL AND s.champion_driver_id != ''
-        GROUP BY rc.year, rr.driver_id
-        ORDER BY rc.year, total DESC
+        GROUP BY rc.year, rr.driver_id, rc.round
     """), {"from_year": from_year, "to_year": to_year}).fetchall()
 
+    race_counts = dict(db.execute(text("""
+        SELECT year, COUNT(*) FROM race_calendar
+        WHERE year BETWEEN :from_year AND :to_year
+        GROUP BY year
+    """), {"from_year": from_year, "to_year": to_year}).fetchall())
+
     from collections import defaultdict
-    by_year: dict[int, list] = defaultdict(list)
-    for year, driver_id, total in rows:
-        by_year[year].append((driver_id, total))
+    by_year: dict[int, dict[str, list]] = defaultdict(lambda: defaultdict(list))
+    for year, driver_id, round_num, pts in round_rows:
+        by_year[year][driver_id].append((round_num, pts))
+
+    dropped_rules = _load_dropped_scores_rules()
 
     best = None
-    for year, standings in by_year.items():
-        if len(standings) < 2:
+    for year, champ_id in champions.items():
+        drivers = by_year.get(year)
+        if not drivers or champ_id not in drivers:
             continue
-        champ_id, champ_pts = standings[0]
-        runner_id, runner_pts = standings[1]
+        n_races = race_counts.get(year, 0)
+        rule = dropped_rules.get(year)
+        totals: dict[str, float] = {}
+        for driver_id, rounds in drivers.items():
+            if rule:
+                arr = [0.0] * n_races
+                for round_num, pts in rounds:
+                    if 1 <= round_num <= n_races:
+                        arr[round_num - 1] += pts
+                totals[driver_id] = _apply_dropped_scores(arr, rule)
+            else:
+                totals[driver_id] = sum(pts for _, pts in rounds)
+
+        champ_pts = totals[champ_id]
+        runner_id, runner_pts = max(
+            ((d, t) for d, t in totals.items() if d != champ_id),
+            key=lambda x: x[1], default=(None, None)
+        )
+        if runner_id is None:
+            continue
         margin = round(champ_pts - runner_pts, 1)
         if best is None or margin > best["margin"]:
             best = {

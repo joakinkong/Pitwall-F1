@@ -809,6 +809,74 @@ el respaldo manual — normalmente no hace falta tocarlo. El Action:
   probado en vivo (clic invierte de descendente a ascendente, cambia el
   piloto en el tope de la tabla). Sin overflow horizontal en 420px.
 
+- **2026-07-16** — Fix del bug de descartes (paso previo al backfill 1950-1979,
+  ver entradas siguientes): `_build_driver_standings` en `backend/crud.py`
+  calculaba `total` como suma bruta de `RaceResult.points`, sin aplicar el
+  descarte real de 1980-1990 (ver `docs/data/points_systems.json.years[year]
+  .dropped_scores`, modos `best_n` y `split`). El campeonato de
+  CONSTRUCTORES nunca tuvo descarte en esa era, así que
+  `_build_constructor_standings` no se tocó. `cum` (el array de progresión
+  del gráfico) se deja sin tocar — sigue siendo la suma bruta acumulada, y
+  puede diferir de `total` (mismo patrón ya documentado para el caso
+  TSU 2025 de cambio de equipo a mitad de temporada, no es una
+  inconsistencia nueva). Se agregó `_apply_dropped_scores` (ambos modos) y
+  `_load_dropped_scores_rules` (lee `points_systems.json` directamente —
+  incluso siendo un archivo "de export", el backend ya lo trata como fuente
+  de verdad de un hecho histórico externo, mismo criterio que
+  `NON_FINISH_CODES` compartido a mano entre backend/frontend). El mismo
+  fix se aplicó a `biggest_title_margin` (usado por la página Récords), que
+  tenía SU PROPIA query de puntos brutos independiente y además asumía
+  "el de más puntos = campeón" en vez de leer `Season.champion_driver_id` —
+  ahora usa el campeón real de la DB y busca el subcampeón entre el resto.
+  El simulador JS (`docs/js/app.js`, `computeSimTotals`) tenía el mismo
+  hueco pero peor: solo implementaba el modo `best_n`, así que 1980 (único
+  año con modo `split`, temporada partida) nunca aplicaba descarte alguno
+  en el simulador — se extrajo a una función compartida `applyDroppedScores`
+  con ambos modos.
+  **Bug de datos encontrado de paso, no el mismo que el de descartes:** al
+  diagnosticar contra los campeones reales de 1980-1990 (no solo recalcular
+  y comparar contra lo ya cargado) apareció un SEGUNDO campeón mal cargado
+  además del 1988 ya documentado: **1984** decía Prost en la DB, el campeón
+  real fue **Lauda** (72 vs 71.5, el margen de 0.5 puntos más famoso de la
+  historia de la F1). Causa: Mónaco 1984 se acortó por lluvia (regla FIA de
+  medios puntos para carreras interrumpidas antes del 75% de distancia,
+  documentada como limitación NO modelada en `points_systems.json.meta
+  .limitations`), y Prost quedó cargado con los 9 puntos completos por esa
+  carrera en vez de 4.5. Se corrigió ese único valor
+  (`race_results.points` de PRO en Mónaco 1984: 9.0→4.5) y
+  `Season.champion_driver_id` de 1984→LAU y 1988→SEN directo en `f1.db`
+  (con backup previo `f1.db.bak-pre-descartes-fix`, no commiteado — está en
+  `.gitignore`). Verificado: recalculando 1984 con el fix dio Lauda 72.0 /
+  Prost 71.5 exacto. La limitación general de medios puntos (otras carreras
+  acortadas: Australia 1991, Bélgica 2021, etc.) sigue sin modelarse — este
+  fix fue puntual, solo para el único caso que estaba corrompiendo un
+  campeón dentro del rango con descarte que se estaba arreglando, no una
+  auditoría completa de carreras acortadas.
+  **Prerequisito destrabado de paso:** `export_static.py` fallaba con
+  `OperationalError: no such column: race_results.fastest_lap` al
+  intentar correr — la migración de esquema de la Feature D
+  (`migrate_extended_fields.py`, agrega `quali_position`/`fastest_lap`,
+  dropea `laps`) nunca se había corrido de verdad contra el `f1.db` real
+  del dueño (el changelog de la Feature D solo la había probado contra DBs
+  temporales). Se corrió ahora (idempotente, con guardarraíl ya descrito en
+  su propio changelog) — esto no es parte del fix de descartes en sí, pero
+  bloqueaba poder re-exportar para verificarlo.
+  **Validado**: 1988 recalculado da Senna 90.0 / Prost 87.0 (coincide con
+  los números ya documentados en el changelog del simulador). 1985 (mismo
+  campeón con o sin descarte) pasa de total bruto 76 a 73 con descarte, sin
+  cambiar de campeón. Constructores 1985 sin cambios (sin descarte, como
+  corresponde). 2023 (sin descarte, era moderna) exportado byte-idéntico —
+  cero regresión fuera del rango 1980-1990. `records.json` recalculado:
+  el margen de título más grande de los 80s pasa a ser 1985 (Prost 73 /
+  Alboreto 53, margen 20) en vez de un valor inflado por el bug; el margen
+  histórico global (2023, Verstappen/Pérez, 290) no cambia.
+  **Pendiente real:** la limitación general de medios puntos por carrera
+  acortada (fuera de Mónaco 1984) sigue sin modelarse, documentada en
+  `points_systems.json.meta.limitations` — no se tocó más allá del caso que
+  corrompía un campeón. `f1.db` quedó con `race_results.points` de Mónaco
+  1984 corregido pero el resto del histórico 1980-2024 no se auditó
+  carrera por carrera contra medios puntos.
+
 ---
 
 **Al terminar cualquier tarea significativa en este repo, actualizar la

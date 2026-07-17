@@ -1,5 +1,9 @@
 # Database
 f1.db
+f1.db.bak*
+
+# Cache de scripts one-off (reproducible, no es fuente de verdad)
+scripts/.pre1980_raw_cache.json
 
 # Downloaded libraries (not authored code)
 f1-circuits-svg-main/
