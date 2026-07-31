@@ -1278,7 +1278,7 @@ function buildHome(){
   if(!s)return;
   const pos=POSITIONS[currentYear]||{};
   // Compute metrics: wins, podiums, DNF per driver and team
-  const dWins={},tWins={},dPodiums={},tPodiums={},dDNF={},tDNF={},tColors={};
+  const dWins={},tWins={},dPodiums={},tPodiums={},dPoints={},tPoints={},dDNF={},tDNF={},tColors={};
   for(const d of s.drivers){
     const results=pos[d.id]||[];
     for(let i=0;i<results.length;i++){
@@ -1291,9 +1291,11 @@ function buildHome(){
       if(p==='1'){dWins[d.id]=(dWins[d.id]||0)+1;tWins[tName]=(tWins[tName]||0)+1;}
       if(p==='1'||p==='2'||p==='3'){dPodiums[d.id]=(dPodiums[d.id]||0)+1;tPodiums[tName]=(tPodiums[tName]||0)+1;}
       if(NON_FINISH_CODES.includes(p)){dDNF[d.id]=(dDNF[d.id]||0)+1;tDNF[tName]=(tDNF[tName]||0)+1;}
+      const racePts=Math.round(((d.cum[i]||0)-(i>0?d.cum[i-1]||0:0))*10)/10;
+      if(racePts>0){dPoints[d.id]=(dPoints[d.id]||0)+racePts;tPoints[tName]=(tPoints[tName]||0)+racePts;}
     }
   }
-  homeChartData={wins:{d:dWins,t:tWins},podiums:{d:dPodiums,t:tPodiums},dnf:{d:dDNF,t:tDNF},colors:tColors};
+  homeChartData={wins:{d:dWins,t:tWins},podiums:{d:dPodiums,t:tPodiums},points:{d:dPoints,t:tPoints},dnf:{d:dDNF,t:tDNF},colors:tColors};
   const cal=CAL_DATA.calendars[currentYear]||[];
   const racesDone=s.completed!==undefined?s.completed:s.races.length;
   // Champion or current leader
@@ -1491,8 +1493,8 @@ function renderHomeCharts(metric){
   if(!homeChartData)return;
   const s=SEASONS[currentYear];if(!s)return;
   const data=homeChartData[metric];
-  const labels={wins:'Victorias',podiums:'Podios',dnf:'DNF / Abandono'};
-  const units={wins:'victoria',podiums:'podio',dnf:'abandono'};
+  const labels={wins:'Victorias',podiums:'Podios',points:'Puntos',dnf:'DNF / Abandono'};
+  const units={wins:'victoria',podiums:'podio',points:'punto',dnf:'abandono'};
   const el=document.getElementById('homeChartsLabel');
   if(el)el.textContent=labels[metric]+' por Gran Premio';
   // Driver chart
