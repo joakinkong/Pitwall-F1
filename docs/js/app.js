@@ -139,11 +139,15 @@ function updateYearArrows(){
   if(next)next.disabled=idx===-1||idx>=years.length-1;
 }
 
+// cum de un piloto solo tiene entradas de las rondas que corrió (crud/sync); el
+// chart usa el índice como número de GP, así que se realinea con positions
+// (''=no corrió esa ronda) repitiendo el acumulado previo. Si no cuadra, tal cual.
+function alignedCum(d){const pos=(POSITIONS[currentYear]||{})[d.id];if(!pos)return d.cum;const ran=pos.filter(x=>x!=='').length;if(ran!==d.cum.length||ran===pos.length)return d.cum;let k=0,last=0;return pos.map(x=>{if(x!=='')last=d.cum[k++];return last;});}
 function buildChart(tab){const ctx=document.getElementById('mainChart').getContext('2d');if(chart)chart.destroy();const s=SEASONS[currentYear];let source=tab==='drivers'?s.drivers:s.constructors;
 const idA=document.getElementById('selectA')?.value,idB=document.getElementById('selectB')?.value;
 if(idA&&idB)source=source.filter(d=>d.id===idA||d.id===idB);
 let sec=new Set();if(tab==='drivers'){const tb={};for(const d of source){if(!tb[d.color]||d.total>tb[d.color].total)tb[d.color]=d;}for(const d of source){if(tb[d.color]&&tb[d.color].id!==d.id)sec.add(d.id);}}
-const racesDone=s.completed||s.races.length;const chartLabels=s.races.slice(0,racesDone);const ds=source.map(d=>({label:dCode(d.id),data:d.cum.slice(0,racesDone),borderColor:d.color,backgroundColor:d.color+'18',borderWidth:2.2,borderDash:sec.has(d.id)?[6,3]:[],pointRadius:3,pointHoverRadius:6,pointBackgroundColor:d.color,pointBorderColor:'#121314',pointBorderWidth:1.5,tension:.3,fill:false}));
+const racesDone=s.completed||s.races.length;const chartLabels=s.races.slice(0,racesDone);const ds=source.map(d=>({label:dCode(d.id),data:alignedCum(d).slice(0,racesDone),borderColor:d.color,backgroundColor:d.color+'18',borderWidth:2.2,borderDash:sec.has(d.id)?[6,3]:[],pointRadius:3,pointHoverRadius:6,pointBackgroundColor:d.color,pointBorderColor:'#121314',pointBorderWidth:1.5,tension:.3,fill:false}));
 var hlPlugin={id:'hl',_hx:-1,afterEvent:function(ch,args){
   var e=args.event;
   if(!e||e.type==='mouseout'){
