@@ -1,0 +1,30 @@
+#!/bin/sh
+# post-merge — se ejecuta después de cada `git pull` / merge.
+#
+# Si el pull trajo temporadas gestionadas por el sync automático (2025+), las trae
+# a f1.db (scripts/import_to_db.py) para que el admin panel y un eventual
+# `export_static.py` no trabajen con una DB vieja. Solo toca f1.db: no modifica
+# archivos del repo y NUNCA hace fallar el pull (un post-merge no puede abortarlo;
+# si algo sale mal, solo avisa).
+#
+# Activar una vez por clon:   git config core.hooksPath .githooks
+
+ROOT=$(git rev-parse --show-toplevel) || exit 0
+cd "$ROOT" || exit 0
+
+[ -f f1.db ] || exit 0                                   # sin DB local no hay nada que reconciliar
+git rev-parse -q --verify ORIG_HEAD >/dev/null || exit 0
+
+YEARS=$(git diff --name-only ORIG_HEAD HEAD -- docs/data/seasons \
+        | sed -n 's#^docs/data/seasons/\([0-9][0-9][0-9][0-9]\)\.json$#\1#p' \
+        | awk '$1 >= 2025' | sort -u)
+[ -n "$YEARS" ] || exit 0
+
+echo "[post-merge] Cambiaron temporadas gestionadas: $(echo $YEARS | tr '\n' ' ')- reconciliando f1.db..."
+cp f1.db f1.db.bak-pre-import || { echo "[post-merge] No pude hacer el backup de f1.db; no se reconcilia."; exit 0; }
+
+for Y in $YEARS; do
+  PYTHONUTF8=1 python scripts/import_to_db.py --year "$Y" \
+    || echo "[post-merge] AVISO: falló import_to_db.py para $Y. Backup de la DB previa: f1.db.bak-pre-import"
+done
+exit 0
