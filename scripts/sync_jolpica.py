@@ -18,8 +18,10 @@ QUÉ TOMA DE JOLPICA (recalculado, autoritativo): positions, grid, quali, vuelta
 rápida, sprints, y los puntos/standings (total + cum por ronda).
 QUÉ PRESERVA DEL JSON EXISTENTE (metadata que no vive en Jolpica, viene de la DB
 del dueño): calendar (fechas display, event, flag sprint, hora UTC), nombres de
-piloto ("L. Norris"), nombres de equipo ("McLAREN"), colores, y champion_* (que
-es una decisión del dueño). Por eso el JSON de la temporada DEBE existir ya.
+piloto ("L. Norris"), nombres de equipo ("McLAREN"), colores, y champion_* si ya
+está cargado (decisión del dueño: nunca se pisa). Si está vacío, se completa solo
+cuando el título ya es matemáticamente imposible de alcanzar (ver
+champion_if_clinched). Por eso el JSON de la temporada DEBE existir ya.
 
 VALIDACIÓN ESTRICTA antes de escribir (si algo falla: exit EXIT_ERROR, no escribe
 NADA): rondas con fecha pasada tienen resultados completos en Jolpica (una
@@ -48,6 +50,13 @@ REQUEST_PAUSE_SECONDS = 1.5      # cortesía: API comunitaria gratuita con rate 
 MANAGED_FROM_YEAR = 2025         # antes de esto el histórico está congelado
 MIN_CARS_PER_RACE = 18           # grilla mínima razonable para dar una carrera por completa
 GRACE_HOURS = 48                 # una carrera recién corrida puede tardar en cargarse
+
+# Puntos máximos posibles por ronda (sistema 2025+: sin punto de vuelta rápida,
+# sprint top-8). Se usan para decidir si un título ya está matemáticamente cerrado.
+MAX_RACE_DRIVER = 25                       # un piloto: gana
+MAX_SPRINT_DRIVER = 8
+MAX_RACE_TEAM = 25 + 18                    # un equipo: 1-2 en carrera
+MAX_SPRINT_TEAM = 8 + 7                    # un equipo: 1-2 en sprint
 
 EXIT_WROTE = 0
 EXIT_NO_CHANGES = 3
@@ -424,9 +433,15 @@ def build_season_json(year, base, jmap, today):
 
     # 9) ensamblar en el MISMO orden de claves que export_static.py
     completed = len(process_rounds)
+    # rondas sin resultados procesados (incluye las "pendientes" recién corridas)
+    remaining_calendar = [c for c in calendar if c["round"] not in set(process_rounds)]
     season_obj = {
-        "champion_driver": base["season"].get("champion_driver", ""),
-        "champion_constructor": base["season"].get("champion_constructor", ""),
+        "champion_driver": (base["season"].get("champion_driver", "")
+                            or champion_if_clinched(drivers_list, remaining_calendar,
+                                                    MAX_RACE_DRIVER, MAX_SPRINT_DRIVER)),
+        "champion_constructor": (base["season"].get("champion_constructor", "")
+                                 or champion_if_clinched(constructors_list, remaining_calendar,
+                                                         MAX_RACE_TEAM, MAX_SPRINT_TEAM)),
         "races": [c["id"] for c in calendar],
         "drivers": drivers_list,
         "constructors": constructors_list,
@@ -451,6 +466,24 @@ def build_season_json(year, base, jmap, today):
     summary = {"process_rounds": process_rounds, "pending": pending,
                "drivers": len(drivers_list), "extended": extended}
     return out, summary
+
+
+def champion_if_clinched(entries, remaining_calendar, max_race, max_sprint):
+    """id del líder si ya es campeón matemático, o "" si el título sigue abierto.
+
+    Campeón = el líder le saca al segundo MÁS de lo que el segundo puede sumar con
+    las rondas que faltan (carreras + sprints). Desigualdad estricta: si el segundo
+    podría empatarlo, no se da por cerrado (el desempate por victorias es otra
+    discusión). Solo mira puntos totales; vale para 2025+ (sin descartes ni punto de
+    vuelta rápida)."""
+    if len(entries) < 2:
+        return ""
+    ranked = sorted(entries, key=lambda e: -e["total"])
+    max_left = sum(max_race + (max_sprint if c.get("sprint") else 0)
+                   for c in remaining_calendar)
+    if ranked[0]["total"] > ranked[1]["total"] + max_left:
+        return ranked[0]["id"]
+    return ""
 
 
 def _check_totals(computed, standings, label):

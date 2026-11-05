@@ -15,8 +15,9 @@ trampa, por defecto este script:
   - preserva la entrada de esos años en init.json (seasons_list) tal como está.
 Con --force los reescribe igual (usar solo si ya reconciliaste la DB con el JSON
 de producción vía scripts/import_to_db.py, si no vas a revertir datos del Action).
-records.json siempre se regenera desde la DB: si cargaste rondas 2025+ solo vía
-el Action, reconciliá la DB (import_to_db.py) antes de confiar en esos récords.
+records.json se genera con scripts/build_records.py a partir de los JSON de
+docs/data/ (no de la DB), la misma implementación que corre el Action tras cada
+sync, así que no depende de que f1.db esté al día.
 """
 import sys
 import json
@@ -27,6 +28,9 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "backend"))
 
 from database import SessionLocal
 import crud
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "scripts"))
+import build_records
 
 OUT_DIR = os.path.join(os.path.dirname(__file__), "docs", "data")
 SEASONS_DIR = os.path.join(OUT_DIR, "seasons")
@@ -51,25 +55,6 @@ def load_existing_init():
         with open(path, encoding="utf-8") as f:
             return json.load(f)
     return None
-
-# Eras para la página de récords. "from"/"to" en None → se completa con el
-# primer/último año real de la DB. Ajustar acá si cambia el reglamento.
-ERAS = [
-    {"id": "all", "label": None, "from": None, "to": None},
-    {"id": "1950s", "label": "1950s", "from": 1950, "to": 1959},
-    {"id": "1960s", "label": "1960s", "from": 1960, "to": 1969},
-    {"id": "1970s", "label": "1970s", "from": 1970, "to": 1979},
-    {"id": "1980s", "label": "1980s", "from": 1980, "to": 1989},
-    {"id": "1990s", "label": "1990s", "from": 1990, "to": 1999},
-    {"id": "2000s", "label": "2000s", "from": 2000, "to": 2009},
-    {"id": "2010s", "label": "2010s", "from": 2010, "to": 2019},
-    {"id": "2020s", "label": "2020s", "from": 2020, "to": 2029},
-    {"id": "v10", "label": "V10 (1995-2005)", "from": 1995, "to": 2005},
-    {"id": "v8", "label": "V8 (2006-2013)", "from": 2006, "to": 2013},
-    {"id": "turbo_hybrid", "label": "Turbo-Híbrida (2014-2025)", "from": 2014, "to": 2025},
-    {"id": "2026plus", "label": "Reglamento 2026+", "from": 2026, "to": 9999},
-]
-
 
 def write_json(path, data):
     with open(path, "w", encoding="utf-8") as f:
@@ -146,21 +131,14 @@ try:
         print(f"  {year} OK{' (+extended)' if extended else ''}")
 
     print("Exportando records.json...")
-    min_year, max_year = min(years), max(years)
-    eras_out = []
-    records_out = {}
-    for era in ERAS:
-        from_y = era["from"] if era["from"] is not None else min_year
-        to_y = era["to"] if era["to"] is not None else max_year
-        label = era["label"] if era["label"] is not None else f"Todo ({min_year}-{max_year})"
-        eras_out.append({"id": era["id"], "label": label})
-        records_out[era["id"]] = crud.get_records_for_era(db, from_y, to_y)
-        print(f"  {era['id']} OK")
-
-    write_json(os.path.join(OUT_DIR, "records.json"), {
-        "eras": eras_out,
-        "records": records_out,
-    })
+    # Las correcciones de equipo del historico salen de f1.db (ver
+    # build_records.write_team_overrides); el resto lo lee de los JSON recien escritos.
+    db_path = os.path.join(os.path.dirname(__file__), "f1.db")
+    n_over, over_changed = build_records.write_team_overrides(db_path)
+    print(f"  records_team_overrides.json: {n_over} filas"
+          f"{' (CAMBIO - commitear scripts/records_team_overrides.json)' if over_changed else ''}")
+    write_json(os.path.join(OUT_DIR, "records.json"), build_records.build())
+    print("  records.json OK")
 
     print(f"\nListo. Archivos en docs/data/")
 

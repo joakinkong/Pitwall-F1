@@ -90,6 +90,34 @@ def run(year):
 
     db = SessionLocal()
     try:
+        # 0) Pilotos y circuitos nuevos que el sync metió al JSON y la DB todavía no
+        #    conoce (ej. un debutante). Se crean desde init.json; los que ya existen
+        #    NO se tocan (su metadata en la DB puede ser mejor). Sin esto, un
+        #    export_static --force dejaría a ese piloto fuera de init.json.
+        n_new_drv = 0
+        for d in drivers:
+            if db.get(Driver, d["id"]) is None:
+                info = init["drivers"].get(d["id"])
+                if info is None:
+                    sys.exit(f"El piloto {d['id']} no está en init.json drivers: completá su "
+                             f"ficha ahí antes de reconciliar la DB.")
+                db.add(Driver(id=d["id"], name=info["name"], nationality=info.get("nat"),
+                              flag=info.get("flag"), number=info.get("num"), dob=info.get("dob"),
+                              debut_year=info.get("debut"), biography=info.get("bio")))
+                n_new_drv += 1
+        n_new_circ = 0
+        for c in calendar:
+            if db.get(Circuit, c["id"]) is None:
+                info = init["circuits"].get(c["id"])
+                if info is None:
+                    sys.exit(f"El circuito {c['id']} no está en init.json circuits.")
+                db.add(Circuit(id=c["id"], name=info["name"], circuit_name=info.get("circuit"),
+                               city=info.get("city"), flag=init["flags"].get(c["id"]),
+                               length=info.get("length"), turns=info.get("turns"),
+                               laps=info.get("laps")))
+                n_new_circ += 1
+        db.flush()
+
         # 1) Season (campeón)
         season = db.query(Season).filter(Season.year == year).first()
         if not season:
@@ -177,6 +205,8 @@ def run(year):
         db.commit()
         print(f"Reconciliado {year} en f1.db: {n_res} resultados de carrera, "
               f"{n_spr} de sprint, {len(calendar)} rondas de calendario.")
+        if n_new_drv or n_new_circ:
+            print(f"  Creados desde init.json: {n_new_drv} piloto(s), {n_new_circ} circuito(s).")
     finally:
         db.close()
 
